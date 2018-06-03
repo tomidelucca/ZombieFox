@@ -106,7 +106,7 @@
 		9CFCF1511B68E4CE00686987 /* FlowerFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FlowerFull.png; sourceTree = "<group>"; };
 		9CFCF1521B68E4CE00686987 /* ItemsPearl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ItemsPearl.png; sourceTree = "<group>"; };
 		9CFCF1531B68E4CE00686987 /* MaxIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MaxIcon.png; sourceTree = "<group>"; };
-		9CFEBECF1B1F80F7002C687D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		9CFEBECF1B1F80F7002C687D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E54966661AF778A6001ADED6 /* Fox (Objective-C).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fox (Objective-C).app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54966691AF778A6001ADED6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E549666B1AF778A6001ADED6 /* AAPLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLAppDelegate.h; sourceTree = "<group>"; };
@@ -225,8 +225,7 @@
 				9CFCF14C1B68E4CE00686987 /* Overlays */,
 				9C8180B21BDA675800FE8C68 /* Particle systems */,
 			);
-			name = "Game assets";
-			path = "../Game assets";
+			path = "Game assets";
 			sourceTree = "<group>";
 		};
 		9CFCF14C1B68E4CE00686987 /* Overlays */ = {
