@@ -22,52 +22,11 @@
 		9C0EAE2A1BA9D864004F26CB /* FlowerFull.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1511B68E4CE00686987 /* FlowerFull.png */; };
 		9C0EAE2B1BA9D864004F26CB /* ItemsPearl.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1521B68E4CE00686987 /* ItemsPearl.png */; };
 		9C0EAE2C1BA9D864004F26CB /* MaxIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1531B68E4CE00686987 /* MaxIcon.png */; };
-		9C25F2B21BECE9F20018B67F /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C25F2B11BECE9F20018B67F /* Launch Screen.storyboard */; };
-		9C7D93A41BAC863900DB9637 /* AAPLGameControls.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */; };
-		9C7D93A51BAC863900DB9637 /* AAPLGameControls.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */; };
 		9C7D93A61BAC863900DB9637 /* AAPLGameControls.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */; };
-		9C8180B71BDA675800FE8C68 /* collect.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B31BDA675800FE8C68 /* collect.scnp */; };
-		9C8180B81BDA675800FE8C68 /* collect.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B31BDA675800FE8C68 /* collect.scnp */; };
 		9C8180B91BDA675800FE8C68 /* collect.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B31BDA675800FE8C68 /* collect.scnp */; };
-		9C8180BA1BDA675800FE8C68 /* confetti.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B41BDA675800FE8C68 /* confetti.png */; };
-		9C8180BB1BDA675800FE8C68 /* confetti.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B41BDA675800FE8C68 /* confetti.png */; };
 		9C8180BC1BDA675800FE8C68 /* confetti.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B41BDA675800FE8C68 /* confetti.png */; };
-		9C8180BD1BDA675800FE8C68 /* confetti.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B51BDA675800FE8C68 /* confetti.scnp */; };
-		9C8180BE1BDA675800FE8C68 /* confetti.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B51BDA675800FE8C68 /* confetti.scnp */; };
 		9C8180BF1BDA675800FE8C68 /* confetti.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B51BDA675800FE8C68 /* confetti.scnp */; };
-		9C8180C01BDA675800FE8C68 /* glow01.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B61BDA675800FE8C68 /* glow01.png */; };
-		9C8180C11BDA675800FE8C68 /* glow01.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B61BDA675800FE8C68 /* glow01.png */; };
 		9C8180C21BDA675800FE8C68 /* glow01.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B61BDA675800FE8C68 /* glow01.png */; };
-		9CF835DD1BA9BF6D004F41D1 /* AAPLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF835DC1BA9BF6D004F41D1 /* AAPLAppDelegate.m */; };
-		9CF835E51BA9BF6D004F41D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CF835E31BA9BF6D004F41D1 /* Main.storyboard */; };
-		9CF835E71BA9BF6D004F41D1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CF835E61BA9BF6D004F41D1 /* Images.xcassets */; };
-		9CF835EF1BA9C041004F41D1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF835EE1BA9C041004F41D1 /* main.m */; };
-		9CF835F11BA9C336004F41D1 /* game.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1471B68E4CE00686987 /* game.scnassets */; };
-		9CF835F21BA9C33A004F41D1 /* congratulations.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF14D1B68E4CE00686987 /* congratulations.png */; };
-		9CF835F31BA9C33A004F41D1 /* congratulations_pandaMax.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF14E1B68E4CE00686987 /* congratulations_pandaMax.png */; };
-		9CF835F41BA9C33A004F41D1 /* dpad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF14F1B68E4CE00686987 /* dpad.png */; };
-		9CF835F51BA9C33A004F41D1 /* FlowerEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1501B68E4CE00686987 /* FlowerEmpty.png */; };
-		9CF835F61BA9C33A004F41D1 /* FlowerFull.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1511B68E4CE00686987 /* FlowerFull.png */; };
-		9CF835F71BA9C33A004F41D1 /* ItemsPearl.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1521B68E4CE00686987 /* ItemsPearl.png */; };
-		9CF835F81BA9C33A004F41D1 /* MaxIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1531B68E4CE00686987 /* MaxIcon.png */; };
-		9CF835F91BA9C340004F41D1 /* AAPLGameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CA652E1ADBF90F006293CF /* AAPLGameView.m */; };
-		9CF835FA1BA9C340004F41D1 /* AAPLGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CA65311ADBF90F006293CF /* AAPLGameViewController.m */; };
-		9CF835FB1BA9C340004F41D1 /* AAPLCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CA65501ADC127F006293CF /* AAPLCharacter.m */; };
-		9CFCF1541B68E4CE00686987 /* game.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1471B68E4CE00686987 /* game.scnassets */; };
-		9CFCF15E1B68E4CE00686987 /* congratulations.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF14D1B68E4CE00686987 /* congratulations.png */; };
-		9CFCF1601B68E4CE00686987 /* congratulations_pandaMax.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF14E1B68E4CE00686987 /* congratulations_pandaMax.png */; };
-		9CFCF1621B68E4CE00686987 /* dpad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF14F1B68E4CE00686987 /* dpad.png */; };
-		9CFCF1641B68E4CE00686987 /* FlowerEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1501B68E4CE00686987 /* FlowerEmpty.png */; };
-		9CFCF1661B68E4CE00686987 /* FlowerFull.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1511B68E4CE00686987 /* FlowerFull.png */; };
-		9CFCF1681B68E4CE00686987 /* ItemsPearl.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1521B68E4CE00686987 /* ItemsPearl.png */; };
-		9CFCF16A1B68E4CE00686987 /* MaxIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1531B68E4CE00686987 /* MaxIcon.png */; };
-		E549666A1AF778A6001ADED6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E54966691AF778A6001ADED6 /* main.m */; };
-		E549666D1AF778A6001ADED6 /* AAPLAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E549666C1AF778A6001ADED6 /* AAPLAppDelegate.m */; };
-		E54966751AF778A6001ADED6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E54966731AF778A6001ADED6 /* Main.storyboard */; };
-		E54966771AF778A6001ADED6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E54966761AF778A6001ADED6 /* Images.xcassets */; };
-		E565868B1AF779A600A24465 /* AAPLGameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CA652E1ADBF90F006293CF /* AAPLGameView.m */; };
-		E565868C1AF779B100A24465 /* AAPLGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CA65311ADBF90F006293CF /* AAPLGameViewController.m */; };
-		E565868D1AF77A8200A24465 /* AAPLCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = 94CA65501ADC127F006293CF /* AAPLCharacter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,20 +43,12 @@
 		9C0EAE0F1BA9D4AF004F26CB /* AAPLAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLAppDelegate.h; sourceTree = "<group>"; };
 		9C0EAE101BA9D4AF004F26CB /* AAPLAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLAppDelegate.m; sourceTree = "<group>"; };
 		9C0EAE121BA9D4C0004F26CB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		9C25F2B11BECE9F20018B67F /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLGameControls.m; sourceTree = "<group>"; };
 		9C7D93A71BAC8D7E00DB9637 /* AAPLGameViewControllerPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLGameViewControllerPrivate.h; sourceTree = "<group>"; };
 		9C8180B31BDA675800FE8C68 /* collect.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = collect.scnp; sourceTree = "<group>"; };
 		9C8180B41BDA675800FE8C68 /* confetti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = confetti.png; sourceTree = "<group>"; };
 		9C8180B51BDA675800FE8C68 /* confetti.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = confetti.scnp; sourceTree = "<group>"; };
 		9C8180B61BDA675800FE8C68 /* glow01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glow01.png; sourceTree = "<group>"; };
-		9CF835D61BA9BF6D004F41D1 /* Fox (Objective-C).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fox (Objective-C).app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CF835DB1BA9BF6D004F41D1 /* AAPLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLAppDelegate.h; sourceTree = "<group>"; };
-		9CF835DC1BA9BF6D004F41D1 /* AAPLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLAppDelegate.m; sourceTree = "<group>"; };
-		9CF835E41BA9BF6D004F41D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9CF835E61BA9BF6D004F41D1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		9CF835E81BA9BF6D004F41D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9CF835EE1BA9C041004F41D1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9CFCF1471B68E4CE00686987 /* game.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = game.scnassets; sourceTree = "<group>"; };
 		9CFCF14D1B68E4CE00686987 /* congratulations.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = congratulations.png; sourceTree = "<group>"; };
 		9CFCF14E1B68E4CE00686987 /* congratulations_pandaMax.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = congratulations_pandaMax.png; sourceTree = "<group>"; };
@@ -107,31 +58,10 @@
 		9CFCF1521B68E4CE00686987 /* ItemsPearl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ItemsPearl.png; sourceTree = "<group>"; };
 		9CFCF1531B68E4CE00686987 /* MaxIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MaxIcon.png; sourceTree = "<group>"; };
 		9CFEBECF1B1F80F7002C687D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		E54966661AF778A6001ADED6 /* Fox (Objective-C).app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fox (Objective-C).app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E54966691AF778A6001ADED6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		E549666B1AF778A6001ADED6 /* AAPLAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLAppDelegate.h; sourceTree = "<group>"; };
-		E549666C1AF778A6001ADED6 /* AAPLAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLAppDelegate.m; sourceTree = "<group>"; };
-		E54966741AF778A6001ADED6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E54966761AF778A6001ADED6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		E549667B1AF778A6001ADED6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		9C0EADF81BA9D44F004F26CB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9CF835D31BA9BF6D004F41D1 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E54966631AF778A6001ADED6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -147,8 +77,6 @@
 				9CFEBECF1B1F80F7002C687D /* README.md */,
 				9CFCF1461B68E4CE00686987 /* Game assets */,
 				9CFEBECE1B1F7D04002C687D /* Common */,
-				E54966671AF778A6001ADED6 /* iOS */,
-				9CF835D71BA9BF6D004F41D1 /* tvOS */,
 				9C0EADFC1BA9D44F004F26CB /* OS X */,
 				94CA65251ADBF90F006293CF /* Products */,
 			);
@@ -157,8 +85,6 @@
 		94CA65251ADBF90F006293CF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9CF835D61BA9BF6D004F41D1 /* Fox (Objective-C).app */,
-				E54966661AF778A6001ADED6 /* Fox (Objective-C).app */,
 				9C0EADFB1BA9D44F004F26CB /* Fox (Objective-C).app */,
 			);
 			name = Products;
@@ -195,27 +121,6 @@
 				9C8180B61BDA675800FE8C68 /* glow01.png */,
 			);
 			path = "Particle systems";
-			sourceTree = "<group>";
-		};
-		9CF835D71BA9BF6D004F41D1 /* tvOS */ = {
-			isa = PBXGroup;
-			children = (
-				9CF835DB1BA9BF6D004F41D1 /* AAPLAppDelegate.h */,
-				9CF835DC1BA9BF6D004F41D1 /* AAPLAppDelegate.m */,
-				9CF835E31BA9BF6D004F41D1 /* Main.storyboard */,
-				9CF835E61BA9BF6D004F41D1 /* Images.xcassets */,
-				9CF835E81BA9BF6D004F41D1 /* Info.plist */,
-				9CF835F01BA9C04A004F41D1 /* Supporting Files */,
-			);
-			path = tvOS;
-			sourceTree = "<group>";
-		};
-		9CF835F01BA9C04A004F41D1 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				9CF835EE1BA9C041004F41D1 /* main.m */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		9CFCF1461B68E4CE00686987 /* Game assets */ = {
@@ -257,28 +162,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		E54966671AF778A6001ADED6 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				E549666B1AF778A6001ADED6 /* AAPLAppDelegate.h */,
-				E549666C1AF778A6001ADED6 /* AAPLAppDelegate.m */,
-				E54966731AF778A6001ADED6 /* Main.storyboard */,
-				9C25F2B11BECE9F20018B67F /* Launch Screen.storyboard */,
-				E54966761AF778A6001ADED6 /* Images.xcassets */,
-				E549667B1AF778A6001ADED6 /* Info.plist */,
-				E54966681AF778A6001ADED6 /* Supporting Files */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
-		E54966681AF778A6001ADED6 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				E54966691AF778A6001ADED6 /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -299,40 +182,6 @@
 			productReference = 9C0EADFB1BA9D44F004F26CB /* Fox (Objective-C).app */;
 			productType = "com.apple.product-type.application";
 		};
-		9CF835D51BA9BF6D004F41D1 /* Fox tvOS (Objective-C) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9CF835EB1BA9BF6D004F41D1 /* Build configuration list for PBXNativeTarget "Fox tvOS (Objective-C)" */;
-			buildPhases = (
-				9CF835D21BA9BF6D004F41D1 /* Sources */,
-				9CF835D31BA9BF6D004F41D1 /* Frameworks */,
-				9CF835D41BA9BF6D004F41D1 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Fox tvOS (Objective-C)";
-			productName = tvOS;
-			productReference = 9CF835D61BA9BF6D004F41D1 /* Fox (Objective-C).app */;
-			productType = "com.apple.product-type.application";
-		};
-		E54966651AF778A6001ADED6 /* Fox iOS (Objective-C) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E549668B1AF778A6001ADED6 /* Build configuration list for PBXNativeTarget "Fox iOS (Objective-C)" */;
-			buildPhases = (
-				E54966621AF778A6001ADED6 /* Sources */,
-				E54966631AF778A6001ADED6 /* Frameworks */,
-				E54966641AF778A6001ADED6 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Fox iOS (Objective-C)";
-			productName = Fox_iOS;
-			productReference = E54966661AF778A6001ADED6 /* Fox (Objective-C).app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -345,12 +194,6 @@
 				TargetAttributes = {
 					9C0EADFA1BA9D44F004F26CB = {
 						CreatedOnToolsVersion = 7.1;
-					};
-					9CF835D51BA9BF6D004F41D1 = {
-						CreatedOnToolsVersion = 7.1;
-					};
-					E54966651AF778A6001ADED6 = {
-						CreatedOnToolsVersion = 7.0;
 					};
 				};
 			};
@@ -367,8 +210,6 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E54966651AF778A6001ADED6 /* Fox iOS (Objective-C) */,
-				9CF835D51BA9BF6D004F41D1 /* Fox tvOS (Objective-C) */,
 				9C0EADFA1BA9D44F004F26CB /* Fox OS X (Objective-C) */,
 			);
 		};
@@ -396,49 +237,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9CF835D41BA9BF6D004F41D1 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9CF835F31BA9C33A004F41D1 /* congratulations_pandaMax.png in Resources */,
-				9C8180BE1BDA675800FE8C68 /* confetti.scnp in Resources */,
-				9CF835E71BA9BF6D004F41D1 /* Images.xcassets in Resources */,
-				9CF835F71BA9C33A004F41D1 /* ItemsPearl.png in Resources */,
-				9CF835F41BA9C33A004F41D1 /* dpad.png in Resources */,
-				9CF835F61BA9C33A004F41D1 /* FlowerFull.png in Resources */,
-				9CF835F51BA9C33A004F41D1 /* FlowerEmpty.png in Resources */,
-				9CF835E51BA9BF6D004F41D1 /* Main.storyboard in Resources */,
-				9CF835F11BA9C336004F41D1 /* game.scnassets in Resources */,
-				9C8180C11BDA675800FE8C68 /* glow01.png in Resources */,
-				9C8180B81BDA675800FE8C68 /* collect.scnp in Resources */,
-				9CF835F21BA9C33A004F41D1 /* congratulations.png in Resources */,
-				9CF835F81BA9C33A004F41D1 /* MaxIcon.png in Resources */,
-				9C8180BB1BDA675800FE8C68 /* confetti.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E54966641AF778A6001ADED6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9CFCF1601B68E4CE00686987 /* congratulations_pandaMax.png in Resources */,
-				9C8180BD1BDA675800FE8C68 /* confetti.scnp in Resources */,
-				E54966771AF778A6001ADED6 /* Images.xcassets in Resources */,
-				9C25F2B21BECE9F20018B67F /* Launch Screen.storyboard in Resources */,
-				9CFCF15E1B68E4CE00686987 /* congratulations.png in Resources */,
-				9CFCF1681B68E4CE00686987 /* ItemsPearl.png in Resources */,
-				9CFCF16A1B68E4CE00686987 /* MaxIcon.png in Resources */,
-				9CFCF1621B68E4CE00686987 /* dpad.png in Resources */,
-				9CFCF1661B68E4CE00686987 /* FlowerFull.png in Resources */,
-				E54966751AF778A6001ADED6 /* Main.storyboard in Resources */,
-				9C8180C01BDA675800FE8C68 /* glow01.png in Resources */,
-				9C8180B71BDA675800FE8C68 /* collect.scnp in Resources */,
-				9CFCF1641B68E4CE00686987 /* FlowerEmpty.png in Resources */,
-				9CFCF1541B68E4CE00686987 /* game.scnassets in Resources */,
-				9C8180BA1BDA675800FE8C68 /* confetti.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -455,32 +253,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9CF835D21BA9BF6D004F41D1 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9CF835EF1BA9C041004F41D1 /* main.m in Sources */,
-				9CF835DD1BA9BF6D004F41D1 /* AAPLAppDelegate.m in Sources */,
-				9CF835FA1BA9C340004F41D1 /* AAPLGameViewController.m in Sources */,
-				9CF835F91BA9C340004F41D1 /* AAPLGameView.m in Sources */,
-				9CF835FB1BA9C340004F41D1 /* AAPLCharacter.m in Sources */,
-				9C7D93A51BAC863900DB9637 /* AAPLGameControls.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E54966621AF778A6001ADED6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E565868C1AF779B100A24465 /* AAPLGameViewController.m in Sources */,
-				9C7D93A41BAC863900DB9637 /* AAPLGameControls.m in Sources */,
-				E565868D1AF77A8200A24465 /* AAPLCharacter.m in Sources */,
-				E565868B1AF779A600A24465 /* AAPLGameView.m in Sources */,
-				E549666D1AF778A6001ADED6 /* AAPLAppDelegate.m in Sources */,
-				E549666A1AF778A6001ADED6 /* main.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
@@ -488,22 +260,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				9C0EAE091BA9D44F004F26CB /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		9CF835E31BA9BF6D004F41D1 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				9CF835E41BA9BF6D004F41D1 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		E54966731AF778A6001ADED6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E54966741AF778A6001ADED6 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -613,72 +369,6 @@
 			};
 			name = Release;
 		};
-		9CF835E91BA9BF6D004F41D1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				INFOPLIST_FILE = tvOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.fox.objc";
-				PRODUCT_MODULE_NAME = AAPLFoxObjC;
-				PRODUCT_NAME = "Fox (Objective-C)";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
-			};
-			name = Debug;
-		};
-		9CF835EA1BA9BF6D004F41D1 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				INFOPLIST_FILE = tvOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.fox.objc";
-				PRODUCT_MODULE_NAME = AAPLFoxObjC;
-				PRODUCT_NAME = "Fox (Objective-C)";
-				SDKROOT = appletvos;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
-			};
-			name = Release;
-		};
-		E54966871AF778A6001ADED6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.fox.objc";
-				PRODUCT_MODULE_NAME = AAPLFoxObjC;
-				PRODUCT_NAME = "Fox (Objective-C)";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		E54966881AF778A6001ADED6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				INFOPLIST_FILE = iOS/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.fox.objc";
-				PRODUCT_MODULE_NAME = AAPLFoxObjC;
-				PRODUCT_NAME = "Fox (Objective-C)";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -696,24 +386,6 @@
 			buildConfigurations = (
 				9C0EAE0D1BA9D44F004F26CB /* Debug */,
 				9C0EAE0E1BA9D44F004F26CB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9CF835EB1BA9BF6D004F41D1 /* Build configuration list for PBXNativeTarget "Fox tvOS (Objective-C)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9CF835E91BA9BF6D004F41D1 /* Debug */,
-				9CF835EA1BA9BF6D004F41D1 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E549668B1AF778A6001ADED6 /* Build configuration list for PBXNativeTarget "Fox iOS (Objective-C)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E54966871AF778A6001ADED6 /* Debug */,
-				E54966881AF778A6001ADED6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

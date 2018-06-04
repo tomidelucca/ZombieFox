@@ -54,13 +54,8 @@
     // Game controls
     GCControllerDirectionPad *_controllerDPad;
     vector_float2 _controllerDirection;
-    
-#if !(TARGET_OS_IOS || TARGET_OS_TV)
+    NSUInteger _holdingTrigger;
     CGPoint _lastMousePosition;
-#elif TARGET_OS_IOS
-    UITouch *_padTouch;
-    UITouch *_panningTouch;
-#endif
 }
 
 - (void)panCamera:(CGPoint)direction;

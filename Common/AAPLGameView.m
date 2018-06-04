@@ -10,28 +10,15 @@
 
 #import "AAPLGameView.h"
 
-@implementation AAPLGameView {
-    SKNode *_overlayNode;
-    SKNode *_congratulationsGroupNode;
-    SKLabelNode *_collectedPearlCountLabel;
-    NSMutableArray<SKSpriteNode *> *_collectedFlowerSprites;
-}
 
-#pragma mark -  2D Overlay
+@implementation AAPLGameView
 
-#if TARGET_OS_IOS || TARGET_OS_TV
+SKNode *_overlayNode;
+SKNode *_congratulationsGroupNode;
+SKLabelNode *_collectedPearlCountLabel;
+NSMutableArray<SKSpriteNode *> *_collectedFlowerSprites;
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    [self setup2DOverlay];
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    [self layout2DOverlay];
-}
-
-#else
+#pragma mark - 2D Overlay
 
 - (void)viewDidMoveToWindow {
     [super viewDidMoveToWindow];
@@ -42,8 +29,6 @@
     [super setFrameSize:newSize];
     [self layout2DOverlay];
 }
-
-#endif
 
 - (void)layout2DOverlay {
     _overlayNode.position = CGPointMake(0.0, self.bounds.size.height);
@@ -122,18 +107,6 @@
     _collectedPearlCountLabel.position = CGPointMake(152, -113);
     [_overlayNode addChild:_collectedPearlCountLabel];
     
-    // The virtual D-pad
-#if TARGET_OS_IOS
-    
-    CGRect virtualDPadBounds = self.virtualDPadBoundsInScene;
-    SKSpriteNode *dpadSprite = [SKSpriteNode spriteNodeWithImageNamed:@"dpad.png"];
-    dpadSprite.anchorPoint = CGPointMake(0.0, 0.0);
-    dpadSprite.position = virtualDPadBounds.origin;
-    dpadSprite.size = virtualDPadBounds.size;
-    [skScene addChild:dpadSprite];
-    
-#endif
-    
     // Assign the SpriteKit overlay to the SceneKit view.
     self.overlaySKScene = skScene;
     skScene.userInteractionEnabled = NO;
@@ -190,8 +163,6 @@
 
 #pragma mark - Mouse and Keyboard Events
 
-#if !(TARGET_OS_IOS || TARGET_OS_TV)
-
 - (void)mouseDown:(NSEvent *)theEvent {
     if (!_eventsDelegate || [_eventsDelegate mouseDown:self event:theEvent] == NO) {
         [super mouseDown:theEvent];
@@ -221,23 +192,5 @@
         [super keyUp:theEvent];
     }
 }
-
-#endif
-
-#pragma mark - Virtual D-pad
-
-#if TARGET_OS_IOS
-
-- (CGRect)virtualDPadBoundsInScene {
-    return CGRectMake(10.0, 10.0, 150.0, 150.0);
-}
-
-- (CGRect)virtualDPadBounds {
-    CGRect virtualDPadBounds = [self virtualDPadBoundsInScene];
-    virtualDPadBounds.origin.y = self.bounds.size.height - virtualDPadBounds.size.height + virtualDPadBounds.origin.y;
-    return virtualDPadBounds;
-}
-
-#endif
 
 @end

@@ -19,11 +19,7 @@ typedef NS_OPTIONS(NSUInteger, AAPLBitmask) {
     AAPLBitmaskWater            = 1UL << 6
 };
 
-#if TARGET_OS_IOS || TARGET_OS_TV
-typedef UIViewController AAPLViewController;
-#else
 typedef NSViewController AAPLViewController;
-#endif
 
 @interface AAPLGameViewController : AAPLViewController <SCNSceneRendererDelegate, SCNPhysicsContactDelegate>
 

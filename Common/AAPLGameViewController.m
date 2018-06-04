@@ -92,10 +92,6 @@
         return;
     }
     
-#if TARGET_OS_IOS || TARGET_OS_TV
-    direction.y *= -1.0;
-#endif
-    
     static const CGFloat F = 0.005;
     
     // Make sure the camera handles are correctly reset (because automatic camera animations may have put the "rotation" in a weird state.

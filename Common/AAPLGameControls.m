@@ -31,10 +31,7 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
 #pragma mark -  Game Controller Events
 
 - (void)setupGameControllers {
-#if !(TARGET_OS_IOS || TARGET_OS_TV)
     self.gameView.eventsDelegate = self;
-#endif
-    
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleControllerDidConnectNotification:) name:GCControllerDidConnectNotification object:nil];
 }
 
@@ -52,16 +49,6 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
         strongSelf->_controllerDPad = dpad;
     };
     
-#if TARGET_OS_TV
-    
-    // Apple TV remote
-    GCMicroGamepad *microGamepad = gameController.microGamepad;
-    // Allow the gamepad to handle transposing D-pad values when rotating the controller.
-    microGamepad.allowsRotation = YES;
-    microGamepad.dpad.valueChangedHandler = movementHandler;
-    
-#endif
-    
     // Gamepad D-pad
     GCGamepad *gamepad = gameController.gamepad;
     gamepad.dpad.valueChangedHandler = movementHandler;
@@ -71,73 +58,7 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
     extendedGamepad.leftThumbstick.valueChangedHandler = movementHandler;
 }
 
-#pragma mark - Touch Events
-
-#if TARGET_OS_IOS
-
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    for (UITouch *touch in touches) {
-        if (CGRectContainsPoint(self.gameView.virtualDPadBounds, [touch locationInView:self.gameView])) {
-            // We're in the dpad
-            if (_padTouch == nil) {
-                _padTouch = touch;
-                _controllerDirection = (vector_float2){0.0, 0.0};
-            }
-        }
-        else if (_panningTouch == nil) {
-            // Start panning
-            _panningTouch = [touches anyObject];
-        }
-        
-        if (_padTouch && _panningTouch)
-            break; // We already have what we need
-    }
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    if (_panningTouch) {
-        CGPoint p0 = [_panningTouch previousLocationInView:self.view];
-        CGPoint p1 = [_panningTouch locationInView:self.view];
-        CGPoint displacement = CGPointMake(p1.x - p0.x, p1.y - p0.y);
-        [self panCamera:displacement];
-    }
-    
-    if (_padTouch) {
-        CGPoint p0 = [_padTouch previousLocationInView:self.view];
-        CGPoint p1 = [_padTouch locationInView:self.view];
-        vector_float2 displacement = {p1.x - p0.x, p1.y - p0.y};
-        _controllerDirection = vector_clamp(vector_mix(_controllerDirection, displacement, AAPLControllerAcceleration), -AAPLControllerDirectionLimit, AAPLControllerDirectionLimit);
-    }
-}
-
-- (void)commonTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    if (_panningTouch) {
-        if ([touches containsObject:_panningTouch]) {
-            _panningTouch = nil;
-        }
-    }
-    
-    if (_padTouch) {
-        if ([touches containsObject:_padTouch] || [[event touchesForView:self.view] containsObject:_padTouch] == NO) {
-            _padTouch = nil;
-            _controllerDirection = (vector_float2){0.0, 0.0};
-        }
-    }
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-    [self commonTouchesEnded:touches withEvent:event];
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    [self commonTouchesEnded:touches withEvent:event];
-}
-
-#endif
-
 #pragma mark - Mouse and Keyboard Events
-
-#if !(TARGET_OS_IOS || TARGET_OS_TV)
 
 - (BOOL)mouseDown:(NSView *)view event:(NSEvent *)theEvent {
     // Remember last mouse position for dragging.
@@ -158,6 +79,16 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
 }
 
 - (BOOL)keyDown:(NSView *)view event:(NSEvent *)theEvent {
+    
+    BOOL success = NO;
+    
+    if (theEvent.keyCode == 49) {
+        if (!theEvent.isARepeat) {
+            _holdingTrigger = 1;
+            success = YES;
+        }
+    }
+    
     switch (theEvent.keyCode) {
         case 126: // Up
             if (!theEvent.isARepeat) {
@@ -181,10 +112,20 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
             return YES;
     }
     
-    return NO;
+    return success;
 }
 
 - (BOOL)keyUp:(NSView *)view event:(NSEvent *)theEvent {
+    
+    BOOL success = NO;
+    
+    if (theEvent.keyCode == 49) {
+         if (!theEvent.isARepeat) {
+            _holdingTrigger = 0;
+             success = YES;
+        }
+    }
+    
     switch (theEvent.keyCode) {
         case 126: // Up
             if (!theEvent.isARepeat) {
@@ -208,9 +149,7 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
             return YES;
     }
     
-    return NO;
+    return success;
 }
-
-#endif
 
 @end
