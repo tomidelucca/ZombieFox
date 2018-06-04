@@ -82,7 +82,7 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
     
     BOOL success = NO;
     
-    if (theEvent.keyCode == 49) {
+    if (theEvent.keyCode == 49) { // Spacebar
         if (!theEvent.isARepeat) {
             _holdingTrigger = 1;
             success = YES;
@@ -119,7 +119,7 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
     
     BOOL success = NO;
     
-    if (theEvent.keyCode == 49) {
+    if (theEvent.keyCode == 49) { // Spacebar
          if (!theEvent.isARepeat) {
             _holdingTrigger = 0;
              success = YES;

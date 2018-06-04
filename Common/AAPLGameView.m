@@ -11,12 +11,12 @@
 #import "AAPLGameView.h"
 
 
-@implementation AAPLGameView
-
-SKNode *_overlayNode;
-SKNode *_congratulationsGroupNode;
-SKLabelNode *_collectedPearlCountLabel;
-NSMutableArray<SKSpriteNode *> *_collectedFlowerSprites;
+@implementation AAPLGameView {
+    SKNode *_overlayNode;
+    SKNode *_congratulationsGroupNode;
+    SKLabelNode *_collectedPearlCountLabel;
+    NSMutableArray<SKSpriteNode *> *_collectedFlowerSprites;
+}
 
 #pragma mark - 2D Overlay
 
