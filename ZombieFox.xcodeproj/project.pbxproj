@@ -45,7 +45,7 @@
 		9C0EAE0B1BA9D44F004F26CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C0EAE0F1BA9D4AF004F26CB /* AAPLAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLAppDelegate.h; sourceTree = "<group>"; };
 		9C0EAE101BA9D4AF004F26CB /* AAPLAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLAppDelegate.m; sourceTree = "<group>"; };
-		9C0EAE121BA9D4C0004F26CB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9C0EAE121BA9D4C0004F26CB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "../Game assets/Images.xcassets"; sourceTree = "<group>"; };
 		9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLGameControls.m; sourceTree = "<group>"; };
 		9C7D93A71BAC8D7E00DB9637 /* AAPLGameViewControllerPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLGameViewControllerPrivate.h; sourceTree = "<group>"; };
 		9C8180B31BDA675800FE8C68 /* collect.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = collect.scnp; sourceTree = "<group>"; };
@@ -60,7 +60,6 @@
 		9CFCF1511B68E4CE00686987 /* FlowerFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FlowerFull.png; sourceTree = "<group>"; };
 		9CFCF1521B68E4CE00686987 /* ItemsPearl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ItemsPearl.png; sourceTree = "<group>"; };
 		9CFCF1531B68E4CE00686987 /* MaxIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MaxIcon.png; sourceTree = "<group>"; };
-		9CFEBECF1B1F80F7002C687D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E677EF9220D5B798005FEC05 /* AAPLEnemy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLEnemy.h; sourceTree = "<group>"; };
 		E677EF9320D5B798005FEC05 /* AAPLEnemy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLEnemy.m; sourceTree = "<group>"; };
 		E677EF9820D5BA8E005FEC05 /* AAPLPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLPlayer.h; sourceTree = "<group>"; };
@@ -83,10 +82,7 @@
 		94CA651B1ADBF90F006293CF = {
 			isa = PBXGroup;
 			children = (
-				9CFEBECF1B1F80F7002C687D /* README.md */,
-				9CFCF1461B68E4CE00686987 /* Game assets */,
-				9CFEBECE1B1F7D04002C687D /* Common */,
-				9C0EADFC1BA9D44F004F26CB /* OS X */,
+				9C0EADFC1BA9D44F004F26CB /* ZombieFox */,
 				94CA65251ADBF90F006293CF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -99,18 +95,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9C0EADFC1BA9D44F004F26CB /* OS X */ = {
+		9C0EADFC1BA9D44F004F26CB /* ZombieFox */ = {
 			isa = PBXGroup;
 			children = (
 				9C0EAE0F1BA9D4AF004F26CB /* AAPLAppDelegate.h */,
 				9C0EAE101BA9D4AF004F26CB /* AAPLAppDelegate.m */,
-				9C0EAE121BA9D4C0004F26CB /* Images.xcassets */,
-				9C0EAE081BA9D44F004F26CB /* Main.storyboard */,
+				E677EFA020D61341005FEC05 /* Categories */,
+				E677EF9F20D6131C005FEC05 /* Views */,
+				E677EF9E20D61302005FEC05 /* View Controllers */,
+				E677EFA120D6134F005FEC05 /* Models */,
+				9CFCF1461B68E4CE00686987 /* Assets */,
 				9C0EAE0B1BA9D44F004F26CB /* Info.plist */,
 				9C0EAE001BA9D44F004F26CB /* Supporting Files */,
 			);
-			name = "OS X";
-			path = OSX;
+			path = ZombieFox;
 			sourceTree = "<group>";
 		};
 		9C0EAE001BA9D44F004F26CB /* Supporting Files */ = {
@@ -132,14 +130,16 @@
 			path = "Particle systems";
 			sourceTree = "<group>";
 		};
-		9CFCF1461B68E4CE00686987 /* Game assets */ = {
+		9CFCF1461B68E4CE00686987 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				9C0EAE081BA9D44F004F26CB /* Main.storyboard */,
+				9C0EAE121BA9D4C0004F26CB /* Images.xcassets */,
 				9CFCF1471B68E4CE00686987 /* game.scnassets */,
 				9CFCF14C1B68E4CE00686987 /* Overlays */,
 				9C8180B21BDA675800FE8C68 /* Particle systems */,
 			);
-			path = "Game assets";
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		9CFCF14C1B68E4CE00686987 /* Overlays */ = {
@@ -156,7 +156,36 @@
 			path = Overlays;
 			sourceTree = "<group>";
 		};
-		9CFEBECE1B1F7D04002C687D /* Common */ = {
+		E677EF9E20D61302005FEC05 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */,
+				94CA65301ADBF90F006293CF /* AAPLGameViewController.h */,
+				9C7D93A71BAC8D7E00DB9637 /* AAPLGameViewControllerPrivate.h */,
+				94CA65311ADBF90F006293CF /* AAPLGameViewController.m */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		E677EF9F20D6131C005FEC05 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				94CA652E1ADBF90F006293CF /* AAPLGameView.m */,
+				94CA652D1ADBF90F006293CF /* AAPLGameView.h */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E677EFA020D61341005FEC05 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				E677EF9B20D6098B005FEC05 /* SCNScene+LoadAnimation.h */,
+				E677EF9C20D6098B005FEC05 /* SCNScene+LoadAnimation.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		E677EFA120D6134F005FEC05 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				94CA65521ADC129A006293CF /* AAPLCharacter.h */,
@@ -165,16 +194,8 @@
 				E677EF9920D5BA8E005FEC05 /* AAPLPlayer.m */,
 				E677EF9220D5B798005FEC05 /* AAPLEnemy.h */,
 				E677EF9320D5B798005FEC05 /* AAPLEnemy.m */,
-				94CA652D1ADBF90F006293CF /* AAPLGameView.h */,
-				94CA652E1ADBF90F006293CF /* AAPLGameView.m */,
-				94CA65301ADBF90F006293CF /* AAPLGameViewController.h */,
-				9C7D93A71BAC8D7E00DB9637 /* AAPLGameViewControllerPrivate.h */,
-				94CA65311ADBF90F006293CF /* AAPLGameViewController.m */,
-				9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */,
-				E677EF9B20D6098B005FEC05 /* SCNScene+LoadAnimation.h */,
-				E677EF9C20D6098B005FEC05 /* SCNScene+LoadAnimation.m */,
 			);
-			path = Common;
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -212,7 +233,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 94CA651F1ADBF90F006293CF /* Build configuration list for PBXProject "Fox" */;
+			buildConfigurationList = 94CA651F1ADBF90F006293CF /* Build configuration list for PBXProject "ZombieFox" */;
 			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -380,9 +401,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = OSX/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ZombieFox/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.fox.objc";
+				PRODUCT_BUNDLE_IDENTIFIER = cool.tomi.ZombieFox;
 				PRODUCT_MODULE_NAME = AAPLFoxObjC;
 				PRODUCT_NAME = "Fox (Objective-C)";
 				SDKROOT = macosx;
@@ -394,9 +415,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = OSX/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ZombieFox/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.fox.objc";
+				PRODUCT_BUNDLE_IDENTIFIER = cool.tomi.ZombieFox;
 				PRODUCT_MODULE_NAME = AAPLFoxObjC;
 				PRODUCT_NAME = "Fox (Objective-C)";
 				SDKROOT = macosx;
@@ -406,7 +427,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		94CA651F1ADBF90F006293CF /* Build configuration list for PBXProject "Fox" */ = {
+		94CA651F1ADBF90F006293CF /* Build configuration list for PBXProject "ZombieFox" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				94CA65461ADBF90F006293CF /* Debug */,
