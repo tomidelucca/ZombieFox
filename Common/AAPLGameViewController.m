@@ -109,67 +109,6 @@
         self.player.node.position = _replacementPosition;
     }
 }
-    
-#pragma mark - SCNPhysicsContactDelegate Conformance
-
-// To receive contact messages, you set the contactDelegate property of an SCNPhysicsWorld object.
-// SceneKit calls your delegate methods when a contact begins, when information about the contact changes, and when the contact ends.
-
-- (void)physicsWorld:(SCNPhysicsWorld *)world didBeginContact:(SCNPhysicsContact *)contact {
-    if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskCollision) {
-        [self characterNode:contact.nodeB hitWall:contact.nodeA withContact:contact];
-    }
-    if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskCollision) {
-        [self characterNode:contact.nodeA hitWall:contact.nodeB withContact:contact];
-    }
-    if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskCollectable) {
-        [self collectPearl:contact.nodeA];
-    }
-    if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskCollectable) {
-        [self collectPearl:contact.nodeB];
-    }
-    if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskSuperCollectable) {
-        [self collectFlower:contact.nodeA];
-    }
-    if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskSuperCollectable) {
-        [self collectFlower:contact.nodeB];
-    }
-    if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskEnemy) {
-        [self.player catchFire];
-    }
-    if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskEnemy) {
-        [self.player catchFire];
-    }
-}
-
-- (void)physicsWorld:(SCNPhysicsWorld *)world didUpdateContact:(SCNPhysicsContact *)contact {
-    if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskCollision) {
-        [self characterNode:contact.nodeB hitWall:contact.nodeA withContact:contact];
-    }
-    if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskCollision) {
-        [self characterNode:contact.nodeA hitWall:contact.nodeB withContact:contact];
-    }
-}
-
-- (void)characterNode:(SCNNode *)characterNode hitWall:(SCNNode *)wall withContact:(SCNPhysicsContact *)contact {
-    if (characterNode.parentNode != self.player.node) {
-        return;
-    }
-    
-    if (_maxPenetrationDistance > contact.penetrationDistance) {
-        return;
-    }
-    
-    _maxPenetrationDistance = contact.penetrationDistance;
-    
-    vector_float3 characterPosition = SCNVector3ToFloat3(self.player.node.position);
-    vector_float3 positionOffset = SCNVector3ToFloat3(contact.contactNormal) * contact.penetrationDistance;
-    positionOffset.y = 0;
-    characterPosition += positionOffset;
-    
-    _replacementPosition = SCNVector3FromFloat3(characterPosition);
-    _replacementPositionIsValid = YES;
-}
 
 #pragma mark - Scene Setup
 

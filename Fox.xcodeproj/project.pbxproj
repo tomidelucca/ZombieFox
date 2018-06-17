@@ -29,6 +29,7 @@
 		9C8180C21BDA675800FE8C68 /* glow01.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B61BDA675800FE8C68 /* glow01.png */; };
 		E677EF9420D5B798005FEC05 /* AAPLEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EF9320D5B798005FEC05 /* AAPLEnemy.m */; };
 		E677EF9A20D5BA8E005FEC05 /* AAPLPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EF9920D5BA8E005FEC05 /* AAPLPlayer.m */; };
+		E677EF9D20D6098B005FEC05 /* SCNScene+LoadAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EF9C20D6098B005FEC05 /* SCNScene+LoadAnimation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,8 @@
 		E677EF9320D5B798005FEC05 /* AAPLEnemy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLEnemy.m; sourceTree = "<group>"; };
 		E677EF9820D5BA8E005FEC05 /* AAPLPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLPlayer.h; sourceTree = "<group>"; };
 		E677EF9920D5BA8E005FEC05 /* AAPLPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLPlayer.m; sourceTree = "<group>"; };
+		E677EF9B20D6098B005FEC05 /* SCNScene+LoadAnimation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SCNScene+LoadAnimation.h"; sourceTree = "<group>"; };
+		E677EF9C20D6098B005FEC05 /* SCNScene+LoadAnimation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "SCNScene+LoadAnimation.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +171,8 @@
 				9C7D93A71BAC8D7E00DB9637 /* AAPLGameViewControllerPrivate.h */,
 				94CA65311ADBF90F006293CF /* AAPLGameViewController.m */,
 				9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */,
+				E677EF9B20D6098B005FEC05 /* SCNScene+LoadAnimation.h */,
+				E677EF9C20D6098B005FEC05 /* SCNScene+LoadAnimation.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -256,6 +261,7 @@
 			files = (
 				9C0EAE021BA9D44F004F26CB /* main.m in Sources */,
 				9C0EAE111BA9D4AF004F26CB /* AAPLAppDelegate.m in Sources */,
+				E677EF9D20D6098B005FEC05 /* SCNScene+LoadAnimation.m in Sources */,
 				E677EF9A20D5BA8E005FEC05 /* AAPLPlayer.m in Sources */,
 				9C0EAE1D1BA9D4DA004F26CB /* AAPLGameViewController.m in Sources */,
 				E677EF9420D5B798005FEC05 /* AAPLEnemy.m in Sources */,

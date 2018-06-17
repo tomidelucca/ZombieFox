@@ -10,23 +10,23 @@
 
 #import <SceneKit/SceneKit.h>
 
+#import "AAPLGameViewController.h"
+
 typedef NS_ENUM(NSUInteger, AAPLGroundType) {
     AAPLGroundTypeGrass,
-    AAPLGroundTypeRock,
-    AAPLGroundTypeWater,
-    AAPLGroundTypeInTheAir,
-    AAPLGroundTypeSoil,
     AAPLGroundTypeCount
 };
 
 @interface AAPLCharacter : NSObject
 
-@property(nonatomic, readonly) SCNNode *node;
+@property (nonatomic, readonly) SCNNode *node;
+@property (nonatomic) CGFloat walkSpeed;
+
+- (instancetype)initWithCharacterScene:(SCNScene*)scene;
+- (void)setupWalkAnimationWithScene:(SCNScene*)scene;
 
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene;
 - (void)rotateByAngle:(CGFloat)angle;
-- (void)catchFire;
-- (void)haltFire;
 
 @end
 

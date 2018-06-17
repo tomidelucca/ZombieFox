@@ -9,183 +9,71 @@
 @import SceneKit;
 
 #import "AAPLCharacter.h"
-#import "AAPLGameViewController.h"
+#import "SCNScene+LoadAnimation.h"
 
 static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 static NSUInteger const AAPLCharacterStepsCount = 11;
 
+@interface AAPLCharacter()
+@property (strong, nonatomic) CAAnimation* walkAnimation;
+@property (nonatomic) NSTimeInterval previousUpdateTime;
+@property (nonatomic) AAPLGroundType groundType;
+@property (strong, nonatomic) SCNNode* node;
+@property (nonatomic) BOOL isWalking;
+@end
+
 @implementation AAPLCharacter {
-    // Character handle
-    SCNNode *_node;
-    
-    // Controlling the character
-    AAPLGroundType _groundType;
-    NSTimeInterval _previousUpdateTime;
-    CGFloat _walkSpeed;
-    CGFloat _accelerationY;
-    CGFloat _directionAngle;
-    BOOL _isWalking;
-    BOOL _isBurning;
-    BOOL _isInvincible;
-    
-    // Particle systems
-    SCNNode *_fireEmitter;
-    SCNNode *_smokeEmitter;
-    SCNNode *_whiteSmokeEmitter;
-    CGFloat _fireEmitterBirthRate;
-    CGFloat _smokeEmitterBirthRate;
-    CGFloat _whiteSmokeEmitterBirthRate;
- 
-    // Sound effects
-    SCNAudioSource *_reliefSound;
-    SCNAudioSource *_haltFireSound;
-    SCNAudioSource *_catchFireSound;
     SCNAudioSource *_steps[AAPLCharacterStepsCount][AAPLGroundTypeCount];
-    
-    // Animations
-    CAAnimation *_walkAnimation;
 }
 
 #pragma mark - Initialization
 
-- (instancetype)init {
-    if (self = [super init]) {
-        
-        /// Load character from external file
-        
-        _node = [SCNNode node];
-        SCNScene *characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
-        SCNNode *characterTopLevelNode = characterScene.rootNode.childNodes[0];
-        [_node addChildNode:characterTopLevelNode];
-        
-        
-        /// Configure collision capsule
-        
-        // Collisions are handled by the physics engine. The character is approximated by
-        // a capsule that is configured to collide with collectables, enemies and walls
-        
-        SCNVector3 min, max;
-        [_node getBoundingBoxMin:&min max:&max];
-        CGFloat collisionCapsuleRadius = (max.x - min.x) * 0.4;
-        CGFloat collisionCapsuleHeight = (max.y - min.y);
-        
-        SCNNode *characterCollisionNode = [SCNNode node];
-        characterCollisionNode.name = @"collider";
-        characterCollisionNode.position = SCNVector3Make(0.0, collisionCapsuleHeight * 0.51, 0.0);// a bit too high to not hit the floor
-        characterCollisionNode.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeKinematic shape:[SCNPhysicsShape shapeWithGeometry:[SCNCapsule capsuleWithCapRadius:collisionCapsuleRadius height:collisionCapsuleHeight] options:nil]];
-        characterCollisionNode.physicsBody.contactTestBitMask = AAPLBitmaskSuperCollectable | AAPLBitmaskCollectable | AAPLBitmaskCollision | AAPLBitmaskEnemy;
-        [_node addChildNode:characterCollisionNode];
-        
-        
-        /// Load particle systems
-        
-        // Particle systems were configured in the SceneKit Scene Editor
-        // They are retrieved from the scene and their birth rate are stored for later use
-        
-        _fireEmitter = [characterTopLevelNode childNodeWithName:@"fire" recursively:YES];
-        _fireEmitterBirthRate = _fireEmitter.particleSystems[0].birthRate;
-        _fireEmitter.particleSystems[0].birthRate = 0;
-        _fireEmitter.hidden = NO;
-        
-        _smokeEmitter = [characterTopLevelNode childNodeWithName:@"smoke" recursively:YES];
-        _smokeEmitterBirthRate = _smokeEmitter.particleSystems[0].birthRate;
-        _smokeEmitter.particleSystems[0].birthRate = 0;
-        _smokeEmitter.hidden = NO;
-        
-        _whiteSmokeEmitter = [characterTopLevelNode childNodeWithName:@"whiteSmoke" recursively:YES];
-        _whiteSmokeEmitterBirthRate = _whiteSmokeEmitter.particleSystems[0].birthRate;
-        _whiteSmokeEmitter.particleSystems[0].birthRate = 0;
-        _whiteSmokeEmitter.hidden = NO;
-        
-        
-        /// Load sound effects
-
-        _reliefSound = [SCNAudioSource audioSourceNamed:@"game.scnassets/sounds/aah_extinction.mp3"];
-        _reliefSound.volume = 2.0;
-        [_reliefSound load];
-        
-        _haltFireSound = [SCNAudioSource audioSourceNamed:@"game.scnassets/sounds/fire_extinction.mp3"];
-        _haltFireSound.volume = 2.0;
-        [_haltFireSound load];
-        
-        _catchFireSound = [SCNAudioSource audioSourceNamed:@"game.scnassets/sounds/ouch_firehit.mp3"];
-        _catchFireSound.volume = 2.0;
-        [_catchFireSound load];
-        
-        for (NSUInteger i = 0; i < AAPLCharacterStepsCount; i++) {
-            _steps[i][AAPLGroundTypeGrass] = [SCNAudioSource audioSourceNamed:[NSString stringWithFormat:@"game.scnassets/sounds/Step_grass_0%d.mp3", (uint32_t)i]];
-            _steps[i][AAPLGroundTypeGrass].volume = 0.5;
-            [_steps[i][AAPLGroundTypeGrass] load];
-            
-            _steps[i][AAPLGroundTypeRock] = [SCNAudioSource audioSourceNamed:[NSString stringWithFormat:@"game.scnassets/sounds/Step_rock_0%d.mp3", (uint32_t)i]];
-            [_steps[i][AAPLGroundTypeRock] load];
-            
-            _steps[i][AAPLGroundTypeSoil] = [SCNAudioSource audioSourceNamed:[NSString stringWithFormat:@"game.scnassets/sounds/Step_rock_0%d.mp3", (uint32_t)i]];
-            [_steps[i][AAPLGroundTypeSoil] load];
-            
-            _steps[i][AAPLGroundTypeWater] = [SCNAudioSource audioSourceNamed:[NSString stringWithFormat:@"game.scnassets/sounds/Step_splash_0%d.mp3", (uint32_t)i]];
-            [_steps[i][AAPLGroundTypeWater] load];
-        }
-        
-        
-        /// Configure animations
-        
-        // Some animations are already there and can be retrieved from the scene
-        // The "walk" animation is loaded from a file, it is configured to play foot steps at specific times during the animation
-
-        [characterTopLevelNode enumerateChildNodesUsingBlock:^(SCNNode *child, BOOL *stop) {
-            for(NSString *key in child.animationKeys) {               // for every animation key
-                CAAnimation *animation = [child animationForKey:key]; // get the animation
-                animation.usesSceneTimeBase = NO;                     // make it system time based
-                animation.repeatCount = FLT_MAX;                      // make it repeat forever
-                [child addAnimation:animation forKey:key];            // animations are copied upon addition, so we have to replace the previous animation
-            }
-        }];
-        
-        _walkAnimation = [self loadAnimationFromSceneNamed:@"game.scnassets/walk.scn"];
-        _walkAnimation.usesSceneTimeBase = NO;
-        _walkAnimation.fadeInDuration = 0.3;
-        _walkAnimation.fadeOutDuration = 0.3;
-        _walkAnimation.repeatCount = FLT_MAX;
-        _walkAnimation.speed = AAPLCharacterSpeedFactor;
-        _walkAnimation.animationEvents = @[[SCNAnimationEvent animationEventWithKeyTime:0.1 block:^(CAAnimation *animation, id animatedObject, BOOL playingBackward) { [self playFootStep]; }],
-                                           [SCNAnimationEvent animationEventWithKeyTime:0.6 block:^(CAAnimation *animation, id animatedObject, BOOL playingBackward) { [self playFootStep]; }]];
-        
-    
-        /// Misc
-        
-        _walkSpeed = 1.0;
+- (instancetype)initWithCharacterScene:(SCNScene*)scene {
+    self = [super init];
+    if (self) {
+        [self setupNodeWithScene:scene];
+        [self configureCharacter];
     }
-    
     return self;
 }
 
-#pragma mark - Retrieving nodes
+#pragma mark - Setup character
 
-- (SCNNode *)node {
-    return _node;
+- (void)setupNodeWithScene:(SCNScene*)scene
+{
+    self.node = [SCNNode node];
+    SCNScene *characterScene = scene;
+    SCNNode *characterTopLevelNode = characterScene.rootNode.childNodes[0];
+    [self.node addChildNode:characterTopLevelNode];
+}
+
+- (void)configureCharacter
+{
+    self.walkSpeed = 1.0f;
+    [self loadEmbeddedAnimations];
+    [self loadSounds];
 }
 
 #pragma mark - Controlling the character
 
 - (void)rotateByAngle:(CGFloat)angle
 {
-    [_node runAction:[SCNAction rotateByX:0.0f y:(angle * M_PI / 80) z:0.0f duration:0.1f]];
+    [self.node runAction:[SCNAction rotateByX:0.0f y:(angle * M_PI / 80) z:0.0f duration:0.1f]];
 }
 
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene {
     
-    if (_previousUpdateTime == 0.0) {
-        _previousUpdateTime = time;
+    if (self.previousUpdateTime == 0.0) {
+        self.previousUpdateTime = time;
     }
     
-    NSTimeInterval deltaTime = MIN(time - _previousUpdateTime, 1.0 / 60.0);
+    NSTimeInterval deltaTime = MIN(time - self.previousUpdateTime, 1.0 / 60.0);
     CGFloat characterSpeed = deltaTime * AAPLCharacterSpeedFactor * 0.84;
-    _previousUpdateTime = time;
+    self.previousUpdateTime = time;
     
     if (direction.x != 0.0 || direction.z != 0.0) {
-        vector_float3 position = SCNVector3ToFloat3(_node.position);
-        _node.position = SCNVector3FromFloat3(position + direction * characterSpeed);
+        vector_float3 position = SCNVector3ToFloat3(self.node.position);
+        self.node.position = SCNVector3FromFloat3(position + direction * characterSpeed);
         self.walking = YES;
     } else {
         self.walking = NO;
@@ -194,16 +82,28 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
 
 #pragma mark - Animating the character
 
+- (void)setupWalkAnimationWithScene:(SCNScene*)scene
+{
+    self.walkAnimation = [scene loadAnimation];
+    self.walkAnimation.usesSceneTimeBase = NO;
+    self.walkAnimation.fadeInDuration = 0.3;
+    self.walkAnimation.fadeOutDuration = 0.3;
+    self.walkAnimation.repeatCount = FLT_MAX;
+    self.walkAnimation.speed = AAPLCharacterSpeedFactor;
+    self.walkAnimation.animationEvents = @[[SCNAnimationEvent animationEventWithKeyTime:0.1 block:^(CAAnimation *animation, id animatedObject, BOOL playingBackward) { [self playFootStep]; }],
+                                       [SCNAnimationEvent animationEventWithKeyTime:0.6 block:^(CAAnimation *animation, id animatedObject, BOOL playingBackward) { [self playFootStep]; }]];
+}
+
 - (void)setWalking:(BOOL)walking {
-    if (_isWalking != walking) {
-        _isWalking = walking;
+    if (self.isWalking != walking) {
+        self.isWalking = walking;
         
         // Update node animation.
-        if (_isWalking) {
-            [_node addAnimation:_walkAnimation forKey:@"walk"];
+        if (self.isWalking) {
+            [self.node addAnimation:self.walkAnimation forKey:@"walk"];
         }
         else {
-            [_node removeAnimationForKey:@"walk" fadeOutDuration:0.2];
+            [self.node removeAnimationForKey:@"walk" fadeOutDuration:0.2];
         }
     }
 }
@@ -212,92 +112,46 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
     _walkSpeed = walkSpeed;
     
     // remove current walk animation if any.
-    BOOL wasWalking = _isWalking;
+    BOOL wasWalking = self.isWalking;
     if (wasWalking)
         self.walking = NO;
     
-    _walkAnimation.speed = AAPLCharacterSpeedFactor * _walkSpeed;
+    self.walkAnimation.speed = AAPLCharacterSpeedFactor * self.walkSpeed;
     
     // restore walk animation if needed.
-    if (wasWalking)
+    if (wasWalking) {
         self.walking = YES;
+    }
 }
 
-#pragma mark - Dealing with fire
-
-- (void)catchFire {
-    if (_isInvincible == NO) {
-        _isInvincible = YES;
-        [_node runAction:[SCNAction sequence:@[[SCNAction playAudioSource:_catchFireSound waitForCompletion:NO],
-                                               [SCNAction repeatAction:[SCNAction sequence:@[[SCNAction fadeOpacityTo:0.01 duration:0.1],
-                                                                                             [SCNAction fadeOpacityTo:1.0 duration:0.1]]]
-                                                                 count:7],
-                                               [SCNAction runBlock:^(SCNNode *node) { _isInvincible = NO; }]]]];
-    }
-    
-    _isBurning = YES;
-    
-    // start fire + smoke
-    _fireEmitter.particleSystems[0].birthRate = _fireEmitterBirthRate;
-    _smokeEmitter.particleSystems[0].birthRate = _smokeEmitterBirthRate;
-    
-    // walk faster
-    self.walkSpeed = 2.3;
-}
-
-- (void)haltFire {
-    if (_isBurning) {
-        _isBurning = NO;
-        
-        [_node runAction:[SCNAction sequence:@[[SCNAction playAudioSource:_haltFireSound waitForCompletion:true],
-                                               [SCNAction playAudioSource:_reliefSound waitForCompletion:false]]]];
-
-        // stop fire and smoke
-        _fireEmitter.particleSystems[0].birthRate = 0;
-        [SCNTransaction begin];
-        [SCNTransaction setAnimationDuration:1.0];
-        _smokeEmitter.particleSystems[0].birthRate = 0;
-        [SCNTransaction commit];
-        
-        // start white smoke
-        _whiteSmokeEmitter.particleSystems[0].birthRate = _whiteSmokeEmitterBirthRate;
-        
-        // progressively stop white smoke
-        [SCNTransaction begin];
-        [SCNTransaction setAnimationDuration:5.0];
-        _whiteSmokeEmitter.particleSystems[0].birthRate = 0;
-        [SCNTransaction commit];
-        
-        // walk normally
-        self.walkSpeed = 1.0;
-    }
+- (void)loadEmbeddedAnimations
+{
+    SCNNode *characterTopLevelNode = self.node.childNodes[0];
+    [characterTopLevelNode enumerateChildNodesUsingBlock:^(SCNNode *child, BOOL *stop) {
+        for(NSString *key in child.animationKeys) {               // for every animation key
+            CAAnimation *animation = [child animationForKey:key]; // get the animation
+            animation.usesSceneTimeBase = NO;                     // make it system time based
+            animation.repeatCount = FLT_MAX;                      // make it repeat forever
+            [child addAnimation:animation forKey:key];            // animations are copied upon addition, so we have to replace the previous animation
+        }
+    }];
 }
 
 #pragma mark - Dealing with sound
 
-- (void)playFootStep {
-    if (_groundType != AAPLGroundTypeInTheAir) { // We are in the air, no sound to play.
-        // Play a random step sound.
-        NSInteger stepSoundIndex = arc4random_uniform(AAPLCharacterStepsCount);
-        [_node runAction:[SCNAction playAudioSource:_steps[stepSoundIndex][_groundType] waitForCompletion:NO]];
+- (void)loadSounds
+{
+    for (NSUInteger i = 0; i < AAPLCharacterStepsCount; i++) {
+        _steps[i][AAPLGroundTypeGrass] = [SCNAudioSource audioSourceNamed:[NSString stringWithFormat:@"game.scnassets/sounds/Step_grass_0%d.mp3", (uint32_t)i]];
+        _steps[i][AAPLGroundTypeGrass].volume = 0.5;
+        [_steps[i][AAPLGroundTypeGrass] load];
     }
 }
 
-#pragma mark - Utils
-
-- (CAAnimation *)loadAnimationFromSceneNamed:(NSString *)sceneName {
-    SCNScene *scene = [SCNScene sceneNamed:sceneName];
-    
-    // find top level animation
-    __block CAAnimation *animation = nil;
-    [scene.rootNode enumerateChildNodesUsingBlock:^(SCNNode *child, BOOL *stop) {
-        if (child.animationKeys.count > 0) {
-            animation = [child animationForKey:child.animationKeys[0]];
-            *stop = YES;
-        }
-    }];
-    
-    return animation;
+- (void)playFootStep {
+    // Play a random step sound.
+    NSInteger stepSoundIndex = arc4random_uniform(AAPLCharacterStepsCount);
+    [self.node runAction:[SCNAction playAudioSource:_steps[stepSoundIndex][self.groundType] waitForCompletion:NO]];
 }
 
 @end
