@@ -35,7 +35,7 @@
     self.gameView.playing = YES;
     self.gameView.loops = YES;
     
-    [self setupPlayer];
+    [self setupGame];
     [self setupCamera];
     [self setupGround];
     [self setupGameControllers];
@@ -48,18 +48,20 @@
     self.gameView.delegate = self;
 }
 
-- (void)setupPlayer
+- (void)setupGame
 {
     self.player = [AAPLPlayer new];
     self.player.node.position = SCNVector3Make(1.0f, 0.0f, 1.0f);
     self.player.delegate = self;
     [self.gameView.scene.rootNode addChildNode:self.player.node];
     
-    //AAPLItem* item = [AAPLItemFactory speedItemWithSpeed:2.0f forInterval:5.0f];
+    self.enemies = [NSMutableArray new];
+    self.items = [NSMutableArray new];
+
     AAPLItem* item = [AAPLItemFactory damageForCharacter:30.0f];
     item.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
-    self.item = item;
     [self.gameView.scene.rootNode addChildNode:item.node];
+    [self.items addObject:item];
 }
 
 - (void)setupCamera
@@ -137,7 +139,7 @@
     AAPLItem* item = [AAPLItem itemForNode:contact.nodeB];
     [item runActionWithPlayer:self.player];
     [item.node removeFromParentNode];
-    self.item = nil;
+    [self.items removeObject:item];
 }
 
 #pragma mark - AAPLCharacterDelegate Conformance

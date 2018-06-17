@@ -9,5 +9,5 @@
 #import "AAPLCharacter.h"
 
 @interface AAPLEnemy : AAPLCharacter
-
++ (AAPLEnemy*)enemyForNode:(SCNNode*)node;
 @end

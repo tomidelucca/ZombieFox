@@ -34,6 +34,7 @@
 		E677EFA820D630F9005FEC05 /* AAPLCharacterConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFA720D630F9005FEC05 /* AAPLCharacterConfiguration.m */; };
 		E677EFAB20D6FB88005FEC05 /* AAPLNodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFAA20D6FB88005FEC05 /* AAPLNodeManager.m */; };
 		E677EFD020D7040A005FEC05 /* AAPLItemFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFCF20D7040A005FEC05 /* AAPLItemFactory.m */; };
+		E677EFDB20D71C25005FEC05 /* AAPLEnemyFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFDA20D71C25005FEC05 /* AAPLEnemyFactory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,8 @@
 		E677EFAA20D6FB88005FEC05 /* AAPLNodeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLNodeManager.m; sourceTree = "<group>"; };
 		E677EFCE20D7040A005FEC05 /* AAPLItemFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLItemFactory.h; sourceTree = "<group>"; };
 		E677EFCF20D7040A005FEC05 /* AAPLItemFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLItemFactory.m; sourceTree = "<group>"; };
+		E677EFD920D71C25005FEC05 /* AAPLEnemyFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLEnemyFactory.h; sourceTree = "<group>"; };
+		E677EFDA20D71C25005FEC05 /* AAPLEnemyFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLEnemyFactory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,15 +204,10 @@
 		E677EFA120D6134F005FEC05 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E677EFD820D71BFD005FEC05 /* Characters */,
 				E677EFD120D70527005FEC05 /* Items */,
 				E677EFA620D630F9005FEC05 /* AAPLCharacterConfiguration.h */,
 				E677EFA720D630F9005FEC05 /* AAPLCharacterConfiguration.m */,
-				94CA65521ADC129A006293CF /* AAPLCharacter.h */,
-				94CA65501ADC127F006293CF /* AAPLCharacter.m */,
-				E677EF9820D5BA8E005FEC05 /* AAPLPlayer.h */,
-				E677EF9920D5BA8E005FEC05 /* AAPLPlayer.m */,
-				E677EF9220D5B798005FEC05 /* AAPLEnemy.h */,
-				E677EF9320D5B798005FEC05 /* AAPLEnemy.m */,
 				E677EFA520D6154B005FEC05 /* AAPLCollisionMasks.h */,
 				E677EFA920D6FB88005FEC05 /* AAPLNodeManager.h */,
 				E677EFAA20D6FB88005FEC05 /* AAPLNodeManager.m */,
@@ -226,6 +224,21 @@
 				E677EFCF20D7040A005FEC05 /* AAPLItemFactory.m */,
 			);
 			path = Items;
+			sourceTree = "<group>";
+		};
+		E677EFD820D71BFD005FEC05 /* Characters */ = {
+			isa = PBXGroup;
+			children = (
+				94CA65521ADC129A006293CF /* AAPLCharacter.h */,
+				94CA65501ADC127F006293CF /* AAPLCharacter.m */,
+				E677EF9820D5BA8E005FEC05 /* AAPLPlayer.h */,
+				E677EF9920D5BA8E005FEC05 /* AAPLPlayer.m */,
+				E677EF9220D5B798005FEC05 /* AAPLEnemy.h */,
+				E677EF9320D5B798005FEC05 /* AAPLEnemy.m */,
+				E677EFD920D71C25005FEC05 /* AAPLEnemyFactory.h */,
+				E677EFDA20D71C25005FEC05 /* AAPLEnemyFactory.m */,
+			);
+			path = Characters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,6 +324,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C0EAE021BA9D44F004F26CB /* main.m in Sources */,
+				E677EFDB20D71C25005FEC05 /* AAPLEnemyFactory.m in Sources */,
 				9C0EAE111BA9D4AF004F26CB /* AAPLAppDelegate.m in Sources */,
 				E677EF9D20D6098B005FEC05 /* SCNScene+LoadAnimation.m in Sources */,
 				E677EF9A20D5BA8E005FEC05 /* AAPLPlayer.m in Sources */,

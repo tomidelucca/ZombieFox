@@ -7,6 +7,7 @@
 //
 
 #import "AAPLPlayer.h"
+#import "AAPLNodeManager.h"
 
 @implementation AAPLPlayer
 
@@ -50,6 +51,20 @@
     collisionNode.physicsBody.contactTestBitMask = AAPLBitmaskCollectable;
     
 	[self.node addChildNode:collisionNode];
+    
+    [[AAPLNodeManager sharedManager] associateNode:collisionNode withModel:self];
+    [[AAPLNodeManager sharedManager] associateNode:self.node withModel:self];
+}
+
++ (AAPLPlayer*)playerForNode:(SCNNode*)node
+{
+    NSObject* model = [[AAPLNodeManager sharedManager] modelForAssociatedNode:node];
+    
+    if ([model isKindOfClass:[AAPLPlayer class]]) {
+        return (AAPLPlayer*)model;
+    }
+    
+    return nil;
 }
 
 @end

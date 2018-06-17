@@ -7,27 +7,17 @@
 //
 
 #import "AAPLEnemy.h"
+#import "AAPLNodeManager.h"
 
 @implementation AAPLEnemy
 
-- (instancetype)init
+- (instancetype)initWithConfiguration:(AAPLCharacterConfiguration *)configuration
 {
-    self = [super initWithConfiguration:[AAPLEnemy mummyConfiguration]];
+    self = [super initWithConfiguration:configuration];
     if (self) {
         [self setupCollisions];
     }
     return self;
-}
-
-#pragma mark - Configuration
-
-+ (AAPLCharacterConfiguration*)mummyConfiguration
-{
-    AAPLCharacterConfiguration* configuration = [AAPLCharacterConfiguration new];
-    configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/mummy.dae"];
-    configuration.walkAnimationScene = [SCNScene sceneNamed:@"game.scnassets/mummy_walk.dae"];
-    configuration.maxLife = 30.0f;
-    return configuration;
 }
 
 - (void)setupCollisions
@@ -49,6 +39,20 @@
     
     collisionNode.categoryBitMask = AAPLBitmaskEnemy;
     collisionNode.physicsBody.collisionBitMask = AAPLBitmaskPlayer;
+    
+    [[AAPLNodeManager sharedManager] associateNode:collisionNode withModel:self];
+    [[AAPLNodeManager sharedManager] associateNode:self.node withModel:self];
+}
+
++ (AAPLEnemy*)enemyForNode:(SCNNode*)node
+{
+    NSObject* model = [[AAPLNodeManager sharedManager] modelForAssociatedNode:node];
+    
+    if ([model isKindOfClass:[AAPLEnemy class]]) {
+        return (AAPLEnemy*)model;
+    }
+    
+    return nil;
 }
 
 @end
