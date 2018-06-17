@@ -168,14 +168,9 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
 
 #pragma mark - Controlling the character
 
-- (void)setDirectionAngle:(CGFloat)directionAngle {
-    _directionAngle = directionAngle;
-    [_node runAction:[SCNAction rotateToX:0.0f y:directionAngle z:0.0f duration:0.1 shortestUnitArc:YES]];
-}
-
 - (void)rotateByAngle:(CGFloat)angle
 {
-    [_node runAction:[SCNAction rotateByX:0.0f y:angle z:0.0f duration:0.1]];
+    [_node runAction:[SCNAction rotateByX:0.0f y:(angle * M_PI / 80) z:0.0f duration:0.1f]];
 }
 
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene {

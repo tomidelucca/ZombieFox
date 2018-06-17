@@ -69,7 +69,7 @@
 
 #pragma mark - Moving the Character
 
-- (vector_float3)characterDirection {
+- (vector_float3)playerDirection {
     vector_float2 controllerDirection = self.controllerDirection;
     vector_float3 direction = {0.0f, 0.0f, controllerDirection.y};
     
@@ -83,11 +83,8 @@
     return direction;
 }
 
-- (vector_float3)characterAngle {
-    vector_float2 controllerDirection = self.controllerDirection;
-    vector_float3 direction = {controllerDirection.x * M_PI/80, 0.0f, 0.0f};
-    
-    return direction;
+- (CGFloat)characterAngleVelocity {
+    return self.controllerDirection.x;
 }
 
 #pragma mark - SCNSceneRendererDelegate Conformance (Game Loop)
@@ -95,41 +92,15 @@
 // SceneKit calls this method exactly once per frame, so long as the SCNView object (or other SCNSceneRenderer object) displaying the scene is not paused.
 // Implement this method to add game logic to the rendering loop. Any changes you make to the scene graph during this method are immediately reflected in the displayed scene.
 
-- (AAPLGroundType)groundTypeFromMaterial:(SCNMaterial *)material {
-    return 0;
-}
-
 - (void)renderer:(id <SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time {
-    // Reset some states every frame
-    _replacementPositionIsValid = NO;
-    _maxPenetrationDistance = 0;
     
     SCNScene *scene = self.gameView.scene;
-    vector_float3 direction = self.characterDirection;
-    vector_float3 angle = [self characterAngle];
     
-    [self.player walkInDirection:direction
+    [self.player walkInDirection:[self playerDirection]
                            time:time
                           scene:scene];
     
-    [self.player rotateByAngle:angle.x];
-    
-    // Adjust the volume of the enemy based on the distance with the character.
-    float distanceToClosestEnemy = FLT_MAX;
-    /*vector_float3 characterPosition = SCNVector3ToFloat3(self.player.node.position);
-    for (SCNNode *enemy in _enemies) {
-        //distance to enemy
-        SCNMatrix4 enemyTransform = enemy.worldTransform;
-        vector_float3 enemyPosition = (vector_float3){enemyTransform.m41, enemyTransform.m42, enemyTransform.m43};
-        float distance = vector_distance(characterPosition, enemyPosition);
-        distanceToClosestEnemy = MIN(distanceToClosestEnemy, distance);
-    }*/
-    
-    // Adjust sounds volumes based on distance with the enemy.
-    if (!_gameIsComplete) {
-        AVAudioMixerNode *mixer = (AVAudioMixerNode *)_flameThrowerSound.audioNode;
-        mixer.volume = 0.3 * MAX(0, MIN(1, 1 - ((distanceToClosestEnemy - 1.2) / 1.6)));
-    }
+    [self.player rotateByAngle:[self characterAngleVelocity]];
 }
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer didSimulatePhysicsAtTime:(NSTimeInterval)time {
