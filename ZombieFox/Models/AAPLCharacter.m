@@ -16,15 +16,14 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 @interface AAPLCharacter ()
 @property (strong, nonatomic) CAAnimation *walkAnimation;
 @property (nonatomic) NSTimeInterval previousUpdateTime;
-@property (nonatomic) AAPLGroundType groundType;
 @property (strong, nonatomic) SCNNode *node;
 @property (nonatomic) CGFloat walkSpeed;
 @property (nonatomic) BOOL isWalking;
 
 @property (nonatomic) CGFloat maxLife;
 @property (nonatomic) CGFloat life;
-@property (nonatomic) CGFloat strength;
 @property (nonatomic) BOOL invulnerable;
+
 @end
 
 @implementation AAPLCharacter
@@ -36,6 +35,7 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
     self = [super init];
     if (self) {
         self.maxLife = configuration.maxLife;
+        self.life = configuration.maxLife;
         [self setupNodeWithScene:configuration.characterScene];
         if (configuration.walkAnimationScene) {
             [self setupWalkAnimationWithScene:configuration.walkAnimationScene];
@@ -144,12 +144,22 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 
 #pragma mark - Boosters
 
+- (void)setLife:(CGFloat)life
+{
+    if (life > self.maxLife && life < 0) {
+        return;
+    }
+    
+    _life = life;
+    [self.delegate player:self lifeDidChange:life];
+}
+
 - (void)takeLife:(CGFloat)points
 {
     self.life -= points;
     
     if (self.life < 0) {
-        // DEAD DO SOMETHING
+        self.life = 0;
     }
 }
 

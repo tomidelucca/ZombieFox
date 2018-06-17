@@ -12,4 +12,5 @@
 + (AAPLItem*)healthItemWithLife:(CGFloat)life;
 + (AAPLItem*)speedItemWithSpeed:(CGFloat)speed forInterval:(NSTimeInterval)interval;
 + (AAPLItem*)shieldForInterval:(CGFloat)interval;
++ (AAPLItem*)damageForCharacter:(CGFloat)damage;
 @end

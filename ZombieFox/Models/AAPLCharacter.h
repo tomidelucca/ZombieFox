@@ -13,14 +13,18 @@
 #import "AAPLCharacterConfiguration.h"
 #import "AAPLCollisionMasks.h"
 
-typedef NS_ENUM (NSUInteger, AAPLGroundType) {
-	AAPLGroundTypeGrass,
-	AAPLGroundTypeCount
-};
+@class AAPLCharacter;
+
+@protocol AAPLCharacterDelegate
+- (void)player:(AAPLCharacter*)character lifeDidChange:(CGFloat)newLife;
+@end
 
 @interface AAPLCharacter : NSObject
 
 @property (nonatomic, readonly) SCNNode *node;
+@property (nonatomic, readonly) CGFloat maxLife;
+@property (nonatomic, readonly) CGFloat life;
+@property (nonatomic, weak) id<AAPLCharacterDelegate> delegate;
 
 - (instancetype)initWithConfiguration:(AAPLCharacterConfiguration*)configuration;
 

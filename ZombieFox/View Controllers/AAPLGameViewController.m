@@ -13,7 +13,7 @@
 #import "AAPLGameViewControllerPrivate.h"
 #import "AAPLItemFactory.h"
 
-@interface AAPLGameViewController()
+@interface AAPLGameViewController() <AAPLCharacterDelegate>
 @property (strong, nonatomic) AAPLItem* item;
 @end
 
@@ -52,9 +52,11 @@
 {
     self.player = [AAPLPlayer new];
     self.player.node.position = SCNVector3Make(1.0f, 0.0f, 1.0f);
+    self.player.delegate = self;
     [self.gameView.scene.rootNode addChildNode:self.player.node];
     
-    AAPLItem* item = [AAPLItemFactory speedItemWithSpeed:2.0f forInterval:5.0f];
+    //AAPLItem* item = [AAPLItemFactory speedItemWithSpeed:2.0f forInterval:5.0f];
+    AAPLItem* item = [AAPLItemFactory damageForCharacter:30.0f];
     item.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
     self.item = item;
     [self.gameView.scene.rootNode addChildNode:item.node];
@@ -104,11 +106,6 @@
 	[self.player rotateByAngle:[self characterAngleVelocity]];
 }
 
-- (void)renderer:(id <SCNSceneRenderer>)renderer didSimulatePhysicsAtTime:(NSTimeInterval)time
-{
-
-}
-
 #pragma mark - Moving the Character
 
 - (vector_float3)playerDirection
@@ -116,14 +113,9 @@
     vector_float2 controllerDirection = self.controllerDirection;
     vector_float3 direction = {0.0f, 0.0f, controllerDirection.y};
     
-    SCNNode *pov = self.gameView.pointOfView;
-    if (pov) {
-        SCNVector3 p1 = [self.player.node convertPosition:SCNVector3Make(direction.x, direction.y, direction.z) toNode:nil];
-        SCNVector3 p0 = [self.player.node convertPosition:SCNVector3Zero toNode:nil];
-        direction = (vector_float3) {p1.x - p0.x, 0.0, p1.z - p0.z};
-    }
-    
-    return direction;
+    SCNVector3 p1 = [self.player.node convertPosition:SCNVector3Make(direction.x, direction.y, direction.z) toNode:nil];
+    SCNVector3 p0 = [self.player.node convertPosition:SCNVector3Zero toNode:nil];
+    return (vector_float3) {p1.x - p0.x, 0.0, p1.z - p0.z};
 }
 
 - (CGFloat)characterAngleVelocity
@@ -148,13 +140,13 @@
     self.item = nil;
 }
 
-- (void)physicsWorld:(SCNPhysicsWorld *)world didUpdateContact:(SCNPhysicsContact *)contact
-{
+#pragma mark - AAPLCharacterDelegate Conformance
 
-}
-
-- (void)characterNode:(SCNNode *)characterNode hitWall:(SCNNode *)wall withContact:(SCNPhysicsContact *)contact
-{
+- (void)player:(AAPLCharacter *)character lifeDidChange:(CGFloat)newLife {
+    
+    if (character == self.player) {
+        [self.gameView setLife:newLife/character.maxLife];
+    }
     
 }
 

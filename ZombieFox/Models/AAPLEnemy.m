@@ -30,7 +30,6 @@
     return configuration;
 }
 
-
 - (void)setupCollisions
 {
     SCNVector3 min, max;

@@ -43,4 +43,15 @@
     return item;
 }
 
++ (AAPLItem*)damageForCharacter:(CGFloat)damage
+{
+    AAPLItem* item = [[AAPLItem alloc] initWithAction:^(AAPLPlayer* player) {
+        [player takeLife:damage];
+    }];
+    
+    [item setItemColor:[NSColor purpleColor]];
+    
+    return item;
+}
+
 @end

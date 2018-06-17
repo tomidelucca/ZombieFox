@@ -26,7 +26,7 @@
     AAPLCharacterConfiguration* configuration = [AAPLCharacterConfiguration new];
     configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
     configuration.walkAnimationScene = [SCNScene sceneNamed:@"game.scnassets/walk.scn"];
-    configuration.maxLife = 100.0f;
+    configuration.maxLife = 80.0f;
     return configuration;
 }
 
