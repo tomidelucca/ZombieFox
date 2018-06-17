@@ -71,7 +71,7 @@
 
 - (vector_float3)characterDirection {
     vector_float2 controllerDirection = self.controllerDirection;
-    vector_float3 direction = {controllerDirection.x, 0.0f, controllerDirection.y};
+    vector_float3 direction = {0.0f, 0.0f, controllerDirection.y};
     
     SCNNode *pov = self.gameView.pointOfView;
     if (pov) {
@@ -79,6 +79,13 @@
         SCNVector3 p0 = [self.player.node convertPosition:SCNVector3Zero toNode:nil];
         direction = (vector_float3){p1.x - p0.x, 0.0, p1.z - p0.z};
     }
+    
+    return direction;
+}
+
+- (vector_float3)characterAngle {
+    vector_float2 controllerDirection = self.controllerDirection;
+    vector_float3 direction = {controllerDirection.x * M_PI/80, 0.0f, 0.0f};
     
     return direction;
 }
@@ -99,10 +106,13 @@
     
     SCNScene *scene = self.gameView.scene;
     vector_float3 direction = self.characterDirection;
+    vector_float3 angle = [self characterAngle];
     
     [self.player walkInDirection:direction
                            time:time
                           scene:scene];
+    
+    [self.player rotateByAngle:angle.x];
     
     // Adjust the volume of the enemy based on the distance with the character.
     float distanceToClosestEnemy = FLT_MAX;

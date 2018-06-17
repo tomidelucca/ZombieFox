@@ -173,6 +173,11 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
     [_node runAction:[SCNAction rotateToX:0.0f y:directionAngle z:0.0f duration:0.1 shortestUnitArc:YES]];
 }
 
+- (void)rotateByAngle:(CGFloat)angle
+{
+    [_node runAction:[SCNAction rotateByX:0.0f y:angle z:0.0f duration:0.1]];
+}
+
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene {
     
     if (_previousUpdateTime == 0.0) {
@@ -186,8 +191,6 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
     if (direction.x != 0.0 || direction.z != 0.0) {
         vector_float3 position = SCNVector3ToFloat3(_node.position);
         _node.position = SCNVector3FromFloat3(position + direction * characterSpeed);
-        
-        self.directionAngle = atan2(direction.x, direction.z);
         self.walking = YES;
     } else {
         self.walking = NO;

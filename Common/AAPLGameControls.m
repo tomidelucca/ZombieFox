@@ -92,9 +92,6 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
                 return YES;
             }
         case 125: // Down
-            if (!theEvent.isARepeat) {
-                _controllerDirection += (vector_float2){0,  0};
-            }
             return YES;
         case 123: // Left
             if (!theEvent.isARepeat) {
@@ -129,9 +126,6 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
             }
             return YES;
         case 125: // Down
-            if (!theEvent.isARepeat) {
-                _controllerDirection -= (vector_float2){0,  0};
-            }
             return YES;
         case 123: // Left
             if (!theEvent.isARepeat) {

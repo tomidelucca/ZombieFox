@@ -24,6 +24,7 @@ typedef NS_ENUM(NSUInteger, AAPLGroundType) {
 @property(nonatomic, readonly) SCNNode *node;
 
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene;
+- (void)rotateByAngle:(CGFloat)angle;
 - (void)catchFire;
 - (void)haltFire;
 
