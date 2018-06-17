@@ -12,31 +12,37 @@
 #import "SCNScene+LoadAnimation.h"
 
 static CGFloat const AAPLCharacterSpeedFactor = 1.538;
-static NSUInteger const AAPLCharacterStepsCount = 11;
 
 @interface AAPLCharacter ()
 @property (strong, nonatomic) CAAnimation *walkAnimation;
 @property (nonatomic) NSTimeInterval previousUpdateTime;
 @property (nonatomic) AAPLGroundType groundType;
 @property (strong, nonatomic) SCNNode *node;
+@property (nonatomic) CGFloat walkSpeed;
 @property (nonatomic) BOOL isWalking;
+
+@property (nonatomic) CGFloat maxLife;
+@property (nonatomic) CGFloat life;
+@property (nonatomic) CGFloat strength;
+@property (nonatomic) BOOL invulnerable;
 @end
 
 @implementation AAPLCharacter
-{
-	SCNAudioSource *_steps[AAPLCharacterStepsCount][AAPLGroundTypeCount];
-}
 
 #pragma mark - Initialization
 
-- (instancetype)initWithCharacterScene:(SCNScene *)scene
+- (instancetype)initWithConfiguration:(AAPLCharacterConfiguration*)configuration
 {
-	self = [super init];
-	if (self) {
-		[self setupNodeWithScene:scene];
-		[self configureCharacter];
-	}
-	return self;
+    self = [super init];
+    if (self) {
+        self.maxLife = configuration.maxLife;
+        [self setupNodeWithScene:configuration.characterScene];
+        if (configuration.walkAnimationScene) {
+            [self setupWalkAnimationWithScene:configuration.walkAnimationScene];
+        }
+        [self configureCharacter];
+    }
+    return self;
 }
 
 #pragma mark - Setup character
@@ -51,9 +57,8 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
 
 - (void)configureCharacter
 {
-	self.walkSpeed = 1.0f;
-	[self loadEmbeddedAnimations];
-	[self loadSounds];
+    [self loadEmbeddedAnimations];
+    self.walkSpeed = 1.0f;
 }
 
 #pragma mark - Controlling the character
@@ -70,7 +75,7 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
 	}
 
 	NSTimeInterval deltaTime = MIN(time - self.previousUpdateTime, 1.0 / 60.0);
-	CGFloat characterSpeed = deltaTime * AAPLCharacterSpeedFactor * 0.84;
+	CGFloat characterSpeed = deltaTime * AAPLCharacterSpeedFactor * 0.84 * self.walkSpeed;
 	self.previousUpdateTime = time;
 
 	if (direction.x != 0.0 || direction.z != 0.0) {
@@ -92,10 +97,6 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
 	self.walkAnimation.fadeOutDuration = 0.3;
 	self.walkAnimation.repeatCount = FLT_MAX;
 	self.walkAnimation.speed = AAPLCharacterSpeedFactor;
-	self.walkAnimation.animationEvents = @[[SCNAnimationEvent animationEventWithKeyTime:0.1 block: ^(CAAnimation *animation, id animatedObject, BOOL playingBackward) {[self playFootStep];
-	}],
-	                                       [SCNAnimationEvent animationEventWithKeyTime:0.6 block: ^(CAAnimation *animation, id animatedObject, BOOL playingBackward) {[self playFootStep];
-										   }]];
 }
 
 - (void)setWalking:(BOOL)walking
@@ -116,15 +117,13 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
 {
 	_walkSpeed = walkSpeed;
 
-	// remove current walk animation if any.
-	BOOL wasWalking = self.isWalking;
+    BOOL wasWalking = self.isWalking;
 	if (wasWalking) {
 		self.walking = NO;
 	}
 
 	self.walkAnimation.speed = AAPLCharacterSpeedFactor * self.walkSpeed;
 
-	// restore walk animation if needed.
 	if (wasWalking) {
 		self.walking = YES;
 	}
@@ -134,31 +133,56 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
 {
 	SCNNode *characterTopLevelNode = self.node.childNodes[0];
 	[characterTopLevelNode enumerateChildNodesUsingBlock: ^(SCNNode *child, BOOL *stop) {
-	    for (NSString *key in child.animationKeys) {               // for every animation key
-	        CAAnimation *animation = [child animationForKey:key]; // get the animation
-	        animation.usesSceneTimeBase = NO;                     // make it system time based
-	        animation.repeatCount = FLT_MAX;                      // make it repeat forever
-	        [child addAnimation:animation forKey:key];            // animations are copied upon addition, so we have to replace the previous animation
+	    for (NSString *key in child.animationKeys) {
+	        CAAnimation *animation = [child animationForKey:key];
+	        animation.usesSceneTimeBase = NO;
+	        animation.repeatCount = FLT_MAX;
+	        [child addAnimation:animation forKey:key];
 		}
 	}];
 }
 
-#pragma mark - Dealing with sound
+#pragma mark - Boosters
 
-- (void)loadSounds
+- (void)takeLife:(CGFloat)points
 {
-	for (NSUInteger i = 0; i < AAPLCharacterStepsCount; i++) {
-		_steps[i][AAPLGroundTypeGrass] = [SCNAudioSource audioSourceNamed:[NSString stringWithFormat:@"game.scnassets/sounds/Step_grass_0%d.mp3", (uint32_t)i]];
-		_steps[i][AAPLGroundTypeGrass].volume = 0.5;
-		[_steps[i][AAPLGroundTypeGrass] load];
-	}
+    self.life -= points;
+    
+    if (self.life < 0) {
+        // DEAD DO SOMETHING
+    }
 }
 
-- (void)playFootStep
+- (void)giveLife:(CGFloat)points
 {
-	// Play a random step sound.
-	NSInteger stepSoundIndex = arc4random_uniform(AAPLCharacterStepsCount);
-	[self.node runAction:[SCNAction playAudioSource:_steps[stepSoundIndex][self.groundType] waitForCompletion:NO]];
+    self.life += points;
+    
+    if (self.life > self.maxLife) {
+        self.life = self.maxLife;
+    }
+}
+
+- (void)speedMultiplier:(CGFloat)multiplier forInterval:(NSTimeInterval)interval
+{
+    CGFloat boost = (self.walkSpeed * multiplier);
+    self.walkSpeed += boost;
+    
+    __weak typeof(self) weakSelf = self;
+    
+    id wait = [SCNAction waitForDuration:interval];
+    id run = [SCNAction runBlock:^(SCNNode* node) {
+        weakSelf.walkSpeed -= boost;
+    }];
+    
+    [self.node runAction:[SCNAction sequence:@[wait, run]]];
+}
+
+- (void)invulnerableForInterval:(NSTimeInterval)interval
+{
+    self.invulnerable = YES;
+    [NSTimer scheduledTimerWithTimeInterval:interval repeats:NO block:^(NSTimer* timer) {
+        self.invulnerable = NO;
+    }];
 }
 
 @end

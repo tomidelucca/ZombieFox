@@ -9,19 +9,9 @@
 @import SceneKit;
 
 #import "AAPLGameView.h"
+#import "AAPLCollisionMasks.h"
 
-// Collision bit masks
-typedef NS_OPTIONS (NSUInteger, AAPLBitmask) {
-	AAPLBitmaskCollision        = 1UL << 2,
-	AAPLBitmaskCollectable      = 1UL << 3,
-	AAPLBitmaskEnemy            = 1UL << 4,
-	AAPLBitmaskSuperCollectable = 1UL << 5,
-	AAPLBitmaskWater            = 1UL << 6
-};
-
-typedef NSViewController AAPLViewController;
-
-@interface AAPLGameViewController : AAPLViewController <SCNSceneRendererDelegate, SCNPhysicsContactDelegate>
+@interface AAPLGameViewController : NSViewController <SCNSceneRendererDelegate, SCNPhysicsContactDelegate>
 
 @property (nonatomic, readonly) AAPLGameView *gameView;
 

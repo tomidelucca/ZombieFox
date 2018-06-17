@@ -11,6 +11,11 @@
 @import AVFoundation;
 
 #import "AAPLGameViewControllerPrivate.h"
+#import "AAPLItemFactory.h"
+
+@interface AAPLGameViewController()
+@property (strong, nonatomic) AAPLItem* item;
+@end
 
 @implementation AAPLGameViewController
 
@@ -49,10 +54,10 @@
     self.player.node.position = SCNVector3Make(1.0f, 0.0f, 1.0f);
     [self.gameView.scene.rootNode addChildNode:self.player.node];
     
-    AAPLEnemy* enemy = [AAPLEnemy new];
-    enemy.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
-    enemy.node.scale = SCNVector3Make(0.7f, 0.7f, 0.7f);
-    [self.gameView.scene.rootNode addChildNode:enemy.node];
+    AAPLItem* item = [AAPLItemFactory speedItemWithSpeed:2.0f forInterval:5.0f];
+    item.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
+    self.item = item;
+    [self.gameView.scene.rootNode addChildNode:item.node];
 }
 
 - (void)setupCamera
@@ -131,6 +136,26 @@
 - (AAPLGameView *)gameView
 {
 	return (AAPLGameView *)self.view;
+}
+
+#pragma mark - SCNPhysicsContactDelegate Conformance
+
+- (void)physicsWorld:(SCNPhysicsWorld *)world didBeginContact:(SCNPhysicsContact *)contact
+{
+    AAPLItem* item = [AAPLItem itemForNode:contact.nodeB];
+    [item runActionWithPlayer:self.player];
+    [item.node removeFromParentNode];
+    self.item = nil;
+}
+
+- (void)physicsWorld:(SCNPhysicsWorld *)world didUpdateContact:(SCNPhysicsContact *)contact
+{
+
+}
+
+- (void)characterNode:(SCNNode *)characterNode hitWall:(SCNNode *)wall withContact:(SCNPhysicsContact *)contact
+{
+    
 }
 
 @end

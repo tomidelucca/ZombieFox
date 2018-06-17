@@ -24,6 +24,8 @@
 {
 	[super viewDidMoveToWindow];
 	[self setup2DOverlay];
+    
+    // self.debugOptions = SCNDebugOptionShowPhysicsShapes | SCNDebugOptionShowPhysicsFields;
 }
 
 - (void)setFrameSize:(NSSize)newSize

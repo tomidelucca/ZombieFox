@@ -10,7 +10,8 @@
 
 #import <SceneKit/SceneKit.h>
 
-#import "AAPLGameViewController.h"
+#import "AAPLCharacterConfiguration.h"
+#import "AAPLCollisionMasks.h"
 
 typedef NS_ENUM (NSUInteger, AAPLGroundType) {
 	AAPLGroundTypeGrass,
@@ -20,12 +21,16 @@ typedef NS_ENUM (NSUInteger, AAPLGroundType) {
 @interface AAPLCharacter : NSObject
 
 @property (nonatomic, readonly) SCNNode *node;
-@property (nonatomic) CGFloat walkSpeed;
 
-- (instancetype)initWithCharacterScene:(SCNScene *)scene;
-- (void)setupWalkAnimationWithScene:(SCNScene *)scene;
+- (instancetype)initWithConfiguration:(AAPLCharacterConfiguration*)configuration;
 
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene;
 - (void)rotateByAngle:(CGFloat)angle;
 
+- (void)takeLife:(CGFloat)points;
+- (void)giveLife:(CGFloat)points;
+
+- (void)speedMultiplier:(CGFloat)multiplier forInterval:(NSTimeInterval)interval;
+
+- (void)invulnerableForInterval:(NSTimeInterval)interval;
 @end
