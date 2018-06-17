@@ -10,4 +10,13 @@
 
 @implementation AAPLEnemy
 
+- (instancetype)init
+{
+    self = [super initWithCharacterScene:[SCNScene sceneNamed:@"game.scnassets/mummy.dae"]];
+    if (self) {
+        [self setupWalkAnimationWithScene:[SCNScene sceneNamed:@"game.scnassets/mummy_walk.dae"]];
+    }
+    return self;
+}
+
 @end

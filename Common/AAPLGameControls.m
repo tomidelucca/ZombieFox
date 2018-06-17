@@ -8,57 +8,13 @@
 
 #import "AAPLGameViewControllerPrivate.h"
 
-static CGFloat const AAPLControllerAcceleration = 1.0 / 10.0;
-static CGFloat const AAPLControllerDirectionLimit = 1.0;
-
 @implementation AAPLGameViewController (GameControls)
-
-#pragma mark - Controller orientation
-
-- (vector_float2)controllerDirection
-{
-	// Poll when using a game controller
-	if (_controllerDPad) {
-		if (_controllerDPad.xAxis.value == 0.0 && _controllerDPad.yAxis.value == 0.0) {
-			_controllerDirection = (vector_float2) {0.0, 0.0};
-		} else {
-			_controllerDirection = vector_clamp(_controllerDirection + (vector_float2) {_controllerDPad.xAxis.value, -_controllerDPad.yAxis.value}*AAPLControllerAcceleration, -AAPLControllerDirectionLimit, AAPLControllerDirectionLimit);
-		}
-	}
-
-	return _controllerDirection;
-}
 
 #pragma mark -  Game Controller Events
 
 - (void)setupGameControllers
 {
 	self.gameView.eventsDelegate = self;
-	[NSNotificationCenter.defaultCenter addObserver:self selector:@selector(handleControllerDidConnectNotification:) name:GCControllerDidConnectNotification object:nil];
-}
-
-- (void)handleControllerDidConnectNotification:(NSNotification *)notification
-{
-	GCController *gameController = notification.object;
-	[self registerCharacterMovementEvents:gameController];
-}
-
-- (void)registerCharacterMovementEvents:(GCController *)gameController
-{
-	// An analog movement handler for D-pads and thumbsticks.
-	__weak typeof(self)weakSelf = self;
-	GCControllerDirectionPadValueChangedHandler movementHandler = ^(GCControllerDirectionPad *dpad, float xValue, float yValue) {
-		typeof(self)strongSelf = weakSelf;
-		strongSelf->_controllerDPad = dpad;
-	};
-
-	// Gamepad D-pad
-	GCGamepad *gamepad = gameController.gamepad;
-	gamepad.dpad.valueChangedHandler = movementHandler;
-
-	// Extended gamepad left thumbstick
-	GCExtendedGamepad *extendedGamepad = gameController.extendedGamepad;
-	extendedGamepad.leftThumbstick.valueChangedHandler = movementHandler;
 }
 
 #pragma mark - Mouse and Keyboard Events
@@ -84,7 +40,7 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
 
 	if (theEvent.keyCode == 49) { // Spacebar
 		if (!theEvent.isARepeat) {
-			_holdingTrigger = 1;
+			self.holdingTrigger = YES;
 			success = YES;
 		}
 	}
@@ -92,7 +48,7 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
 	switch (theEvent.keyCode) {
 		case 126: { // Up
 			if (!theEvent.isARepeat) {
-				_controllerDirection += (vector_float2) {0, 1};
+				self.controllerDirection += (vector_float2) {0, 1};
 				return YES;
 			}
 		}
@@ -103,14 +59,14 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
 
 		case 123: { // Left
 			if (!theEvent.isARepeat) {
-				_controllerDirection += (vector_float2) {1, 0};
+				self.controllerDirection += (vector_float2) {1, 0};
 			}
 			return YES;
 		}
 
 		case 124: // Right
 			if (!theEvent.isARepeat) {
-				_controllerDirection += (vector_float2) {-1, 0};
+				self.controllerDirection += (vector_float2) {-1, 0};
 			}
 			return YES;
 	}
@@ -124,7 +80,7 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
 
 	if (theEvent.keyCode == 49) { // Spacebar
 		if (!theEvent.isARepeat) {
-			_holdingTrigger = 0;
+			self.holdingTrigger = NO;
 			success = YES;
 		}
 	}
@@ -132,7 +88,7 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
 	switch (theEvent.keyCode) {
 		case 126: { // Up
 			if (!theEvent.isARepeat) {
-				_controllerDirection -= (vector_float2) {0, 1};
+				self.controllerDirection -= (vector_float2) {0, 1};
 			}
 			return YES;
 		}
@@ -143,14 +99,14 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
 
 		case 123: { // Left
 			if (!theEvent.isARepeat) {
-				_controllerDirection -= (vector_float2) {1, 0};
+				self.controllerDirection -= (vector_float2) {1, 0};
 			}
 			return YES;
 		}
 
 		case 124: // Right
 			if (!theEvent.isARepeat) {
-				_controllerDirection -= (vector_float2) {-1, 0};
+				self.controllerDirection -= (vector_float2) {-1, 0};
 			}
 			return YES;
 	}
