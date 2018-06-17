@@ -60,19 +60,15 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
 
 #pragma mark - Mouse and Keyboard Events
 
-- (BOOL)mouseDown:(NSView *)view event:(NSEvent *)theEvent {
-    // Remember last mouse position for dragging.
-    _lastMousePosition = [self.view convertPoint:theEvent.locationInWindow fromView:nil];
+- (BOOL)mouseDown:(NSView *)view event:(NSEvent *)event {
     return YES;
 }
 
-- (BOOL)mouseDragged:(NSView *)view event:(NSEvent *)theEvent {
-    CGPoint mousePosition = [self.view convertPoint:theEvent.locationInWindow fromView:nil];
-    [self panCamera:CGPointMake(mousePosition.x - _lastMousePosition.x, mousePosition.y - _lastMousePosition.y)];
-    _lastMousePosition = mousePosition;
-    
+
+- (BOOL)mouseDragged:(NSView *)view event:(NSEvent *)event {
     return YES;
 }
+
 
 - (BOOL)mouseUp:(NSView *)view event:(NSEvent *)theEvent {
     return YES;
@@ -92,22 +88,22 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
     switch (theEvent.keyCode) {
         case 126: // Up
             if (!theEvent.isARepeat) {
-                _controllerDirection += (vector_float2){ 0, -1};
+                _controllerDirection += (vector_float2){0, 1};
+                return YES;
             }
-            return YES;
         case 125: // Down
             if (!theEvent.isARepeat) {
-                _controllerDirection += (vector_float2){ 0,  1};
+                _controllerDirection += (vector_float2){0,  0};
             }
             return YES;
         case 123: // Left
             if (!theEvent.isARepeat) {
-                _controllerDirection += (vector_float2){-1,  0};
+                _controllerDirection += (vector_float2){1, 0};
             }
             return YES;
         case 124: // Right
             if (!theEvent.isARepeat) {
-                _controllerDirection += (vector_float2){ 1,  0};
+                _controllerDirection += (vector_float2){-1,  0};
             }
             return YES;
     }
@@ -129,22 +125,22 @@ static CGFloat const AAPLControllerDirectionLimit = 1.0;
     switch (theEvent.keyCode) {
         case 126: // Up
             if (!theEvent.isARepeat) {
-                _controllerDirection -= (vector_float2){ 0, -1};
+                _controllerDirection -= (vector_float2){0, 1};
             }
             return YES;
         case 125: // Down
             if (!theEvent.isARepeat) {
-                _controllerDirection -= (vector_float2){ 0,  1};
+                _controllerDirection -= (vector_float2){0,  0};
             }
             return YES;
         case 123: // Left
             if (!theEvent.isARepeat) {
-                _controllerDirection -= (vector_float2){-1,  0};
+                _controllerDirection -= (vector_float2){1,  0};
             }
             return YES;
         case 124: // Right
             if (!theEvent.isARepeat) {
-                _controllerDirection -= (vector_float2){ 1,  0};
+                _controllerDirection -= (vector_float2){-1,  0};
             }
             return YES;
     }

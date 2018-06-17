@@ -19,158 +19,65 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Create a new scene.
-    SCNScene *scene = [SCNScene sceneNamed:@"game.scnassets/level.scn"];
+    self.gameView.scene = [SCNScene sceneNamed:@"game.scnassets/level.scn"];
     
-    // Set the scene to the view and loop for the animation of the bamboos.
-    self.gameView.scene = scene;
     self.gameView.playing = YES;
     self.gameView.loops = YES;
     
-    // Various setup
-    [self setupCamera];
-    [self setupSounds];
+    self.player = [AAPLPlayer new];
+    self.player.node.position = SCNVector3Make(1.0f, 0.0f, 1.0f);
+    [self.gameView.scene.rootNode addChildNode:self.player.node];
     
-    // Configure particle systems
-    _collectFlowerParticleSystem = [SCNParticleSystem particleSystemNamed:@"collect.scnp" inDirectory:nil];
-    _collectFlowerParticleSystem.loops = NO;
-    _confettiParticleSystem = [SCNParticleSystem particleSystemNamed:@"confetti.scnp" inDirectory:nil];
+    SCNCamera* camera = [SCNCamera camera];
+    SCNNode* cameraNode = [SCNNode new];
+    cameraNode.camera = camera;
+    cameraNode.position = SCNVector3Make(0.0f, 1.0f, -2.0f);
+    cameraNode.rotation = SCNVector4Make(0.0f, 1.0f, 0.0f, M_PI);
+    self.gameView.pointOfView = cameraNode;
+    [self.player.node addChildNode:cameraNode];
     
-    // Add the character to the scene.
-    _character = [[AAPLCharacter alloc] init];
-    [scene.rootNode addChildNode:_character.node];
+    SCNMaterial* groundMaterial = [SCNMaterial new];
+    groundMaterial.diffuse.contents = [NSImage imageNamed:@"grass_normal"];
+    groundMaterial.diffuse.contentsTransform = SCNMatrix4MakeScale(32, 32, 0);
+    groundMaterial.diffuse.wrapS = SCNWrapModeRepeat;
+    groundMaterial.diffuse.wrapT = SCNWrapModeRepeat;
+    groundMaterial.specular.contents = [NSImage imageNamed:@"grass_specular"];
+    groundMaterial.specular.contentsTransform = SCNMatrix4MakeScale(32, 32, 0);
+    groundMaterial.specular.wrapS = SCNWrapModeRepeat;
+    groundMaterial.specular.wrapT = SCNWrapModeRepeat;
     
-    SCNNode *startPosition = [scene.rootNode childNodeWithName:@"startingPoint" recursively:YES];
-    _character.node.transform = startPosition.transform;
+    SCNFloor* floor = [SCNFloor floor];
+    floor.reflectivity = 0.0f;
+    floor.firstMaterial = groundMaterial;
     
-    // Retrieve various game elements in one traversal
-    NSMutableArray<SCNNode *> *flameNodes = [NSMutableArray array];
-    NSMutableArray<SCNNode *> *enemyNodes = [NSMutableArray array];
-    NSMutableArray<SCNNode *> *collisionNodes = [NSMutableArray array];
+    SCNBox* box = [SCNBox boxWithWidth:1.0f height:1.0f length:1.0f chamferRadius:0.0f];
+    box.firstMaterial.diffuse.contents = [NSColor redColor];
+    SCNNode* boxNode = [SCNNode nodeWithGeometry:box];
+    boxNode.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
+    [self.gameView.scene.rootNode addChildNode:boxNode];
     
-    [scene.rootNode enumerateChildNodesUsingBlock:^(SCNNode * _Nonnull node, BOOL * _Nonnull stop) {
-        if (node.name.length) {
-            if ([node.name isEqualToString:@"flame"]) {
-                node.physicsBody.categoryBitMask = AAPLBitmaskEnemy;
-                [flameNodes addObject:node];
-            }
-            else if ([node.name isEqualToString:@"enemy"]) {
-                [enemyNodes addObject:node];
-            }
-            if ([node.name rangeOfString:@"collision"].length > 0) {
-                [collisionNodes addObject:node];
-            }
-        }
-    }];
+    self.ground = [SCNNode nodeWithGeometry:floor];
+    [self.gameView.scene.rootNode addChildNode:self.ground];
     
-    _flames = flameNodes;
-    _enemies = enemyNodes;
+    self.enemies = [NSMutableArray new];
     
-    for (SCNNode *node in collisionNodes) {
-        node.hidden = NO;
-        [self setupCollisionNode:node];
-    }
-    
-    // Setup delegates
     self.gameView.scene.physicsWorld.contactDelegate = self;
     self.gameView.delegate = self;
-    
-    [self setupAutomaticCameraPositions];
+
     [self setupGameControllers];
-}
-
-#pragma mark - Game view
-
-- (AAPLGameView *)gameView {
-    return (AAPLGameView *)self.view;
-}
-
-#pragma mark - Managing the Camera
-
-- (void)panCamera:(CGPoint)direction {
-    if (_lockCamera) {
-        return;
-    }
-    
-    static const CGFloat F = 0.005;
-    
-    // Make sure the camera handles are correctly reset (because automatic camera animations may have put the "rotation" in a weird state.
-    [SCNTransaction begin];
-    [SCNTransaction setAnimationDuration:0.0];
-    
-    [_cameraYHandle removeAllActions];
-    [_cameraXHandle removeAllActions];
-    
-    if (_cameraYHandle.rotation.y < 0) {
-        _cameraYHandle.rotation = SCNVector4Make(0, 1, 0, -_cameraYHandle.rotation.w);
-    }
-    
-    if (_cameraXHandle.rotation.x < 0) {
-        _cameraXHandle.rotation = SCNVector4Make(1, 0, 0, -_cameraXHandle.rotation.w);
-    }
-    
-    [SCNTransaction commit];
-    
-    // Update the camera position with some inertia.
-    [SCNTransaction begin];
-    [SCNTransaction setAnimationDuration:0.5];
-    [SCNTransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
-    
-    _cameraYHandle.rotation = SCNVector4Make(0, 1, 0, _cameraYHandle.rotation.y * (_cameraYHandle.rotation.w - direction.x * F));
-    _cameraXHandle.rotation = SCNVector4Make(1, 0, 0, (MAX(-M_PI_2, MIN(0.13, _cameraXHandle.rotation.w + direction.y * F))));
-    
-    [SCNTransaction commit];
-}
-
-- (void)updateCameraWithCurrentGround:(SCNNode *)node {
-    if (_gameIsComplete) {
-        return;
-    }
-    
-    if (_currentGround == nil) {
-        _currentGround = node;
-        return;
-    }
-    
-    // Automatically update the position of the camera when we move to another block.
-    if (node != _currentGround) {
-        _currentGround = node;
-        
-        NSValue *positionValue = [_groundToCameraPosition objectForKey:node];
-        if (positionValue) {
-            SCNVector3 position = positionValue.SCNVector3Value;
-            
-            if (node == _mainGround && _character.node.position.x < 2.5) {
-                position = SCNVector3Make(-0.098175, 3.926991, 0.0);
-            }
-            
-            SCNAction *actionY = [SCNAction rotateToX:0 y:position.y z:0 duration:3.0 shortestUnitArc:YES];
-            actionY.timingMode = SCNActionTimingModeEaseInEaseOut;
-            
-            SCNAction *actionX = [SCNAction rotateToX:position.x y:0 z:0 duration:3.0 shortestUnitArc:YES];
-            actionX.timingMode = SCNActionTimingModeEaseInEaseOut;
-            
-            [_cameraYHandle runAction:actionY];
-            [_cameraXHandle runAction:actionX];
-        }
-    }
 }
 
 #pragma mark - Moving the Character
 
 - (vector_float3)characterDirection {
     vector_float2 controllerDirection = self.controllerDirection;
-    vector_float3 direction = {controllerDirection.x, 0.0, controllerDirection.y};
+    vector_float3 direction = {controllerDirection.x, 0.0f, controllerDirection.y};
     
     SCNNode *pov = self.gameView.pointOfView;
     if (pov) {
-        SCNVector3 p1 = [pov.presentationNode convertPosition:SCNVector3Make(direction.x, direction.y, direction.z) toNode:nil];
-        SCNVector3 p0 = [pov.presentationNode convertPosition:SCNVector3Zero toNode:nil];
+        SCNVector3 p1 = [self.player.node convertPosition:SCNVector3Make(direction.x, direction.y, direction.z) toNode:nil];
+        SCNVector3 p0 = [self.player.node convertPosition:SCNVector3Zero toNode:nil];
         direction = (vector_float3){p1.x - p0.x, 0.0, p1.z - p0.z};
-        
-        if (direction.x != 0.0 || direction.z != 0.0) {
-            direction = vector_normalize(direction);
-        }
     }
     
     return direction;
@@ -182,15 +89,7 @@
 // Implement this method to add game logic to the rendering loop. Any changes you make to the scene graph during this method are immediately reflected in the displayed scene.
 
 - (AAPLGroundType)groundTypeFromMaterial:(SCNMaterial *)material {
-    if (material == _grassArea) {
-        return AAPLGroundTypeGrass;
-    }
-    if (material == _waterArea) {
-        return AAPLGroundTypeWater;
-    }
-    else {
-        return AAPLGroundTypeRock;
-    }
+    return 0;
 }
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time {
@@ -201,26 +100,20 @@
     SCNScene *scene = self.gameView.scene;
     vector_float3 direction = self.characterDirection;
     
-    SCNNode *groundNode = [_character walkInDirection:direction time:time scene:scene groundTypeFromMaterial:^AAPLGroundType(SCNMaterial *material) { return [self groundTypeFromMaterial:material]; }];
-    if (groundNode) {
-        [self updateCameraWithCurrentGround:groundNode];
-    }
-    
-    // Flames are static physics bodies, but they are moved by an action - So we need to tell the physics engine that the transforms did change.
-    for (SCNNode *flame in _flames) {
-        [flame.physicsBody resetTransform];
-    }
+    [self.player walkInDirection:direction
+                           time:time
+                          scene:scene];
     
     // Adjust the volume of the enemy based on the distance with the character.
     float distanceToClosestEnemy = FLT_MAX;
-    vector_float3 characterPosition = SCNVector3ToFloat3(_character.node.position);
+    /*vector_float3 characterPosition = SCNVector3ToFloat3(self.player.node.position);
     for (SCNNode *enemy in _enemies) {
         //distance to enemy
         SCNMatrix4 enemyTransform = enemy.worldTransform;
         vector_float3 enemyPosition = (vector_float3){enemyTransform.m41, enemyTransform.m42, enemyTransform.m43};
         float distance = vector_distance(characterPosition, enemyPosition);
         distanceToClosestEnemy = MIN(distanceToClosestEnemy, distance);
-    }
+    }*/
     
     // Adjust sounds volumes based on distance with the enemy.
     if (!_gameIsComplete) {
@@ -232,7 +125,7 @@
 - (void)renderer:(id <SCNSceneRenderer>)renderer didSimulatePhysicsAtTime:(NSTimeInterval)time {
     // If we hit a wall, position needs to be adjusted
     if (_replacementPositionIsValid) {
-        _character.node.position = _replacementPosition;
+        self.player.node.position = _replacementPosition;
     }
 }
     
@@ -261,10 +154,10 @@
         [self collectFlower:contact.nodeB];
     }
     if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskEnemy) {
-        [_character catchFire];
+        [self.player catchFire];
     }
     if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskEnemy) {
-        [_character catchFire];
+        [self.player catchFire];
     }
 }
 
@@ -278,7 +171,7 @@
 }
 
 - (void)characterNode:(SCNNode *)characterNode hitWall:(SCNNode *)wall withContact:(SCNPhysicsContact *)contact {
-    if (characterNode.parentNode != _character.node) {
+    if (characterNode.parentNode != self.player.node) {
         return;
     }
     
@@ -288,7 +181,7 @@
     
     _maxPenetrationDistance = contact.penetrationDistance;
     
-    vector_float3 characterPosition = SCNVector3ToFloat3(_character.node.position);
+    vector_float3 characterPosition = SCNVector3ToFloat3(self.player.node.position);
     vector_float3 positionOffset = SCNVector3ToFloat3(contact.contactNormal) * contact.penetrationDistance;
     positionOffset.y = 0;
     characterPosition += positionOffset;
@@ -298,113 +191,6 @@
 }
 
 #pragma mark - Scene Setup
-
-- (void)setupCamera {
-    static CGFloat const ALTITUDE = 1.0;
-    static CGFloat const DISTANCE = 10.0;
-    
-    // We create 2 nodes to manipulate the camera:
-    // The first node "_cameraXHandle" is at the center of the world (0, ALTITUDE, 0) and will only rotate on the X axis
-    // The second node "_cameraYHandle" is a child of the first one and will ony rotate on the Y axis
-    // The camera node is a child of the "_cameraYHandle" at a specific distance (DISTANCE).
-    // So rotating _cameraYHandle and _cameraXHandle will update the camera position and the camera will always look at the center of the scene.
-    
-    SCNNode *pov = self.gameView.pointOfView;
-    pov.eulerAngles = SCNVector3Zero;
-    pov.position = SCNVector3Make(0.0, 0.0, DISTANCE);
-    
-    _cameraXHandle = [[SCNNode alloc] init];
-    _cameraXHandle.rotation = SCNVector4Make(1.0, 0.0, 0.0, -M_PI_4 * 0.125);
-    [_cameraXHandle addChildNode:pov];
-    
-    _cameraYHandle = [[SCNNode alloc] init];
-    _cameraYHandle.position = SCNVector3Make(0.0, ALTITUDE, 0.0);
-    _cameraYHandle.rotation = SCNVector4Make(0.0, 1.0, 0.0, M_PI_2 + M_PI_4 * 3.0);
-    [_cameraYHandle addChildNode:_cameraXHandle];
-    
-    [self.gameView.scene.rootNode addChildNode:_cameraYHandle];
-    
-    // Animate camera on launch and prevent the user from manipulating the camera until the end of the animation.
-    [SCNTransaction begin];
-    [SCNTransaction setCompletionBlock:^{ _lockCamera = NO; }];
-    
-    _lockCamera = YES;
-    
-    // Create 2 additive animations that converge to 0
-    // That way at the end of the animation, the camera will be at its default position.
-    CABasicAnimation *cameraYAnimation = [CABasicAnimation animationWithKeyPath:@"rotation.w"];
-    cameraYAnimation.fromValue = @(M_PI * 2.0 - _cameraYHandle.rotation.w);
-    cameraYAnimation.toValue = @(0.0);
-    cameraYAnimation.additive = YES;
-    cameraYAnimation.beginTime = CACurrentMediaTime() + 3.0; // wait a little bit before stating
-    cameraYAnimation.fillMode = kCAFillModeBoth;
-    cameraYAnimation.duration = 5.0;
-    cameraYAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    [_cameraYHandle addAnimation:cameraYAnimation forKey:nil];
-    
-    CABasicAnimation *cameraXAnimation = [cameraYAnimation copy];
-    cameraXAnimation.fromValue = @(-M_PI_2 + _cameraXHandle.rotation.w);
-    [_cameraXHandle addAnimation:cameraXAnimation forKey:nil];
-    
-    [SCNTransaction commit];
-}
-
-- (void)setupAutomaticCameraPositions {
-    SCNNode *rootNode = self.gameView.scene.rootNode;
-    
-    _mainGround = [rootNode childNodeWithName:@"bloc05_collisionMesh_02" recursively:YES];
-    
-    _groundToCameraPosition = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsOpaqueMemory valueOptions:NSPointerFunctionsStrongMemory];
-    
-    [_groundToCameraPosition setObject:[NSValue valueWithSCNVector3:SCNVector3Make(-0.188683, 4.719608, 0.0)] forKey:[rootNode childNodeWithName:@"bloc04_collisionMesh_02" recursively:YES]];
-    [_groundToCameraPosition setObject:[NSValue valueWithSCNVector3:SCNVector3Make(-0.435909, 6.297167, 0.0)] forKey:[rootNode childNodeWithName:@"bloc03_collisionMesh" recursively:YES]];
-    [_groundToCameraPosition setObject:[NSValue valueWithSCNVector3:SCNVector3Make( -0.333663, 7.868592, 0.0)] forKey:[rootNode childNodeWithName:@"bloc07_collisionMesh" recursively:YES]];
-    [_groundToCameraPosition setObject:[NSValue valueWithSCNVector3:SCNVector3Make(-0.575011, 8.739003, 0.0)] forKey:[rootNode childNodeWithName:@"bloc08_collisionMesh" recursively:YES]];
-    [_groundToCameraPosition setObject:[NSValue valueWithSCNVector3:SCNVector3Make( -1.095519, 9.425292, 0.0)] forKey:[rootNode childNodeWithName:@"bloc06_collisionMesh" recursively:YES]];
-    [_groundToCameraPosition setObject:[NSValue valueWithSCNVector3:SCNVector3Make(-0.072051, 8.202264, 0.0)] forKey:[rootNode childNodeWithName:@"bloc05_collisionMesh_02" recursively:YES]];
-    [_groundToCameraPosition setObject:[NSValue valueWithSCNVector3:SCNVector3Make(-0.072051, 8.202264, 0.0)] forKey:[rootNode childNodeWithName:@"bloc05_collisionMesh_01" recursively:YES]];
-}
-
-- (void)setupCollisionNode:(SCNNode *)node {
-    if (node.geometry) {
-        // Collision meshes must use a concave shape for intersection correctness.
-        node.physicsBody = [SCNPhysicsBody staticBody];
-        node.physicsBody.categoryBitMask = AAPLBitmaskCollision;
-        node.physicsBody.physicsShape = [SCNPhysicsShape shapeWithNode:node options:@{SCNPhysicsShapeTypeKey : SCNPhysicsShapeTypeConcavePolyhedron}];
-        
-        // Get grass area to play the right sound steps
-        if ([node.geometry.firstMaterial.name isEqualToString:@"grass-area"]) {
-            if (_grassArea) {
-                node.geometry.firstMaterial = _grassArea;
-            } else {
-                _grassArea = node.geometry.firstMaterial;
-            }
-        }
-        
-        // Get the water area
-        if ([node.geometry.firstMaterial.name isEqualToString:@"water"]) {
-            _waterArea = node.geometry.firstMaterial;
-        }
-        
-        // Temporary workaround because concave shape created from geometry instead of node fails
-        SCNNode *childNode = [SCNNode node];
-        [node addChildNode:childNode];
-        childNode.hidden = YES;
-        childNode.geometry = node.geometry;
-        node.geometry = nil;
-        node.hidden = NO;
-        
-        if ([node.name isEqualToString:@"water"]) {
-            node.physicsBody.categoryBitMask = AAPLBitmaskWater;
-        }
-    }
-    
-    for (SCNNode *childNode in node.childNodes) {
-        if (childNode.hidden == NO) {
-            [self setupCollisionNode:childNode];
-        }
-    }
-}
 
 - (void)setupSounds {
     // Get an arbitrary node to attach the sounds to.
@@ -506,13 +292,13 @@
     // Play the congrat sound.
     [self.gameView.scene.rootNode addAudioPlayer:[SCNAudioPlayer audioPlayerWithSource:_victoryMusic]];
     
-    // Animate the camera forever
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [_cameraYHandle runAction:[SCNAction repeatActionForever:[SCNAction rotateByX:0 y:-1 z:0 duration:3]]];
-        [_cameraXHandle runAction:[SCNAction rotateToX:-M_PI_4 y:0 z:0 duration:5.0]];
-    });
-    
     [self.gameView showEndScreen];
+}
+
+#pragma mark - Game view
+
+- (AAPLGameView *)gameView {
+    return (AAPLGameView *)self.view;
 }
 
 @end

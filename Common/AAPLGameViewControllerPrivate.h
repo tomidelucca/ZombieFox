@@ -9,24 +9,13 @@
 @import GameController;
 
 #import "AAPLGameViewController.h"
-#import "AAPLCharacter.h"
+#import "AAPLPlayer.h"
+#import "AAPLEnemy.h"
 
 @interface AAPLGameViewController() {
-    // Nodes to manipulate the camera
-    SCNNode *_cameraYHandle;
-    SCNNode *_cameraXHandle;
-    
-    // The character
-    AAPLCharacter *_character;
     
     // Game states
     BOOL _gameIsComplete;
-    BOOL _lockCamera;
-    
-    SCNMaterial *_grassArea;
-    SCNMaterial *_waterArea;
-    NSArray<SCNNode *> *_flames;
-    NSArray<SCNNode *> *_enemies;
     
     // Sounds
     SCNAudioSource *_collectPearlSound;
@@ -58,7 +47,9 @@
     CGPoint _lastMousePosition;
 }
 
-- (void)panCamera:(CGPoint)direction;
+@property (strong, nonatomic) SCNNode* ground;
+@property (strong, nonatomic) AAPLPlayer* player;
+@property (strong, nonatomic) NSMutableArray<AAPLEnemy*>* enemies;
 
 @end
 

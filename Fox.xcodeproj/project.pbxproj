@@ -27,6 +27,8 @@
 		9C8180BC1BDA675800FE8C68 /* confetti.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B41BDA675800FE8C68 /* confetti.png */; };
 		9C8180BF1BDA675800FE8C68 /* confetti.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B51BDA675800FE8C68 /* confetti.scnp */; };
 		9C8180C21BDA675800FE8C68 /* glow01.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B61BDA675800FE8C68 /* glow01.png */; };
+		E677EF9420D5B798005FEC05 /* AAPLEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EF9320D5B798005FEC05 /* AAPLEnemy.m */; };
+		E677EF9A20D5BA8E005FEC05 /* AAPLPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EF9920D5BA8E005FEC05 /* AAPLPlayer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,10 @@
 		9CFCF1521B68E4CE00686987 /* ItemsPearl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ItemsPearl.png; sourceTree = "<group>"; };
 		9CFCF1531B68E4CE00686987 /* MaxIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MaxIcon.png; sourceTree = "<group>"; };
 		9CFEBECF1B1F80F7002C687D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E677EF9220D5B798005FEC05 /* AAPLEnemy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLEnemy.h; sourceTree = "<group>"; };
+		E677EF9320D5B798005FEC05 /* AAPLEnemy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLEnemy.m; sourceTree = "<group>"; };
+		E677EF9820D5BA8E005FEC05 /* AAPLPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLPlayer.h; sourceTree = "<group>"; };
+		E677EF9920D5BA8E005FEC05 /* AAPLPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLPlayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +158,10 @@
 			children = (
 				94CA65521ADC129A006293CF /* AAPLCharacter.h */,
 				94CA65501ADC127F006293CF /* AAPLCharacter.m */,
+				E677EF9820D5BA8E005FEC05 /* AAPLPlayer.h */,
+				E677EF9920D5BA8E005FEC05 /* AAPLPlayer.m */,
+				E677EF9220D5B798005FEC05 /* AAPLEnemy.h */,
+				E677EF9320D5B798005FEC05 /* AAPLEnemy.m */,
 				94CA652D1ADBF90F006293CF /* AAPLGameView.h */,
 				94CA652E1ADBF90F006293CF /* AAPLGameView.m */,
 				94CA65301ADBF90F006293CF /* AAPLGameViewController.h */,
@@ -189,7 +199,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = AAPL;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Apple Inc.";
 				TargetAttributes = {
 					9C0EADFA1BA9D44F004F26CB = {
@@ -246,7 +256,9 @@
 			files = (
 				9C0EAE021BA9D44F004F26CB /* main.m in Sources */,
 				9C0EAE111BA9D4AF004F26CB /* AAPLAppDelegate.m in Sources */,
+				E677EF9A20D5BA8E005FEC05 /* AAPLPlayer.m in Sources */,
 				9C0EAE1D1BA9D4DA004F26CB /* AAPLGameViewController.m in Sources */,
+				E677EF9420D5B798005FEC05 /* AAPLEnemy.m in Sources */,
 				9C0EAE1C1BA9D4DA004F26CB /* AAPLGameView.m in Sources */,
 				9C0EAE1E1BA9D4DA004F26CB /* AAPLCharacter.m in Sources */,
 				9C7D93A61BAC863900DB9637 /* AAPLGameControls.m in Sources */,
@@ -273,13 +285,21 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -314,13 +334,21 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";

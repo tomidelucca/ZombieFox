@@ -120,6 +120,9 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
             _steps[i][AAPLGroundTypeRock] = [SCNAudioSource audioSourceNamed:[NSString stringWithFormat:@"game.scnassets/sounds/Step_rock_0%d.mp3", (uint32_t)i]];
             [_steps[i][AAPLGroundTypeRock] load];
             
+            _steps[i][AAPLGroundTypeSoil] = [SCNAudioSource audioSourceNamed:[NSString stringWithFormat:@"game.scnassets/sounds/Step_rock_0%d.mp3", (uint32_t)i]];
+            [_steps[i][AAPLGroundTypeSoil] load];
+            
             _steps[i][AAPLGroundTypeWater] = [SCNAudioSource audioSourceNamed:[NSString stringWithFormat:@"game.scnassets/sounds/Step_splash_0%d.mp3", (uint32_t)i]];
             [_steps[i][AAPLGroundTypeWater] load];
         }
@@ -167,11 +170,11 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
 
 - (void)setDirectionAngle:(CGFloat)directionAngle {
     _directionAngle = directionAngle;
-    [_node runAction:[SCNAction rotateToX:0.0 y:directionAngle z:0.0 duration:0.1 shortestUnitArc:YES]];
+    [_node runAction:[SCNAction rotateToX:0.0f y:directionAngle z:0.0f duration:0.1 shortestUnitArc:YES]];
 }
 
-- (SCNNode *)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene groundTypeFromMaterial:(AAPLGroundType(^)(SCNMaterial *))groundTypeFromMaterial {
-    // delta time since last update
+- (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene {
+    
     if (_previousUpdateTime == 0.0) {
         _previousUpdateTime = time;
     }
@@ -179,90 +182,16 @@ static NSUInteger const AAPLCharacterStepsCount = 11;
     NSTimeInterval deltaTime = MIN(time - _previousUpdateTime, 1.0 / 60.0);
     CGFloat characterSpeed = deltaTime * AAPLCharacterSpeedFactor * 0.84;
     _previousUpdateTime = time;
-
-    SCNVector3 initialPosition = _node.position;
     
-    // move
-    if (direction.x != 0.0 && direction.z != 0.0) {
-        // move character
+    if (direction.x != 0.0 || direction.z != 0.0) {
         vector_float3 position = SCNVector3ToFloat3(_node.position);
         _node.position = SCNVector3FromFloat3(position + direction * characterSpeed);
         
-        // update orientation
         self.directionAngle = atan2(direction.x, direction.z);
-     
         self.walking = YES;
-    }
-    else {
+    } else {
         self.walking = NO;
     }
-    
-    // Update the altitude of the character
-    
-    SCNVector3 position = _node.position;
-    SCNVector3 p0 = position;
-    SCNVector3 p1 = position;
-    
-    static CGFloat const kMaxRise = 0.08;
-    static CGFloat const kMaxJump = 10.0;
-    p0.y -= kMaxJump;
-    p1.y += kMaxRise;
-    
-    // Do a vertical ray intersection
-    SCNNode *groundNode = nil;
-    NSArray<SCNHitTestResult *> *results = [scene.physicsWorld rayTestWithSegmentFromPoint:p1 toPoint:p0 options:@{SCNPhysicsTestCollisionBitMaskKey: @(AAPLBitmaskCollision | AAPLBitmaskWater), SCNPhysicsTestSearchModeKey : SCNPhysicsTestSearchModeClosest}];
-    
-    SCNHitTestResult *result = results.firstObject;
-    if (result) {
-        CGFloat groundAltitude = result.worldCoordinates.y;
-        groundNode = result.node;
-        
-        SCNMaterial *groundMaterial = result.node.childNodes[0].geometry.firstMaterial;
-        _groundType = groundTypeFromMaterial(groundMaterial);
-        
-        if (_groundType == AAPLGroundTypeWater) {
-            if (_isBurning) {
-                [self haltFire];
-            }
-            
-            // do a new ray test without the water to get the altitude of the ground (under the water).
-            results = [scene.physicsWorld rayTestWithSegmentFromPoint:p1 toPoint:p0 options:@{SCNPhysicsTestCollisionBitMaskKey : @(AAPLBitmaskCollision), SCNPhysicsTestSearchModeKey : SCNPhysicsTestSearchModeClosest}];
-            
-            result = results.firstObject;
-            groundAltitude = result.worldCoordinates.y;
-        }
-        
-        static CGFloat const kThreshold = 1e-5;
-        static CGFloat const kGravityAcceleration = 0.18;
-        
-        if (groundAltitude < position.y - kThreshold) {
-            _accelerationY += deltaTime * kGravityAcceleration; // approximation of acceleration for a delta time.
-            if (groundAltitude < position.y - 0.2) {
-                _groundType = AAPLGroundTypeInTheAir;
-            }
-        }
-        else {
-            _accelerationY = 0;
-        }
-        
-        position.y -= _accelerationY;
-        
-        // reset acceleration if we touch the ground
-        if (groundAltitude > position.y) {
-            _accelerationY = 0;
-            position.y = groundAltitude;
-        }
-        
-        // Finally, update the position of the character.
-        _node.position = position;
-        
-    }
-    else {
-        // no result, we are probably out the bounds of the level -> revert the position of the character.
-        _node.position = initialPosition;
-    }
-    
-    return groundNode;
 }
 
 #pragma mark - Animating the character

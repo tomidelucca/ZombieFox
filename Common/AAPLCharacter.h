@@ -8,19 +8,22 @@
 
 @import Foundation;
 
+#import <SceneKit/SceneKit.h>
+
 typedef NS_ENUM(NSUInteger, AAPLGroundType) {
-   AAPLGroundTypeGrass,
-   AAPLGroundTypeRock,
-   AAPLGroundTypeWater,
-   AAPLGroundTypeInTheAir,
-   AAPLGroundTypeCount
+    AAPLGroundTypeGrass,
+    AAPLGroundTypeRock,
+    AAPLGroundTypeWater,
+    AAPLGroundTypeInTheAir,
+    AAPLGroundTypeSoil,
+    AAPLGroundTypeCount
 };
 
 @interface AAPLCharacter : NSObject
 
 @property(nonatomic, readonly) SCNNode *node;
 
-- (SCNNode *)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene groundTypeFromMaterial:(AAPLGroundType(^)(SCNMaterial *))groundTypeFromMaterial;
+- (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene;
 - (void)catchFire;
 - (void)haltFire;
 
