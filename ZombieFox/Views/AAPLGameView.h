@@ -20,10 +20,9 @@
 
 @interface AAPLGameView : SCNView
 
-@property (nonatomic) NSUInteger collectedPearlsCount;
-@property (nonatomic) NSUInteger collectedFlowersCount;
-
-- (void)showEndScreen;
+@property (nonatomic) CGFloat life;
+@property (nonatomic) NSUInteger wave;
+@property (nonatomic) BOOL invulnerable;
 
 @property (nonatomic, weak) id <AAPLKeyboardAndMouseEventsDelegate> eventsDelegate;
 

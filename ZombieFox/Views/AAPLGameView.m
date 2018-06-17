@@ -10,13 +10,14 @@
 
 #import "AAPLGameView.h"
 
+@interface AAPLGameView()
+@property (strong, nonatomic) SKSpriteNode* overlayNode;
+@property (strong, nonatomic) SKLabelNode* waveLabel;
+@property (strong, nonatomic) SKLabelNode* lifeLabel;
+@property (strong, nonatomic) SKSpriteNode* lifeBar;
+@end
+
 @implementation AAPLGameView
-{
-	SKNode *_overlayNode;
-	SKNode *_congratulationsGroupNode;
-	SKLabelNode *_collectedPearlCountLabel;
-	NSMutableArray <SKSpriteNode *> *_collectedFlowerSprites;
-}
 
 #pragma mark - 2D Overlay
 
@@ -24,48 +25,7 @@
 {
 	[super viewDidMoveToWindow];
 	[self setup2DOverlay];
-    
     // self.debugOptions = SCNDebugOptionShowPhysicsShapes | SCNDebugOptionShowPhysicsFields;
-}
-
-- (void)setFrameSize:(NSSize)newSize
-{
-	[super setFrameSize:newSize];
-	[self layout2DOverlay];
-}
-
-- (void)layout2DOverlay
-{
-	_overlayNode.position = CGPointMake(0.0, self.bounds.size.height);
-
-	_congratulationsGroupNode.position = CGPointMake(self.bounds.size.width * 0.5, self.bounds.size.height * 0.5);
-
-	_congratulationsGroupNode.xScale = 1.0;
-	_congratulationsGroupNode.yScale = 1.0;
-	CGRect currentBbox = [_congratulationsGroupNode calculateAccumulatedFrame];
-
-	CGFloat margin = 25.0;
-	CGRect maximumAllowedBbox = CGRectInset(self.bounds, margin, margin);
-
-	CGFloat top = CGRectGetMaxY(currentBbox) - _congratulationsGroupNode.position.y;
-	CGFloat bottom = _congratulationsGroupNode.position.y - CGRectGetMinY(currentBbox);
-	CGFloat maxTopAllowed = CGRectGetMaxY(maximumAllowedBbox) - _congratulationsGroupNode.position.y;
-	CGFloat maxBottomAllowed = _congratulationsGroupNode.position.y - CGRectGetMinY(maximumAllowedBbox);
-
-	CGFloat left = _congratulationsGroupNode.position.x - CGRectGetMinX(currentBbox);
-	CGFloat right = CGRectGetMaxX(currentBbox) - _congratulationsGroupNode.position.x;
-	CGFloat maxLeftAllowed = _congratulationsGroupNode.position.x - CGRectGetMinX(maximumAllowedBbox);
-	CGFloat maxRightAllowed = CGRectGetMaxX(maximumAllowedBbox) - _congratulationsGroupNode.position.x;
-
-	CGFloat topScale = top > maxTopAllowed ? maxTopAllowed / top : 1;
-	CGFloat bottomScale = bottom > maxBottomAllowed ? maxBottomAllowed / bottom : 1;
-	CGFloat leftScale = left > maxLeftAllowed ? maxLeftAllowed / left : 1;
-	CGFloat rightScale = right > maxRightAllowed ? maxRightAllowed / right : 1;
-
-	CGFloat scale = MIN(topScale, MIN(bottomScale, MIN(leftScale, rightScale)));
-
-	_congratulationsGroupNode.xScale = scale;
-	_congratulationsGroupNode.yScale = scale;
 }
 
 - (void)setup2DOverlay
@@ -73,100 +33,68 @@
 	CGFloat w = self.bounds.size.width;
 	CGFloat h = self.bounds.size.height;
 
-	_overlayNode = [[SKNode alloc] init];
+	self.overlayNode = [[SKSpriteNode alloc] init];
 
-	_collectedFlowerSprites = [[NSMutableArray alloc] init];
-
-	// Setup the game overlays using SpriteKit.
 	SKScene *skScene = [SKScene sceneWithSize:CGSizeMake(w, h)];
-	skScene.scaleMode = SKSceneScaleModeResizeFill;
+    skScene.anchorPoint = CGPointMake(0.0f, 0.0f);
+	[skScene addChild:self.overlayNode];
+    
+	self.overlayNode.position = CGPointMake(0.0f, 0.0f);
+    self.overlayNode.anchorPoint = CGPointMake(0.0f, 0.0f);
 
-	[skScene addChild:_overlayNode];
-	_overlayNode.position = CGPointMake(0.0, h);
+	self.lifeBar = [SKSpriteNode spriteNodeWithColor:[SKColor greenColor] size:CGSizeMake(200.0f, 20.0f)];
+	self.lifeBar.position = CGPointMake(10.0f, h - 30.0f);
+    self.lifeBar.anchorPoint = CGPointMake(0.0f, 0.0f);
+	[self.overlayNode addChild:self.lifeBar];
 
-	// The Max icon.
-	SKSpriteNode *characterNode = [SKSpriteNode spriteNodeWithImageNamed:@"MaxIcon.png"];
-	characterNode.position = CGPointMake(50, -50);
-	characterNode.xScale = 0.5;
-	characterNode.yScale = 0.5;
-	[_overlayNode addChild:characterNode];
+	self.lifeLabel = [[SKLabelNode alloc] initWithFontNamed:@"Impact"];
+	self.lifeLabel.text = @"100";
+    self.lifeLabel.fontSize = 26.0f;
+	self.lifeLabel.position = CGPointMake(220.0f, h - 20.0f);
+    self.lifeLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    self.lifeLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+	[self.overlayNode addChild:self.lifeLabel];
+    
+    self.waveLabel = [[SKLabelNode alloc] initWithFontNamed:@"Impact"];
+    self.waveLabel.text = @"Wave 1";
+    self.waveLabel.fontSize = 26.0f;
+    self.waveLabel.position = CGPointMake(w - 10.0f, h - 20.0f);
+    self.waveLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    self.waveLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
+    [self.overlayNode addChild:self.waveLabel];
 
-	// The flowers.
-	for (NSUInteger i = 0; i < 3; i++) {
-		SKSpriteNode *flowerNode = [SKSpriteNode spriteNodeWithImageNamed:@"FlowerEmpty.png"];
-		flowerNode.position = CGPointMake(110 + i * 40, -50);
-		flowerNode.xScale = 0.25;
-		flowerNode.yScale = 0.25;
-		[_overlayNode addChild:flowerNode];
-		[_collectedFlowerSprites addObject:flowerNode];
-	}
-
-	// The pearl icon and count.
-	SKSpriteNode *pearlNode = [SKSpriteNode spriteNodeWithImageNamed:@"ItemsPearl.png"];
-	pearlNode.position = CGPointMake(110, -100);
-	pearlNode.xScale = 0.5;
-	pearlNode.yScale = 0.5;
-	[_overlayNode addChild:pearlNode];
-
-	_collectedPearlCountLabel = [[SKLabelNode alloc] initWithFontNamed:@"Chalkduster"];
-	_collectedPearlCountLabel.text = @"x0";
-	_collectedPearlCountLabel.position = CGPointMake(152, -113);
-	[_overlayNode addChild:_collectedPearlCountLabel];
-
-	// Assign the SpriteKit overlay to the SceneKit view.
 	self.overlaySKScene = skScene;
 	skScene.userInteractionEnabled = NO;
 }
 
-- (void)setCollectedPearlsCount:(NSUInteger)collectedPearlsCount
+- (void)setInvulnerable:(BOOL)invulnerable
 {
-	_collectedPearlsCount = collectedPearlsCount;
-	if (_collectedPearlsCount == 10) {
-		_collectedPearlCountLabel.position = CGPointMake(158, _collectedPearlCountLabel.position.y);
-	}
-	_collectedPearlCountLabel.text = [NSString stringWithFormat:@"x%d", (uint32_t)collectedPearlsCount];
+    _invulnerable = invulnerable;
+    
+    if (invulnerable) {
+        self.lifeBar.color = [NSColor cyanColor];
+    } else {
+        self.life = self.life;
+    }
 }
 
-- (void)setCollectedFlowersCount:(NSUInteger)collectedFlowersCount
+- (void)setLife:(CGFloat)life
 {
-	_collectedFlowerSprites[collectedFlowersCount - 1].texture = [SKTexture textureWithImageNamed:@"FlowerFull.png"];
+    _life = life;
+    self.lifeLabel.text = [NSString stringWithFormat:@"%.0f", life * 100.0f];
+    self.lifeBar.xScale = life;
+    
+    if (life <= 0.2f) {
+        self.lifeBar.color = [NSColor redColor];
+    } else {
+        self.lifeBar.color = [NSColor greenColor];
+    }
 }
 
-#pragma mark - Congratulating the Player
-
-- (void)showEndScreen
+- (void)setWave:(NSUInteger)wave
 {
-	// Congratulation title
-	SKSpriteNode *congratulationsNode = [SKSpriteNode spriteNodeWithImageNamed:@"congratulations.png"];
-
-	// Max image
-	SKSpriteNode *characterNode = [SKSpriteNode spriteNodeWithImageNamed:@"congratulations_pandaMax.png"];
-	characterNode.position = CGPointMake(0.0, -220.0);
-	characterNode.anchorPoint = CGPointMake(0.5, 0.0);
-
-	_congratulationsGroupNode = [[SKNode alloc] init];
-
-	[_congratulationsGroupNode addChild:characterNode];
-	[_congratulationsGroupNode addChild:congratulationsNode];
-
-	SKScene *overlayScene = self.overlaySKScene;
-	[overlayScene addChild:_congratulationsGroupNode];
-
-	// Layout the overlay
-	[self layout2DOverlay];
-
-	// Animate
-	congratulationsNode.alpha = 0.0;
-	congratulationsNode.xScale = 0.0;
-	congratulationsNode.yScale = 0.0;
-	[congratulationsNode runAction:[SKAction group:@[[SKAction fadeInWithDuration:0.25],
-	                                                 [SKAction sequence:@[[SKAction scaleTo:1.22 duration:0.25], [SKAction scaleTo:1.0 duration:0.1]]]]]];
-
-	characterNode.alpha = 0.0;
-	characterNode.xScale = 0.0;
-	characterNode.yScale = 0.0;
-	[characterNode runAction:[SKAction sequence:@[[SKAction waitForDuration:0.5], [SKAction group:@[[SKAction fadeInWithDuration:0.5],
-	                                                                                                [SKAction sequence:@[[SKAction scaleTo:1.22 duration:0.25], [SKAction scaleTo:1.0 duration:0.1]]]]]]]];
+    _wave = wave;
+    self.waveLabel.text = [NSString stringWithFormat:@"Wave %ld", wave];
 }
 
 #pragma mark - Mouse and Keyboard Events
