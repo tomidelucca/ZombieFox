@@ -1,10 +1,10 @@
 /*
     Copyright (C) 2016 Apple Inc. All Rights Reserved.
     See LICENSE.txt for this sample’s licensing information
-    
+
     Abstract:
     The view displaying the game scene, including the 2D overlay.
-*/
+ */
 
 @import simd;
 @import SceneKit;
@@ -20,11 +20,11 @@
 
 @interface AAPLGameView : SCNView
 
-@property(nonatomic) NSUInteger collectedPearlsCount;
-@property(nonatomic) NSUInteger collectedFlowersCount;
+@property (nonatomic) NSUInteger collectedPearlsCount;
+@property (nonatomic) NSUInteger collectedFlowersCount;
 
 - (void)showEndScreen;
 
-@property(nonatomic, weak) id <AAPLKeyboardAndMouseEventsDelegate> eventsDelegate;
+@property (nonatomic, weak) id <AAPLKeyboardAndMouseEventsDelegate> eventsDelegate;
 
 @end
