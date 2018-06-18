@@ -34,9 +34,9 @@
 	if (self) {
 		self.maxLife = configuration.maxLife;
 		self.life = configuration.maxLife;
-        self.walkSpeed = configuration.maxVelocity;
-        _strength = configuration.strength;
-        self.velocity = (vector_float3){0.0f, 0.0f, 0.0f};
+		self.walkSpeed = configuration.maxVelocity;
+		_strength = configuration.strength;
+		self.velocity = (vector_float3) {0.0f, 0.0f, 0.0f};
 		[self setupNodeWithScene:configuration.characterScene];
 		if (configuration.walkAnimationScene) {
 			[self setupWalkAnimationWithScene:configuration.walkAnimationScene];
@@ -82,30 +82,30 @@
 	}
 }
 
-- (void)seek:(AAPLCharacter*)character withTime:(NSTimeInterval)time
+- (void)seek:(AAPLCharacter *)character withTime:(NSTimeInterval)time
 {
-    NSTimeInterval deltaTime = MIN(time, 1.0 / 60.0);
-    
-    vector_float3 t = SCNVector3ToFloat3(character.node.position);
-    vector_float3 p = SCNVector3ToFloat3(self.node.position);
-    
-    CGFloat distance = vector_distance(t, p);
-    
-    vector_float3 desiredVelocity = vector_normalize(t - p) * self.walkSpeed * deltaTime;
-    
-    if (distance <= 1) {
-        desiredVelocity *= distance;
-    }
-    
-    vector_float3 steering = desiredVelocity - self.velocity;
-    
-    self.velocity = self.velocity + steering;
-    
-    self.node.position = SCNVector3Make(p.x + self.velocity.x, p.y + self.velocity.y, p.z + self.velocity.z);
-    
-    CGFloat angle = atan2(self.velocity.x, self.velocity.z);
-    
-    [self.node runAction:[SCNAction rotateToX:0.0f y:angle z:0.0f duration:0.1f]];
+	NSTimeInterval deltaTime = MIN(time, 1.0 / 60.0);
+
+	vector_float3 t = SCNVector3ToFloat3(character.node.position);
+	vector_float3 p = SCNVector3ToFloat3(self.node.position);
+
+	CGFloat distance = vector_distance(t, p);
+
+	vector_float3 desiredVelocity = vector_normalize(t - p) * self.walkSpeed * deltaTime;
+
+	if (distance <= 1) {
+		desiredVelocity *= distance;
+	}
+
+	vector_float3 steering = desiredVelocity - self.velocity;
+
+	self.velocity = self.velocity + steering;
+
+	self.node.position = SCNVector3Make(p.x + self.velocity.x, p.y + self.velocity.y, p.z + self.velocity.z);
+
+	CGFloat angle = atan2(self.velocity.x, self.velocity.z);
+
+	[self.node runAction:[SCNAction rotateToX:0.0f y:angle z:0.0f duration:0.1f]];
 }
 
 #pragma mark - Animating the character

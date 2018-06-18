@@ -27,15 +27,15 @@
 	CGFloat collisionCapsuleRadius = (max.x - min.x) * 0.4;
 	CGFloat collisionCapsuleHeight = (max.y - min.y);
 
-    SCNNode *collisionNode = [SCNNode node];
-    collisionNode.name = @"enemy_collider";
-    collisionNode.position = SCNVector3Make(0.0, collisionCapsuleHeight * 0.5, 0.0);
-    collisionNode.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeKinematic
-                                                       shape:[SCNPhysicsShape shapeWithGeometry:
-                                                              [SCNCapsule capsuleWithCapRadius:collisionCapsuleRadius
-                                                                                        height:collisionCapsuleHeight]
-                                                                                        options:nil]];
-    [self.node addChildNode:collisionNode];
+	SCNNode *collisionNode = [SCNNode node];
+	collisionNode.name = @"enemy_collider";
+	collisionNode.position = SCNVector3Make(0.0, collisionCapsuleHeight * 0.5, 0.0);
+	collisionNode.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeKinematic
+	                                                   shape:[SCNPhysicsShape shapeWithGeometry:
+	                                                          [SCNCapsule capsuleWithCapRadius:collisionCapsuleRadius
+	                                                                                    height:collisionCapsuleHeight]
+	                                                                                    options:nil]];
+	[self.node addChildNode:collisionNode];
 
 	collisionNode.physicsBody.categoryBitMask = AAPLBitmaskEnemy;
 
@@ -48,7 +48,7 @@
 
 - (void)hurtCharacter:(AAPLCharacter *)character
 {
-    [character takeLife:self.strength];
+	[character takeLife:self.strength];
 }
 
 + (AAPLEnemy *)enemyForNode:(SCNNode *)node

@@ -108,11 +108,11 @@
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time
 {
-    if (!self.pastTime) {
-        self.pastTime = time;
-        return;
-    }
-    
+	if (!self.pastTime) {
+		self.pastTime = time;
+		return;
+	}
+
 	self.replacementPositionIsValid = NO;
 	self.maxPenetrationDistance = 0;
 
@@ -123,12 +123,12 @@
 	                       scene:scene];
 
 	[self.player rotateByAngle:[self characterAngleVelocity]];
-    
-    for (AAPLEnemy* enemy in self.enemies) {
-        [enemy seek:self.player withTime:time - self.pastTime];
-    }
-    
-    self.pastTime = time;
+
+	for (AAPLEnemy *enemy in self.enemies) {
+		[enemy seek:self.player withTime:time - self.pastTime];
+	}
+
+	self.pastTime = time;
 }
 
 #pragma mark - Moving the Character
@@ -165,14 +165,13 @@
 		[item.node removeFromParentNode];
 		[self.items removeObject:item];
 	}
-    
 }
 
 - (void)physicsWorld:(SCNPhysicsWorld *)world didUpdateContact:(SCNPhysicsContact *)contact
 {
 	if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskEnemy) {
-        AAPLEnemy* enemy = [AAPLEnemy enemyForNode:contact.nodeB];
-        [enemy hurtCharacter:self.player];
+		AAPLEnemy *enemy = [AAPLEnemy enemyForNode:contact.nodeB];
+		[enemy hurtCharacter:self.player];
 		[self characterNode:contact.nodeA hitWall:contact.nodeB withContact:contact];
 	}
 }
