@@ -25,7 +25,7 @@
 {
 	[super viewDidMoveToWindow];
 	[self setup2DOverlay];
-    // self.debugOptions = SCNDebugOptionShowPhysicsShapes | SCNDebugOptionShowPhysicsFields;
+    self.debugOptions = SCNDebugOptionShowPhysicsShapes | SCNDebugOptionShowPhysicsFields;
 }
 
 - (void)setup2DOverlay

@@ -10,10 +10,10 @@
 #define AAPLCollisionMasks_h
 
 typedef NS_OPTIONS (NSUInteger, AAPLBitmask) {
-    AAPLBitmaskPlayer           = 1UL << 1,
-    AAPLBitmaskCollision        = 1UL << 2,
-    AAPLBitmaskCollectable      = 1UL << 3,
-    AAPLBitmaskEnemy            = 1UL << 4,
+    AAPLBitmaskPlayer           = 1UL << 0,
+    AAPLBitmaskCollision        = 1UL << 1,
+    AAPLBitmaskCollectable      = 1UL << 2,
+    AAPLBitmaskEnemy            = 1UL << 3,
 };
 
 #endif

@@ -12,6 +12,7 @@
 
 #import "AAPLGameViewControllerPrivate.h"
 #import "AAPLItemFactory.h"
+#import "AAPLEnemyFactory.h"
 
 @interface AAPLGameViewController() <AAPLCharacterDelegate>
 @property (strong, nonatomic) AAPLItem* item;
@@ -50,6 +51,8 @@
 
 - (void)setupGame
 {
+    self.maxPenetrationDistance = 0.0f;
+    
     self.player = [AAPLPlayer new];
     self.player.node.position = SCNVector3Make(1.0f, 0.0f, 1.0f);
     self.player.delegate = self;
@@ -62,6 +65,11 @@
     item.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
     [self.gameView.scene.rootNode addChildNode:item.node];
     [self.items addObject:item];
+    
+    AAPLEnemy* enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:10.0f];
+    enemy.node.position = SCNVector3Make(0.0f, 0.0f, 1.0f);
+    [self.gameView.scene.rootNode addChildNode:enemy.node];
+    [self.enemies addObject:enemy];
 }
 
 - (void)setupCamera
@@ -99,6 +107,9 @@
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time
 {
+    self.replacementPositionIsValid = NO;
+    self.maxPenetrationDistance = 0;
+    
 	SCNScene *scene = self.gameView.scene;
 
 	[self.player walkInDirection:[self playerDirection]
@@ -136,10 +147,46 @@
 
 - (void)physicsWorld:(SCNPhysicsWorld *)world didBeginContact:(SCNPhysicsContact *)contact
 {
-    AAPLItem* item = [AAPLItem itemForNode:contact.nodeB];
-    [item runActionWithPlayer:self.player];
-    [item.node removeFromParentNode];
-    [self.items removeObject:item];
+    if (contact.nodeB.categoryBitMask == AAPLBitmaskCollectable) {
+        AAPLItem* item = [AAPLItem itemForNode:contact.nodeB];
+        [item runActionWithPlayer:self.player];
+        [item.node removeFromParentNode];
+        [self.items removeObject:item];
+    }
+}
+
+- (void)physicsWorld:(SCNPhysicsWorld *)world didUpdateContact:(SCNPhysicsContact *)contact
+{
+    if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskEnemy) {
+        [self characterNode:contact.nodeA hitWall:contact.nodeB withContact:contact];
+    }
+}
+
+- (void)renderer:(id<SCNSceneRenderer>)renderer didSimulatePhysicsAtTime:(NSTimeInterval)time
+{
+    if (self.replacementPositionIsValid) {
+        self.player.node.position = self.replacementPosition;
+    }
+}
+
+- (void)characterNode:(SCNNode *)characterNode hitWall:(SCNNode *)wall withContact:(SCNPhysicsContact *)contact {
+    if (characterNode.parentNode != self.player.node) {
+        return;
+    }
+    
+    if (self.maxPenetrationDistance > contact.penetrationDistance) {
+        return;
+    }
+    
+    self.maxPenetrationDistance = contact.penetrationDistance;
+    
+    vector_float3 characterPosition = SCNVector3ToFloat3(self.player.node.position);
+    vector_float3 positionOffset = SCNVector3ToFloat3(contact.contactNormal) * contact.penetrationDistance;
+    positionOffset.y = 0;
+    characterPosition += positionOffset;
+    
+    self.replacementPosition = SCNVector3FromFloat3(characterPosition);
+    self.replacementPositionIsValid = YES;
 }
 
 #pragma mark - AAPLCharacterDelegate Conformance

@@ -47,8 +47,11 @@
                                                                                         height:collisionCapsuleHeight]
                                                                                         options:nil]];
     collisionNode.physicsBody.categoryBitMask = AAPLBitmaskPlayer;
-    collisionNode.physicsBody.collisionBitMask = AAPLBitmaskCollectable;
-    collisionNode.physicsBody.contactTestBitMask = AAPLBitmaskCollectable;
+    collisionNode.physicsBody.collisionBitMask = AAPLBitmaskCollectable | AAPLBitmaskEnemy;
+    collisionNode.physicsBody.contactTestBitMask = AAPLBitmaskCollectable | AAPLBitmaskEnemy;
+    
+    collisionNode.physicsBody.mass = 1.0f;
+    collisionNode.physicsBody.restitution = 0.0f;
     
 	[self.node addChildNode:collisionNode];
     

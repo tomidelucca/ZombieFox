@@ -31,14 +31,18 @@
     collisionNode.name = @"collider";
     collisionNode.position = SCNVector3Make(0.0, collisionCapsuleHeight * 0.5, 0.0);
     collisionNode.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeKinematic
-                                                                shape:[SCNPhysicsShape shapeWithGeometry:
-                                                                       [SCNCapsule capsuleWithCapRadius:collisionCapsuleRadius
-                                                                                                 height:collisionCapsuleHeight]
-                                                                                                 options:nil]];
+                                                       shape:[SCNPhysicsShape shapeWithGeometry:
+                                                              [SCNCapsule capsuleWithCapRadius:collisionCapsuleRadius
+                                                                                        height:collisionCapsuleHeight]
+                                                                                        options:nil]];
     [self.node addChildNode:collisionNode];
     
-    collisionNode.categoryBitMask = AAPLBitmaskEnemy;
+    collisionNode.physicsBody.categoryBitMask = AAPLBitmaskEnemy;
+    collisionNode.physicsBody.contactTestBitMask = AAPLBitmaskPlayer;
     collisionNode.physicsBody.collisionBitMask = AAPLBitmaskPlayer;
+    
+    collisionNode.physicsBody.mass = 1.0f;
+    collisionNode.physicsBody.restitution = 0.2f;
     
     [[AAPLNodeManager sharedManager] associateNode:collisionNode withModel:self];
     [[AAPLNodeManager sharedManager] associateNode:self.node withModel:self];
