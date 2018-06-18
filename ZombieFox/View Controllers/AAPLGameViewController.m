@@ -61,12 +61,12 @@
 	self.enemies = [NSMutableArray new];
 	self.items = [NSMutableArray new];
 
-	AAPLItem *item = [AAPLItemFactory damageForCharacter:30.0f];
+	AAPLItem *item = [AAPLItemFactory healthItemWithLife:50.0f];
 	item.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
 	[self.gameView.scene.rootNode addChildNode:item.node];
 	[self.items addObject:item];
 
-	AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:10.0f];
+	AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:2.0f];
 	enemy.node.position = SCNVector3Make(0.0f, 0.0f, 1.0f);
 	[self.gameView.scene.rootNode addChildNode:enemy.node];
 	[self.enemies addObject:enemy];
@@ -147,12 +147,17 @@
 
 - (void)physicsWorld:(SCNPhysicsWorld *)world didBeginContact:(SCNPhysicsContact *)contact
 {
-	if (contact.nodeB.categoryBitMask == AAPLBitmaskCollectable) {
+	if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskCollectable) {
 		AAPLItem *item = [AAPLItem itemForNode:contact.nodeB];
 		[item runActionWithPlayer:self.player];
 		[item.node removeFromParentNode];
 		[self.items removeObject:item];
 	}
+    
+    if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskEnemy) {
+        AAPLEnemy* enemy = [AAPLEnemy enemyForNode:contact.nodeB];
+        [enemy hurtCharacter:self.player];
+    }
 }
 
 - (void)physicsWorld:(SCNPhysicsWorld *)world didUpdateContact:(SCNPhysicsContact *)contact

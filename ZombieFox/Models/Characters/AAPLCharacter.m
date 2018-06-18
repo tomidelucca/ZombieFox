@@ -36,6 +36,7 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 	if (self) {
 		self.maxLife = configuration.maxLife;
 		self.life = configuration.maxLife;
+        _strength = configuration.strength;
 		[self setupNodeWithScene:configuration.characterScene];
 		if (configuration.walkAnimationScene) {
 			[self setupWalkAnimationWithScene:configuration.walkAnimationScene];

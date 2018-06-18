@@ -206,8 +206,6 @@
 			children = (
 				E677EFD820D71BFD005FEC05 /* Characters */,
 				E677EFD120D70527005FEC05 /* Items */,
-				E677EFA620D630F9005FEC05 /* AAPLCharacterConfiguration.h */,
-				E677EFA720D630F9005FEC05 /* AAPLCharacterConfiguration.m */,
 				E677EFA520D6154B005FEC05 /* AAPLCollisionMasks.h */,
 				E677EFA920D6FB88005FEC05 /* AAPLNodeManager.h */,
 				E677EFAA20D6FB88005FEC05 /* AAPLNodeManager.m */,
@@ -229,6 +227,8 @@
 		E677EFD820D71BFD005FEC05 /* Characters */ = {
 			isa = PBXGroup;
 			children = (
+				E677EFA620D630F9005FEC05 /* AAPLCharacterConfiguration.h */,
+				E677EFA720D630F9005FEC05 /* AAPLCharacterConfiguration.m */,
 				94CA65521ADC129A006293CF /* AAPLCharacter.h */,
 				94CA65501ADC127F006293CF /* AAPLCharacter.m */,
 				E677EF9820D5BA8E005FEC05 /* AAPLPlayer.h */,

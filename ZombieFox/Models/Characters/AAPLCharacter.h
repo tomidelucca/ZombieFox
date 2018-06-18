@@ -24,6 +24,8 @@
 @property (nonatomic, readonly) SCNNode *node;
 @property (nonatomic, readonly) CGFloat maxLife;
 @property (nonatomic, readonly) CGFloat life;
+@property (nonatomic, readonly) CGFloat strength;
+
 @property (nonatomic, weak) id <AAPLCharacterDelegate> delegate;
 
 - (instancetype)initWithConfiguration:(AAPLCharacterConfiguration *)configuration;

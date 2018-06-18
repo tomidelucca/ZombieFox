@@ -12,17 +12,19 @@
 
 + (AAPLEnemy *)mummyWithLife:(CGFloat)life andStrength:(CGFloat)strength
 {
-	AAPLEnemy *enemy = [[AAPLEnemy alloc] initWithConfiguration:[AAPLEnemyFactory mummyConfigurationWithLife:life]];
+    AAPLCharacterConfiguration* configuration = [AAPLEnemyFactory mummyConfigurationWithLife];
+    configuration.maxLife = life;
+    configuration.strength = strength;
+	AAPLEnemy *enemy = [[AAPLEnemy alloc] initWithConfiguration:configuration];
 	enemy.node.scale = SCNVector3Make(0.75f, 0.75f, 0.75f);
 	return enemy;
 }
 
-+ (AAPLCharacterConfiguration *)mummyConfigurationWithLife:(CGFloat)life
++ (AAPLCharacterConfiguration *)mummyConfigurationWithLife
 {
 	AAPLCharacterConfiguration *configuration = [AAPLCharacterConfiguration new];
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/mummy.dae"];
 	configuration.walkAnimationScene = [SCNScene sceneNamed:@"game.scnassets/mummy_walk.dae"];
-	configuration.maxLife = life;
 	return configuration;
 }
 
