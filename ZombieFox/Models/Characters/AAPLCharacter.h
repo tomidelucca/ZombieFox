@@ -39,4 +39,6 @@
 - (void)speedMultiplier:(CGFloat)multiplier forInterval:(NSTimeInterval)interval;
 
 - (void)invulnerableForInterval:(NSTimeInterval)interval;
+
+- (void)seek:(AAPLCharacter*)character withTime:(NSTimeInterval)time;
 @end

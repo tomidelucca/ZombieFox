@@ -14,4 +14,5 @@
 @property (strong, nonatomic) SCNScene *walkAnimationScene;
 @property (nonatomic) CGFloat maxLife;
 @property (nonatomic) CGFloat strength;
+@property (nonatomic) CGFloat maxVelocity;
 @end

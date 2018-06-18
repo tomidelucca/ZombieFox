@@ -11,19 +11,17 @@
 #import "AAPLCharacter.h"
 #import "SCNScene+LoadAnimation.h"
 
-static CGFloat const AAPLCharacterSpeedFactor = 1.538;
-
 @interface AAPLCharacter ()
 @property (strong, nonatomic) CAAnimation *walkAnimation;
 @property (nonatomic) NSTimeInterval previousUpdateTime;
 @property (strong, nonatomic) SCNNode *node;
 @property (nonatomic) CGFloat walkSpeed;
 @property (nonatomic) BOOL isWalking;
+@property (nonatomic) vector_float3 velocity;
 
 @property (nonatomic) CGFloat maxLife;
 @property (nonatomic) CGFloat life;
 @property (nonatomic) BOOL invulnerable;
-
 @end
 
 @implementation AAPLCharacter
@@ -36,7 +34,9 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 	if (self) {
 		self.maxLife = configuration.maxLife;
 		self.life = configuration.maxLife;
+        self.walkSpeed = configuration.maxVelocity;
         _strength = configuration.strength;
+        self.velocity = (vector_float3){0.0f, 0.0f, 0.0f};
 		[self setupNodeWithScene:configuration.characterScene];
 		if (configuration.walkAnimationScene) {
 			[self setupWalkAnimationWithScene:configuration.walkAnimationScene];
@@ -59,7 +59,6 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 - (void)configureCharacter
 {
 	[self loadEmbeddedAnimations];
-	self.walkSpeed = 1.0f;
 }
 
 #pragma mark - Controlling the character
@@ -71,13 +70,8 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene
 {
-	if (self.previousUpdateTime == 0.0) {
-		self.previousUpdateTime = time;
-	}
-
-	NSTimeInterval deltaTime = MIN(time - self.previousUpdateTime, 1.0 / 60.0);
-	CGFloat characterSpeed = deltaTime * AAPLCharacterSpeedFactor * 0.84 * self.walkSpeed;
-	self.previousUpdateTime = time;
+	NSTimeInterval deltaTime = MIN(time, 1.0 / 60.0);
+	CGFloat characterSpeed = deltaTime * self.walkSpeed;
 
 	if (direction.x != 0.0 || direction.z != 0.0) {
 		vector_float3 position = SCNVector3ToFloat3(self.node.position);
@@ -86,6 +80,32 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 	} else {
 		self.walking = NO;
 	}
+}
+
+- (void)seek:(AAPLCharacter*)character withTime:(NSTimeInterval)time
+{
+    NSTimeInterval deltaTime = MIN(time, 1.0 / 60.0);
+    
+    vector_float3 t = SCNVector3ToFloat3(character.node.position);
+    vector_float3 p = SCNVector3ToFloat3(self.node.position);
+    
+    CGFloat distance = vector_distance(t, p);
+    
+    vector_float3 desiredVelocity = vector_normalize(t - p) * self.walkSpeed * deltaTime;
+    
+    if (distance <= 1) {
+        desiredVelocity *= distance;
+    }
+    
+    vector_float3 steering = desiredVelocity - self.velocity;
+    
+    self.velocity = self.velocity + steering;
+    
+    self.node.position = SCNVector3Make(p.x + self.velocity.x, p.y + self.velocity.y, p.z + self.velocity.z);
+    
+    CGFloat angle = atan2(self.velocity.x, self.velocity.z);
+    
+    [self.node runAction:[SCNAction rotateToX:0.0f y:angle z:0.0f duration:0.1f]];
 }
 
 #pragma mark - Animating the character
@@ -97,7 +117,6 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 	self.walkAnimation.fadeInDuration = 0.3;
 	self.walkAnimation.fadeOutDuration = 0.3;
 	self.walkAnimation.repeatCount = FLT_MAX;
-	self.walkAnimation.speed = AAPLCharacterSpeedFactor;
 }
 
 - (void)setWalking:(BOOL)walking
@@ -123,7 +142,7 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 		self.walking = NO;
 	}
 
-	self.walkAnimation.speed = AAPLCharacterSpeedFactor * self.walkSpeed;
+	self.walkAnimation.speed = self.walkSpeed;
 
 	if (wasWalking) {
 		self.walking = YES;

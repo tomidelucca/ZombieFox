@@ -28,6 +28,7 @@
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
 	configuration.walkAnimationScene = [SCNScene sceneNamed:@"game.scnassets/walk.scn"];
 	configuration.maxLife = 80.0f;
+    configuration.maxVelocity = 1.5f;
 	return configuration;
 }
 

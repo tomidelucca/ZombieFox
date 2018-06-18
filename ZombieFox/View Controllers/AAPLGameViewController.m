@@ -16,6 +16,7 @@
 
 @interface AAPLGameViewController () <AAPLCharacterDelegate>
 @property (strong, nonatomic) AAPLItem *item;
+@property (nonatomic) NSTimeInterval pastTime;
 @end
 
 @implementation AAPLGameViewController
@@ -61,13 +62,13 @@
 	self.enemies = [NSMutableArray new];
 	self.items = [NSMutableArray new];
 
-	AAPLItem *item = [AAPLItemFactory healthItemWithLife:50.0f];
+	AAPLItem *item = [AAPLItemFactory speedItemWithSpeed:2.0f forInterval:5.0f];
 	item.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
 	[self.gameView.scene.rootNode addChildNode:item.node];
 	[self.items addObject:item];
 
-	AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:2.0f];
-	enemy.node.position = SCNVector3Make(0.0f, 0.0f, 1.0f);
+	AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:0.5f];
+	enemy.node.position = SCNVector3Make(0.0f, 0.0f, 10.0f);
 	[self.gameView.scene.rootNode addChildNode:enemy.node];
 	[self.enemies addObject:enemy];
 }
@@ -107,16 +108,27 @@
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time
 {
+    if (!self.pastTime) {
+        self.pastTime = time;
+        return;
+    }
+    
 	self.replacementPositionIsValid = NO;
 	self.maxPenetrationDistance = 0;
 
 	SCNScene *scene = self.gameView.scene;
 
 	[self.player walkInDirection:[self playerDirection]
-	                        time:time
+	                        time:time - self.pastTime
 	                       scene:scene];
 
 	[self.player rotateByAngle:[self characterAngleVelocity]];
+    
+    for (AAPLEnemy* enemy in self.enemies) {
+        [enemy seek:self.player withTime:time - self.pastTime];
+    }
+    
+    self.pastTime = time;
 }
 
 #pragma mark - Moving the Character
@@ -154,15 +166,13 @@
 		[self.items removeObject:item];
 	}
     
-    if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskEnemy) {
-        AAPLEnemy* enemy = [AAPLEnemy enemyForNode:contact.nodeB];
-        [enemy hurtCharacter:self.player];
-    }
 }
 
 - (void)physicsWorld:(SCNPhysicsWorld *)world didUpdateContact:(SCNPhysicsContact *)contact
 {
 	if (contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskEnemy) {
+        AAPLEnemy* enemy = [AAPLEnemy enemyForNode:contact.nodeB];
+        [enemy hurtCharacter:self.player];
 		[self characterNode:contact.nodeA hitWall:contact.nodeB withContact:contact];
 	}
 }
