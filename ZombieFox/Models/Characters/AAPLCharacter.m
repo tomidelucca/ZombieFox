@@ -30,19 +30,19 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 
 #pragma mark - Initialization
 
-- (instancetype)initWithConfiguration:(AAPLCharacterConfiguration*)configuration
+- (instancetype)initWithConfiguration:(AAPLCharacterConfiguration *)configuration
 {
-    self = [super init];
-    if (self) {
-        self.maxLife = configuration.maxLife;
-        self.life = configuration.maxLife;
-        [self setupNodeWithScene:configuration.characterScene];
-        if (configuration.walkAnimationScene) {
-            [self setupWalkAnimationWithScene:configuration.walkAnimationScene];
-        }
-        [self configureCharacter];
-    }
-    return self;
+	self = [super init];
+	if (self) {
+		self.maxLife = configuration.maxLife;
+		self.life = configuration.maxLife;
+		[self setupNodeWithScene:configuration.characterScene];
+		if (configuration.walkAnimationScene) {
+			[self setupWalkAnimationWithScene:configuration.walkAnimationScene];
+		}
+		[self configureCharacter];
+	}
+	return self;
 }
 
 #pragma mark - Setup character
@@ -57,8 +57,8 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 
 - (void)configureCharacter
 {
-    [self loadEmbeddedAnimations];
-    self.walkSpeed = 1.0f;
+	[self loadEmbeddedAnimations];
+	self.walkSpeed = 1.0f;
 }
 
 #pragma mark - Controlling the character
@@ -117,7 +117,7 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 {
 	_walkSpeed = walkSpeed;
 
-    BOOL wasWalking = self.isWalking;
+	BOOL wasWalking = self.isWalking;
 	if (wasWalking) {
 		self.walking = NO;
 	}
@@ -146,53 +146,53 @@ static CGFloat const AAPLCharacterSpeedFactor = 1.538;
 
 - (void)setLife:(CGFloat)life
 {
-    if (life > self.maxLife && life < 0) {
-        return;
-    }
-    
-    _life = life;
-    [self.delegate player:self lifeDidChange:life];
+	if (life > self.maxLife && life < 0) {
+		return;
+	}
+
+	_life = life;
+	[self.delegate player:self lifeDidChange:life];
 }
 
 - (void)takeLife:(CGFloat)points
 {
-    self.life -= points;
-    
-    if (self.life < 0) {
-        self.life = 0;
-    }
+	self.life -= points;
+
+	if (self.life < 0) {
+		self.life = 0;
+	}
 }
 
 - (void)giveLife:(CGFloat)points
 {
-    self.life += points;
-    
-    if (self.life > self.maxLife) {
-        self.life = self.maxLife;
-    }
+	self.life += points;
+
+	if (self.life > self.maxLife) {
+		self.life = self.maxLife;
+	}
 }
 
 - (void)speedMultiplier:(CGFloat)multiplier forInterval:(NSTimeInterval)interval
 {
-    CGFloat boost = (self.walkSpeed * multiplier);
-    self.walkSpeed += boost;
-    
-    __weak typeof(self) weakSelf = self;
-    
-    id wait = [SCNAction waitForDuration:interval];
-    id run = [SCNAction runBlock:^(SCNNode* node) {
-        weakSelf.walkSpeed -= boost;
-    }];
-    
-    [self.node runAction:[SCNAction sequence:@[wait, run]]];
+	CGFloat boost = (self.walkSpeed * multiplier);
+	self.walkSpeed += boost;
+
+	__weak typeof(self)weakSelf = self;
+
+	id wait = [SCNAction waitForDuration:interval];
+	id run = [SCNAction runBlock: ^(SCNNode *node) {
+	    weakSelf.walkSpeed -= boost;
+	}];
+
+	[self.node runAction:[SCNAction sequence:@[wait, run]]];
 }
 
 - (void)invulnerableForInterval:(NSTimeInterval)interval
 {
-    self.invulnerable = YES;
-    [NSTimer scheduledTimerWithTimeInterval:interval repeats:NO block:^(NSTimer* timer) {
-        self.invulnerable = NO;
-    }];
+	self.invulnerable = YES;
+	[NSTimer scheduledTimerWithTimeInterval:interval repeats:NO block: ^(NSTimer *timer) {
+	    self.invulnerable = NO;
+	}];
 }
 
 @end

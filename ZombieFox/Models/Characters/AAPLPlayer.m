@@ -22,13 +22,13 @@
 
 #pragma mark - Configuration
 
-+ (AAPLCharacterConfiguration*)playerConfiguration
++ (AAPLCharacterConfiguration *)playerConfiguration
 {
-    AAPLCharacterConfiguration* configuration = [AAPLCharacterConfiguration new];
-    configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
-    configuration.walkAnimationScene = [SCNScene sceneNamed:@"game.scnassets/walk.scn"];
-    configuration.maxLife = 80.0f;
-    return configuration;
+	AAPLCharacterConfiguration *configuration = [AAPLCharacterConfiguration new];
+	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
+	configuration.walkAnimationScene = [SCNScene sceneNamed:@"game.scnassets/walk.scn"];
+	configuration.maxLife = 80.0f;
+	return configuration;
 }
 
 - (void)setupCollisions
@@ -41,33 +41,33 @@
 	SCNNode *collisionNode = [SCNNode node];
 	collisionNode.name = @"collider";
 	collisionNode.position = SCNVector3Make(0.0, collisionCapsuleHeight * 0.50, 0.0);
-    collisionNode.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeKinematic
-                                                       shape:[SCNPhysicsShape shapeWithGeometry:
-                                                              [SCNCapsule capsuleWithCapRadius:collisionCapsuleRadius
-                                                                                        height:collisionCapsuleHeight]
-                                                                                        options:nil]];
-    collisionNode.physicsBody.categoryBitMask = AAPLBitmaskPlayer;
-    collisionNode.physicsBody.collisionBitMask = AAPLBitmaskCollectable | AAPLBitmaskEnemy;
-    collisionNode.physicsBody.contactTestBitMask = AAPLBitmaskCollectable | AAPLBitmaskEnemy;
-    
-    collisionNode.physicsBody.mass = 1.0f;
-    collisionNode.physicsBody.restitution = 0.0f;
-    
+	collisionNode.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeKinematic
+	                                                   shape:[SCNPhysicsShape shapeWithGeometry:
+	                                                          [SCNCapsule capsuleWithCapRadius:collisionCapsuleRadius
+	                                                                                    height:collisionCapsuleHeight]
+	                                                                                    options:nil]];
+	collisionNode.physicsBody.categoryBitMask = AAPLBitmaskPlayer;
+	collisionNode.physicsBody.collisionBitMask = AAPLBitmaskCollectable | AAPLBitmaskEnemy;
+	collisionNode.physicsBody.contactTestBitMask = AAPLBitmaskCollectable | AAPLBitmaskEnemy;
+
+	collisionNode.physicsBody.mass = 1.0f;
+	collisionNode.physicsBody.restitution = 0.0f;
+
 	[self.node addChildNode:collisionNode];
-    
-    [[AAPLNodeManager sharedManager] associateNode:collisionNode withModel:self];
-    [[AAPLNodeManager sharedManager] associateNode:self.node withModel:self];
+
+	[[AAPLNodeManager sharedManager] associateNode:collisionNode withModel:self];
+	[[AAPLNodeManager sharedManager] associateNode:self.node withModel:self];
 }
 
-+ (AAPLPlayer*)playerForNode:(SCNNode*)node
++ (AAPLPlayer *)playerForNode:(SCNNode *)node
 {
-    NSObject* model = [[AAPLNodeManager sharedManager] modelForAssociatedNode:node];
-    
-    if ([model isKindOfClass:[AAPLPlayer class]]) {
-        return (AAPLPlayer*)model;
-    }
-    
-    return nil;
+	NSObject *model = [[AAPLNodeManager sharedManager] modelForAssociatedNode:node];
+
+	if ([model isKindOfClass:[AAPLPlayer class]]) {
+		return (AAPLPlayer *)model;
+	}
+
+	return nil;
 }
 
 @end

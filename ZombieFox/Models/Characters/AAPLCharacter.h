@@ -16,7 +16,7 @@
 @class AAPLCharacter;
 
 @protocol AAPLCharacterDelegate
-- (void)player:(AAPLCharacter*)character lifeDidChange:(CGFloat)newLife;
+- (void)player:(AAPLCharacter *)character lifeDidChange:(CGFloat)newLife;
 @end
 
 @interface AAPLCharacter : NSObject
@@ -24,9 +24,9 @@
 @property (nonatomic, readonly) SCNNode *node;
 @property (nonatomic, readonly) CGFloat maxLife;
 @property (nonatomic, readonly) CGFloat life;
-@property (nonatomic, weak) id<AAPLCharacterDelegate> delegate;
+@property (nonatomic, weak) id <AAPLCharacterDelegate> delegate;
 
-- (instancetype)initWithConfiguration:(AAPLCharacterConfiguration*)configuration;
+- (instancetype)initWithConfiguration:(AAPLCharacterConfiguration *)configuration;
 
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene;
 - (void)rotateByAngle:(CGFloat)angle;

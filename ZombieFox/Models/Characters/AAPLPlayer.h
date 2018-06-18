@@ -9,5 +9,5 @@
 #import "AAPLCharacter.h"
 
 @interface AAPLPlayer : AAPLCharacter
-+ (AAPLPlayer*)playerForNode:(SCNNode*)node;
++ (AAPLPlayer *)playerForNode:(SCNNode *)node;
 @end
