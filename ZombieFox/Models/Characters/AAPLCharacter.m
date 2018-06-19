@@ -9,6 +9,8 @@
 @import SceneKit;
 
 #import "AAPLCharacter.h"
+
+#import "AAPLNodeManager.h"
 #import "SCNScene+LoadAnimation.h"
 
 @interface AAPLCharacter ()
@@ -34,6 +36,7 @@
 		self.life = configuration.maxLife;
 		self.pace = configuration.maxVelocity;
 		_strength = configuration.strength;
+		self.maxPenetrationDistance = 0.0f;
 		self.velocity = (vector_float3) {0.0f, 0.0f, 0.0f};
 		[self setupNodeWithScene:configuration.characterScene];
 		[self configureCharacter];
@@ -122,6 +125,19 @@
 	        [child addAnimation:animation forKey:key];
 		}
 	}];
+}
+
+#pragma mark - Public methods
+
++ (AAPLCharacter *)characterForNode:(SCNNode *)node
+{
+	NSObject *model = [[AAPLNodeManager sharedManager] modelForAssociatedNode:node];
+
+	if ([model isKindOfClass:[AAPLCharacter class]]) {
+		return (AAPLCharacter *)model;
+	}
+
+	return nil;
 }
 
 #pragma mark - Boosters

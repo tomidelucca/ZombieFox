@@ -27,8 +27,12 @@
 @property (nonatomic, readonly) CGFloat strength;
 @property (nonatomic) CGFloat pace;
 @property (nonatomic) BOOL isWalking;
+@property (nonatomic) CGFloat maxPenetrationDistance;
+@property (nonatomic) SCNVector3 replacementPosition;
+@property (nonatomic) BOOL replacementPositionIsValid;
 
 - (instancetype)initWithConfiguration:(AAPLCharacterConfiguration *)configuration;
++ (AAPLCharacter *)characterForNode:(SCNNode *)node;
 
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene;
 - (void)rotateByAngle:(CGFloat)angle;

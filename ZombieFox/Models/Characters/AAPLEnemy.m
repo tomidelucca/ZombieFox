@@ -39,6 +39,8 @@
 	[self.node addChildNode:collisionNode];
 
 	collisionNode.physicsBody.categoryBitMask = AAPLBitmaskEnemy;
+	collisionNode.physicsBody.collisionBitMask = AAPLBitmaskEnemy;
+	collisionNode.physicsBody.contactTestBitMask = AAPLBitmaskEnemy;
 
 	collisionNode.physicsBody.mass = 1.0f;
 	collisionNode.physicsBody.restitution = 0.2f;

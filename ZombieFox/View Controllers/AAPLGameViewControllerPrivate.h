@@ -20,9 +20,6 @@
 @property (strong, nonatomic) NSMutableArray <AAPLItem *> *items;
 @property (nonatomic) vector_float2 controllerDirection;
 @property (nonatomic) BOOL holdingTrigger;
-@property (nonatomic) CGFloat maxPenetrationDistance;
-@property (nonatomic) SCNVector3 replacementPosition;
-@property (nonatomic) BOOL replacementPositionIsValid;
 @end
 
 @interface AAPLGameViewController (GameControls) <AAPLKeyboardAndMouseEventsDelegate>
