@@ -15,8 +15,6 @@
 @property (strong, nonatomic) CAAnimation *walkAnimation;
 @property (nonatomic) NSTimeInterval previousUpdateTime;
 @property (strong, nonatomic) SCNNode *node;
-@property (nonatomic) CGFloat walkSpeed;
-@property (nonatomic) BOOL isWalking;
 @property (nonatomic) vector_float3 velocity;
 
 @property (nonatomic) CGFloat maxLife;
@@ -34,13 +32,10 @@
 	if (self) {
 		self.maxLife = configuration.maxLife;
 		self.life = configuration.maxLife;
-		self.walkSpeed = configuration.maxVelocity;
+		self.pace = configuration.maxVelocity;
 		_strength = configuration.strength;
 		self.velocity = (vector_float3) {0.0f, 0.0f, 0.0f};
 		[self setupNodeWithScene:configuration.characterScene];
-		if (configuration.walkAnimationScene) {
-			[self setupWalkAnimationWithScene:configuration.walkAnimationScene];
-		}
 		[self configureCharacter];
 	}
 	return self;
@@ -71,14 +66,14 @@
 - (void)walkInDirection:(vector_float3)direction time:(NSTimeInterval)time scene:(SCNScene *)scene
 {
 	NSTimeInterval deltaTime = MIN(time, 1.0 / 60.0);
-	CGFloat characterSpeed = deltaTime * self.walkSpeed;
+	CGFloat characterSpeed = deltaTime * self.pace;
 
 	if (direction.x != 0.0 || direction.z != 0.0) {
 		vector_float3 position = SCNVector3ToFloat3(self.node.position);
 		self.node.position = SCNVector3FromFloat3(position + direction * characterSpeed);
-		self.walking = YES;
+		self.isWalking = YES;
 	} else {
-		self.walking = NO;
+		self.isWalking = NO;
 	}
 }
 
@@ -91,7 +86,7 @@
 
 	CGFloat distance = vector_distance(t, p);
 
-	vector_float3 desiredVelocity = vector_normalize(t - p) * self.walkSpeed * deltaTime;
+	vector_float3 desiredVelocity = vector_normalize(t - p) * self.pace * deltaTime;
 
 	if (distance <= 1) {
 		desiredVelocity *= distance;
@@ -103,51 +98,18 @@
 
 	self.node.position = SCNVector3Make(p.x + self.velocity.x, p.y + self.velocity.y, p.z + self.velocity.z);
 
+	if (self.velocity.x != 0.0 || self.velocity.z != 0.0) {
+		self.isWalking = YES;
+	} else {
+		self.isWalking = NO;
+	}
+
 	CGFloat angle = atan2(self.velocity.x, self.velocity.z);
 
 	[self.node runAction:[SCNAction rotateToX:0.0f y:angle z:0.0f duration:0.1f]];
 }
 
 #pragma mark - Animating the character
-
-- (void)setupWalkAnimationWithScene:(SCNScene *)scene
-{
-	self.walkAnimation = [scene loadAnimation];
-	self.walkAnimation.usesSceneTimeBase = NO;
-	self.walkAnimation.fadeInDuration = 0.3;
-	self.walkAnimation.fadeOutDuration = 0.3;
-	self.walkAnimation.repeatCount = FLT_MAX;
-}
-
-- (void)setWalking:(BOOL)walking
-{
-	if (self.isWalking != walking) {
-		self.isWalking = walking;
-
-		// Update node animation.
-		if (self.isWalking) {
-			[self.node addAnimation:self.walkAnimation forKey:@"walk"];
-		} else {
-			[self.node removeAnimationForKey:@"walk" fadeOutDuration:0.2];
-		}
-	}
-}
-
-- (void)setWalkSpeed:(CGFloat)walkSpeed
-{
-	_walkSpeed = walkSpeed;
-
-	BOOL wasWalking = self.isWalking;
-	if (wasWalking) {
-		self.walking = NO;
-	}
-
-	self.walkAnimation.speed = self.walkSpeed;
-
-	if (wasWalking) {
-		self.walking = YES;
-	}
-}
 
 - (void)loadEmbeddedAnimations
 {
@@ -194,14 +156,14 @@
 
 - (void)speedMultiplier:(CGFloat)multiplier forInterval:(NSTimeInterval)interval
 {
-	CGFloat boost = (self.walkSpeed * multiplier);
-	self.walkSpeed += boost;
+	CGFloat boost = (self.pace * multiplier);
+	self.pace += boost;
 
 	__weak typeof(self)weakSelf = self;
 
 	id wait = [SCNAction waitForDuration:interval];
 	id run = [SCNAction runBlock: ^(SCNNode *node) {
-	    weakSelf.walkSpeed -= boost;
+	    weakSelf.pace -= boost;
 	}];
 
 	[self.node runAction:[SCNAction sequence:@[wait, run]]];

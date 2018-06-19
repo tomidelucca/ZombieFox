@@ -7,6 +7,7 @@
 //
 
 #import "AAPLEnemy.h"
+
 #import "AAPLNodeManager.h"
 
 @implementation AAPLEnemy
@@ -45,6 +46,8 @@
 	[[AAPLNodeManager sharedManager] associateNode:collisionNode withModel:self];
 	[[AAPLNodeManager sharedManager] associateNode:self.node withModel:self];
 }
+
+#pragma mark - Public methods
 
 - (void)hurtCharacter:(AAPLCharacter *)character
 {

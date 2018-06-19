@@ -7,7 +7,15 @@
 //
 
 #import "AAPLPlayer.h"
+
 #import "AAPLNodeManager.h"
+#import "SCNScene+LoadAnimation.h"
+
+static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
+
+@interface AAPLPlayer ()
+@property (nonatomic, strong) NSMutableDictionary <NSString *, CAAnimation *> *animations;
+@end
 
 @implementation AAPLPlayer
 
@@ -16,6 +24,7 @@
 	self = [super initWithConfiguration:[AAPLPlayer playerConfiguration]];
 	if (self) {
 		[self setupCollisions];
+		[self loadAnimations];
 	}
 	return self;
 }
@@ -26,7 +35,6 @@
 {
 	AAPLCharacterConfiguration *configuration = [AAPLCharacterConfiguration new];
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
-	configuration.walkAnimationScene = [SCNScene sceneNamed:@"game.scnassets/walk.scn"];
 	configuration.maxLife = 80.0f;
 	configuration.maxVelocity = 1.5f;
 	return configuration;
@@ -60,6 +68,20 @@
 	[[AAPLNodeManager sharedManager] associateNode:self.node withModel:self];
 }
 
+- (void)loadAnimations
+{
+	SCNScene *walkAnimationScene = [SCNScene sceneNamed:@"game.scnassets/walk.scn"];
+	CAAnimation *walkAnimation = [walkAnimationScene loadAnimation];
+	walkAnimation.usesSceneTimeBase = NO;
+	walkAnimation.fadeInDuration = 0.3;
+	walkAnimation.fadeOutDuration = 0.3;
+	walkAnimation.repeatCount = FLT_MAX;
+
+	[self.animations setObject:walkAnimation forKey:AAPLPlayerAnimationKeyWalk];
+}
+
+#pragma mark - Public methods
+
 + (AAPLPlayer *)playerForNode:(SCNNode *)node
 {
 	NSObject *model = [[AAPLNodeManager sharedManager] modelForAssociatedNode:node];
@@ -69,6 +91,49 @@
 	}
 
 	return nil;
+}
+
+#pragma mark - Setters and getters
+
+- (NSMutableDictionary *)animations
+{
+	if (_animations == nil) {
+		_animations = [NSMutableDictionary new];
+	}
+
+	return _animations;
+}
+
+- (void)setPace:(CGFloat)pace
+{
+	[super setPace:pace];
+
+	BOOL wasWalking = self.isWalking;
+
+	if (wasWalking) {
+		self.isWalking = NO;
+	}
+
+	self.animations[AAPLPlayerAnimationKeyWalk].speed = pace;
+
+	if (wasWalking) {
+		self.isWalking = YES;
+	}
+}
+
+- (void)setIsWalking:(BOOL)isWalking
+{
+	if (self.isWalking == isWalking) {
+		return;
+	}
+
+	[super setIsWalking:isWalking];
+
+	if (isWalking) {
+		[self.node addAnimation:self.animations[AAPLPlayerAnimationKeyWalk] forKey:AAPLPlayerAnimationKeyWalk];
+	} else {
+		[self.node removeAnimationForKey:AAPLPlayerAnimationKeyWalk fadeOutDuration:0.2];
+	}
 }
 
 @end

@@ -10,4 +10,5 @@
 
 @interface SCNScene (LoadAnimation)
 - (CAAnimation *)loadAnimation;
+- (void)loadAnimationsToNode:(SCNNode *)node withSpeed:(CGFloat)speed;
 @end

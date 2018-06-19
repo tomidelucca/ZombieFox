@@ -12,7 +12,6 @@
 
 - (CAAnimation *)loadAnimation
 {
-	// find top level animation
 	__block CAAnimation *animation = nil;
 	[self.rootNode enumerateChildNodesUsingBlock: ^(SCNNode *child, BOOL *stop) {
 	    if (child.animationKeys.count > 0) {
@@ -22,6 +21,19 @@
 	}];
 
 	return animation;
+}
+
+- (void)loadAnimationsToNode:(SCNNode *)node withSpeed:(CGFloat)speed
+{
+	[self.rootNode enumerateChildNodesUsingBlock: ^(SCNNode *child, BOOL *stop) {
+	    for (NSString *key in child.animationKeys) {
+	        CAAnimation *animation = [child animationForKey:key];
+	        animation.usesSceneTimeBase = NO;
+	        animation.repeatCount = FLT_MAX;
+	        animation.speed = speed;
+	        [node addAnimation:animation forKey:key];
+		}
+	}];
 }
 
 @end

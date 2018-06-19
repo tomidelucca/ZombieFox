@@ -20,13 +20,13 @@
 @end
 
 @interface AAPLCharacter : NSObject
-
+@property (nonatomic, weak) id <AAPLCharacterDelegate> delegate;
 @property (nonatomic, readonly) SCNNode *node;
 @property (nonatomic, readonly) CGFloat maxLife;
 @property (nonatomic, readonly) CGFloat life;
 @property (nonatomic, readonly) CGFloat strength;
-
-@property (nonatomic, weak) id <AAPLCharacterDelegate> delegate;
+@property (nonatomic) CGFloat pace;
+@property (nonatomic) BOOL isWalking;
 
 - (instancetype)initWithConfiguration:(AAPLCharacterConfiguration *)configuration;
 

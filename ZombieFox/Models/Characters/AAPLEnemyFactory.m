@@ -7,6 +7,7 @@
 //
 
 #import "AAPLEnemyFactory.h"
+#import "SCNScene+LoadAnimation.h"
 
 @implementation AAPLEnemyFactory
 
@@ -15,8 +16,13 @@
 	AAPLCharacterConfiguration *configuration = [AAPLEnemyFactory mummyConfigurationWithLife];
 	configuration.maxLife = life;
 	configuration.strength = strength;
+
 	AAPLEnemy *enemy = [[AAPLEnemy alloc] initWithConfiguration:configuration];
 	enemy.node.scale = SCNVector3Make(0.65f, 0.65f, 0.65f);
+
+	SCNScene *walkAnimation = [SCNScene sceneNamed:@"game.scnassets/mummy_walk.dae"];
+	[walkAnimation loadAnimationsToNode:enemy.node withSpeed:configuration.maxVelocity * 5];
+
 	return enemy;
 }
 
@@ -24,7 +30,6 @@
 {
 	AAPLCharacterConfiguration *configuration = [AAPLCharacterConfiguration new];
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/mummy.dae"];
-	configuration.walkAnimationScene = [SCNScene sceneNamed:@"game.scnassets/mummy_walk.dae"];
 	configuration.maxVelocity = 0.6f;
 	return configuration;
 }
