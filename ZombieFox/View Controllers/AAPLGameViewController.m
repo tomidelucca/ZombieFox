@@ -70,13 +70,6 @@
 	enemy.node.position = SCNVector3Make(0.0f, 0.0f, 10.0f);
 	[self.gameView.scene.rootNode addChildNode:enemy.node];
 	[self.enemies addObject:enemy];
-
-	for (int i = 0; i < 20; i++) {
-		enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:0.5f];
-		enemy.node.position = SCNVector3Make(2.0f + 2.0f * i * pow(-1, i), 0.0f, 2.0f);
-		[self.gameView.scene.rootNode addChildNode:enemy.node];
-		[self.enemies addObject:enemy];
-	}
 }
 
 - (void)setupCamera
