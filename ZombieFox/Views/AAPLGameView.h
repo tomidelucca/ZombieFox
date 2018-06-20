@@ -23,6 +23,7 @@
 @property (nonatomic) CGFloat life;
 @property (nonatomic) NSUInteger wave;
 @property (nonatomic) BOOL invulnerable;
+@property (nonatomic, strong) NSString* weapon;
 
 @property (nonatomic, weak) id <AAPLKeyboardAndMouseEventsDelegate> eventsDelegate;
 

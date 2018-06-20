@@ -51,11 +51,6 @@
 
 #pragma mark - Public methods
 
-- (void)hurtCharacter:(AAPLCharacter *)character
-{
-	[character takeLife:self.strength];
-}
-
 + (AAPLEnemy *)enemyForNode:(SCNNode *)node
 {
 	NSObject *model = [[AAPLNodeManager sharedManager] modelForAssociatedNode:node];

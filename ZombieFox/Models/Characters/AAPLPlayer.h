@@ -7,7 +7,17 @@
 //
 
 #import "AAPLCharacter.h"
+#import "AAPLWeapon.h"
+
+@class AAPLPlayer;
+
+@protocol AAPLPlayerDelegate <NSObject>
+- (void)player:(AAPLPlayer*)player selectedWeaponDidChange:(AAPLWeapon*)newWeapon;
+@end
 
 @interface AAPLPlayer : AAPLCharacter
+@property (weak, nonatomic) id<AAPLPlayerDelegate> playerDelegate;
+@property (strong, nonatomic) AAPLWeapon* weapon;
 + (AAPLPlayer *)playerForNode:(SCNNode *)node;
+- (void)shoot;
 @end

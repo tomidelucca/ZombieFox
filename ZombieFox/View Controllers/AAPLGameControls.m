@@ -79,10 +79,7 @@
 	BOOL success = NO;
 
 	if (theEvent.keyCode == 49) { // Spacebar
-		if (!theEvent.isARepeat) {
-			self.holdingTrigger = NO;
-			success = YES;
-		}
+        success = YES;
 	}
 
 	switch (theEvent.keyCode) {

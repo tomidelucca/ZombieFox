@@ -13,8 +13,9 @@
 #import "AAPLGameViewControllerPrivate.h"
 #import "AAPLItemFactory.h"
 #import "AAPLEnemyFactory.h"
+#import "AAPLWeaponFactory.h"
 
-@interface AAPLGameViewController () <AAPLCharacterDelegate>
+@interface AAPLGameViewController () <AAPLCharacterDelegate, AAPLPlayerDelegate>
 @property (strong, nonatomic) AAPLItem *item;
 @property (nonatomic) NSTimeInterval pastTime;
 @end
@@ -27,6 +28,20 @@
 {
 	[super viewDidLoad];
 	[self setupScene];
+}
+
+- (void)viewDidAppear
+{
+    [super viewDidAppear];
+    
+    AAPLWeaponConfiguration* config = [[AAPLWeaponConfiguration alloc] init];
+    config.scene = self.gameView.scene;
+    config.player = self.player;
+    config.damage = 5.0f;
+    config.weaponType = AAPLWeaponTypeShotgun;
+    
+    AAPLWeapon *weapon = [AAPLWeaponFactory weaponWithConfiguration:config];
+    self.player.weapon = weapon;
 }
 
 #pragma mark - Setup Scene
@@ -54,8 +69,9 @@
 - (void)setupGame
 {
 	self.player = [AAPLPlayer new];
-	self.player.node.position = SCNVector3Make(1.0f, 0.0f, 1.0f);
+	self.player.node.position = SCNVector3Make(0.0f, 0.0f, 1.0f);
 	self.player.delegate = self;
+    self.player.playerDelegate = self;
 	[self.gameView.scene.rootNode addChildNode:self.player.node];
 
 	self.enemies = [NSMutableArray new];
@@ -67,7 +83,8 @@
 	[self.items addObject:item];
 
 	AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:0.5f];
-	enemy.node.position = SCNVector3Make(0.0f, 0.0f, 10.0f);
+	enemy.node.position = SCNVector3Make(0.0f, 0.0f, 3.0f);
+    enemy.delegate = self;
 	[self.gameView.scene.rootNode addChildNode:enemy.node];
 	[self.enemies addObject:enemy];
 }
@@ -135,6 +152,11 @@
 	for (AAPLEnemy *enemy in self.enemies) {
 		[enemy seek:self.player withTime:time - self.pastTime];
 	}
+    
+    if (self.holdingTrigger) {
+        [self.player shoot];
+        self.holdingTrigger = NO;
+    }
 
 	self.pastTime = time;
 }
@@ -224,7 +246,17 @@
 {
 	if (character == self.player) {
 		[self.gameView setLife:newLife / character.maxLife];
-	}
+    } else {
+        if (newLife == 0) {
+            [character.node removeFromParentNode];
+            [self.enemies removeObject:(AAPLEnemy*)character];
+        }
+    }
+}
+
+- (void)player:(AAPLPlayer *)player selectedWeaponDidChange:(AAPLWeapon *)newWeapon
+{
+    [self.gameView setWeapon:newWeapon.name];
 }
 
 @end

@@ -37,6 +37,7 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
 	configuration.maxLife = 80.0f;
 	configuration.maxVelocity = 1.5f;
+    configuration.strength = 10.0f;
 	return configuration;
 }
 
@@ -93,6 +94,11 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 	return nil;
 }
 
+- (void)shoot
+{
+    [self.weapon pullTheTrigger];
+}
+
 #pragma mark - Setters and getters
 
 - (NSMutableDictionary *)animations
@@ -102,6 +108,15 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 	}
 
 	return _animations;
+}
+
+- (void)setWeapon:(AAPLWeapon *)weapon
+{
+    _weapon = weapon;
+    
+    if ([self.playerDelegate respondsToSelector:@selector(player:selectedWeaponDidChange:)]) {
+        [self.playerDelegate player:self selectedWeaponDidChange:weapon];
+    }
 }
 
 - (void)setPace:(CGFloat)pace

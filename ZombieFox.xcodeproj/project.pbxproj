@@ -27,6 +27,10 @@
 		9C8180BC1BDA675800FE8C68 /* confetti.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B41BDA675800FE8C68 /* confetti.png */; };
 		9C8180BF1BDA675800FE8C68 /* confetti.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B51BDA675800FE8C68 /* confetti.scnp */; };
 		9C8180C21BDA675800FE8C68 /* glow01.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B61BDA675800FE8C68 /* glow01.png */; };
+		E676BE7120DB129E00C1844D /* AAPLWeapon.m in Sources */ = {isa = PBXBuildFile; fileRef = E676BE7020DB129E00C1844D /* AAPLWeapon.m */; };
+		E676BE7420DB15EF00C1844D /* AAPLWeaponConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = E676BE7320DB15EF00C1844D /* AAPLWeaponConfiguration.m */; };
+		E676BE7720DB172000C1844D /* AAPLWeaponShotgun.m in Sources */ = {isa = PBXBuildFile; fileRef = E676BE7620DB172000C1844D /* AAPLWeaponShotgun.m */; };
+		E676BE7B20DB1D4300C1844D /* AAPLWeaponFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E676BE7A20DB1D4300C1844D /* AAPLWeaponFactory.m */; };
 		E677EF9420D5B798005FEC05 /* AAPLEnemy.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EF9320D5B798005FEC05 /* AAPLEnemy.m */; };
 		E677EF9A20D5BA8E005FEC05 /* AAPLPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EF9920D5BA8E005FEC05 /* AAPLPlayer.m */; };
 		E677EF9D20D6098B005FEC05 /* SCNScene+LoadAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EF9C20D6098B005FEC05 /* SCNScene+LoadAnimation.m */; };
@@ -65,6 +69,15 @@
 		9CFCF1511B68E4CE00686987 /* FlowerFull.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FlowerFull.png; sourceTree = "<group>"; };
 		9CFCF1521B68E4CE00686987 /* ItemsPearl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ItemsPearl.png; sourceTree = "<group>"; };
 		9CFCF1531B68E4CE00686987 /* MaxIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MaxIcon.png; sourceTree = "<group>"; };
+		E676BE6F20DB129E00C1844D /* AAPLWeapon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLWeapon.h; sourceTree = "<group>"; };
+		E676BE7020DB129E00C1844D /* AAPLWeapon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLWeapon.m; sourceTree = "<group>"; };
+		E676BE7220DB15EF00C1844D /* AAPLWeaponConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLWeaponConfiguration.h; sourceTree = "<group>"; };
+		E676BE7320DB15EF00C1844D /* AAPLWeaponConfiguration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLWeaponConfiguration.m; sourceTree = "<group>"; };
+		E676BE7520DB172000C1844D /* AAPLWeaponShotgun.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLWeaponShotgun.h; sourceTree = "<group>"; };
+		E676BE7620DB172000C1844D /* AAPLWeaponShotgun.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLWeaponShotgun.m; sourceTree = "<group>"; };
+		E676BE7820DB17DB00C1844D /* AAPLWeaponPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLWeaponPrivate.h; sourceTree = "<group>"; };
+		E676BE7920DB1D4300C1844D /* AAPLWeaponFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLWeaponFactory.h; sourceTree = "<group>"; };
+		E676BE7A20DB1D4300C1844D /* AAPLWeaponFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLWeaponFactory.m; sourceTree = "<group>"; };
 		E677EF9220D5B798005FEC05 /* AAPLEnemy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLEnemy.h; sourceTree = "<group>"; };
 		E677EF9320D5B798005FEC05 /* AAPLEnemy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLEnemy.m; sourceTree = "<group>"; };
 		E677EF9820D5BA8E005FEC05 /* AAPLPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLPlayer.h; sourceTree = "<group>"; };
@@ -172,6 +185,22 @@
 			path = Overlays;
 			sourceTree = "<group>";
 		};
+		E676BE6E20DB129000C1844D /* Weapons */ = {
+			isa = PBXGroup;
+			children = (
+				E676BE6F20DB129E00C1844D /* AAPLWeapon.h */,
+				E676BE7020DB129E00C1844D /* AAPLWeapon.m */,
+				E676BE7520DB172000C1844D /* AAPLWeaponShotgun.h */,
+				E676BE7620DB172000C1844D /* AAPLWeaponShotgun.m */,
+				E676BE7220DB15EF00C1844D /* AAPLWeaponConfiguration.h */,
+				E676BE7320DB15EF00C1844D /* AAPLWeaponConfiguration.m */,
+				E676BE7820DB17DB00C1844D /* AAPLWeaponPrivate.h */,
+				E676BE7920DB1D4300C1844D /* AAPLWeaponFactory.h */,
+				E676BE7A20DB1D4300C1844D /* AAPLWeaponFactory.m */,
+			);
+			path = Weapons;
+			sourceTree = "<group>";
+		};
 		E677EF9E20D61302005FEC05 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +233,7 @@
 		E677EFA120D6134F005FEC05 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E676BE6E20DB129000C1844D /* Weapons */,
 				E677EFD820D71BFD005FEC05 /* Characters */,
 				E677EFD120D70527005FEC05 /* Items */,
 				E677EFA520D6154B005FEC05 /* AAPLCollisionMasks.h */,
@@ -325,8 +355,10 @@
 			files = (
 				9C0EAE021BA9D44F004F26CB /* main.m in Sources */,
 				E677EFDB20D71C25005FEC05 /* AAPLEnemyFactory.m in Sources */,
+				E676BE7B20DB1D4300C1844D /* AAPLWeaponFactory.m in Sources */,
 				9C0EAE111BA9D4AF004F26CB /* AAPLAppDelegate.m in Sources */,
 				E677EF9D20D6098B005FEC05 /* SCNScene+LoadAnimation.m in Sources */,
+				E676BE7420DB15EF00C1844D /* AAPLWeaponConfiguration.m in Sources */,
 				E677EF9A20D5BA8E005FEC05 /* AAPLPlayer.m in Sources */,
 				9C0EAE1D1BA9D4DA004F26CB /* AAPLGameViewController.m in Sources */,
 				E677EFA820D630F9005FEC05 /* AAPLCharacterConfiguration.m in Sources */,
@@ -337,6 +369,8 @@
 				9C0EAE1E1BA9D4DA004F26CB /* AAPLCharacter.m in Sources */,
 				E677EFA420D61509005FEC05 /* AAPLItem.m in Sources */,
 				9C7D93A61BAC863900DB9637 /* AAPLGameControls.m in Sources */,
+				E676BE7720DB172000C1844D /* AAPLWeaponShotgun.m in Sources */,
+				E676BE7120DB129E00C1844D /* AAPLWeapon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

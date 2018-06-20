@@ -140,6 +140,11 @@
 	return nil;
 }
 
+- (void)hurtCharacter:(AAPLCharacter *)character
+{
+    [character takeLife:self.strength];
+}
+
 #pragma mark - Boosters
 
 - (void)setLife:(CGFloat)life

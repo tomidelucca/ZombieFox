@@ -45,4 +45,6 @@
 - (void)invulnerableForInterval:(NSTimeInterval)interval;
 
 - (void)seek:(AAPLCharacter *)character withTime:(NSTimeInterval)time;
+
+- (void)hurtCharacter:(AAPLCharacter *)character;
 @end
