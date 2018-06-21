@@ -99,6 +99,16 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 	[self.weapon pullTheTrigger];
 }
 
+- (void)letGo
+{
+    [self.weapon releaseTheTrigger];
+}
+
+- (void)hurtCharacter:(AAPLCharacter *)character
+{
+    [character takeLife:self.weapon.damage];
+}
+
 #pragma mark - AAPLWeaponHolder
 
 - (SCNVector3)positionForWeaponHolder:(AAPLWeapon *)weapon
@@ -109,6 +119,11 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 - (CGFloat)angleForWeaponHolder:(AAPLWeapon *)weapon
 {
 	return self.node.eulerAngles.y;
+}
+
+- (SCNNode*)holderNodeForWeapon:(AAPLWeapon *)weapon
+{
+    return self.node;
 }
 
 #pragma mark - Setters and getters

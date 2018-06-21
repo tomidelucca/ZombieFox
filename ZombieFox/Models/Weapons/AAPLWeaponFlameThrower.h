@@ -8,6 +8,8 @@
 
 #import "AAPLWeapon.h"
 
+static NSString *const AAPLWeaponTypeFlameThrower = @"flamethrower";
+
 @interface AAPLWeaponFlameThrower : AAPLWeapon
 
 @end

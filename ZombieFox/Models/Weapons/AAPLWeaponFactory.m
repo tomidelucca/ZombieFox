@@ -9,6 +9,7 @@
 #import "AAPLWeaponFactory.h"
 #import "AAPLWeaponShotgun.h"
 #import "AAPLWeaponGrenade.h"
+#import "AAPLWeaponFlameThrower.h"
 
 @implementation AAPLWeaponFactory
 
@@ -18,7 +19,9 @@
 		return [AAPLWeaponShotgun new];
 	} else if ([type isEqualToString:AAPLWeaponTypeGrenade]) {
 		return [AAPLWeaponGrenade new];
-	}
+    } else if ([type isEqualToString:AAPLWeaponTypeFlameThrower]) {
+        return [AAPLWeaponFlameThrower new];
+    }
 
 	return nil;
 }
@@ -33,10 +36,15 @@
 	return [AAPLWeaponGrenade new];
 }
 
++ (AAPLWeapon *)flamethrower
+{
+    return [AAPLWeaponFlameThrower new];
+}
+
 + (AAPLWeapon *)randomWeapon
 {
 	int random = arc4random_uniform(3);
-	return random == 0 ? [AAPLWeaponShotgun new] : (random == 1 ? [AAPLWeaponGrenade new] : [AAPLWeaponGrenade new]);
+	return random == 0 ? [AAPLWeaponShotgun new] : (random == 1 ? [AAPLWeaponGrenade new] : [AAPLWeaponFlameThrower new]);
 }
 
 @end

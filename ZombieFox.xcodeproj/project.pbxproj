@@ -23,10 +23,6 @@
 		9C0EAE2B1BA9D864004F26CB /* ItemsPearl.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1521B68E4CE00686987 /* ItemsPearl.png */; };
 		9C0EAE2C1BA9D864004F26CB /* MaxIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CFCF1531B68E4CE00686987 /* MaxIcon.png */; };
 		9C7D93A61BAC863900DB9637 /* AAPLGameControls.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */; };
-		9C8180B91BDA675800FE8C68 /* collect.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B31BDA675800FE8C68 /* collect.scnp */; };
-		9C8180BC1BDA675800FE8C68 /* confetti.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B41BDA675800FE8C68 /* confetti.png */; };
-		9C8180BF1BDA675800FE8C68 /* confetti.scnp in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B51BDA675800FE8C68 /* confetti.scnp */; };
-		9C8180C21BDA675800FE8C68 /* glow01.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8180B61BDA675800FE8C68 /* glow01.png */; };
 		E676BE7120DB129E00C1844D /* AAPLWeapon.m in Sources */ = {isa = PBXBuildFile; fileRef = E676BE7020DB129E00C1844D /* AAPLWeapon.m */; };
 		E676BE7720DB172000C1844D /* AAPLWeaponShotgun.m in Sources */ = {isa = PBXBuildFile; fileRef = E676BE7620DB172000C1844D /* AAPLWeaponShotgun.m */; };
 		E676BE7B20DB1D4300C1844D /* AAPLWeaponFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E676BE7A20DB1D4300C1844D /* AAPLWeaponFactory.m */; };
@@ -38,6 +34,9 @@
 		E677EFAB20D6FB88005FEC05 /* AAPLNodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFAA20D6FB88005FEC05 /* AAPLNodeManager.m */; };
 		E677EFD020D7040A005FEC05 /* AAPLItemFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFCF20D7040A005FEC05 /* AAPLItemFactory.m */; };
 		E677EFDB20D71C25005FEC05 /* AAPLEnemyFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFDA20D71C25005FEC05 /* AAPLEnemyFactory.m */; };
+		E6F3F71E20DB772300A19939 /* fire.scnp in Resources */ = {isa = PBXBuildFile; fileRef = E6F3F71C20DB772300A19939 /* fire.scnp */; };
+		E6F3F71F20DB772300A19939 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F3F71D20DB772300A19939 /* spark.png */; };
+		E6F3F72120DB800500A19939 /* flamethrower.scnp in Resources */ = {isa = PBXBuildFile; fileRef = E6F3F72020DB800500A19939 /* flamethrower.scnp */; };
 		E6FB263720DB49CC0068AEB4 /* AAPLWeaponGrenade.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB263620DB49CC0068AEB4 /* AAPLWeaponGrenade.m */; };
 		E6FB263A20DB49DC0068AEB4 /* AAPLWeaponFlameThrower.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB263920DB49DC0068AEB4 /* AAPLWeaponFlameThrower.m */; };
 		E6FB263D20DB64E90068AEB4 /* AAPLGameState.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB263C20DB64E90068AEB4 /* AAPLGameState.m */; };
@@ -60,10 +59,6 @@
 		9C0EAE121BA9D4C0004F26CB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "../Game assets/Images.xcassets"; sourceTree = "<group>"; };
 		9C7D93A31BAC863900DB9637 /* AAPLGameControls.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLGameControls.m; sourceTree = "<group>"; };
 		9C7D93A71BAC8D7E00DB9637 /* AAPLGameViewControllerPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLGameViewControllerPrivate.h; sourceTree = "<group>"; };
-		9C8180B31BDA675800FE8C68 /* collect.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = collect.scnp; sourceTree = "<group>"; };
-		9C8180B41BDA675800FE8C68 /* confetti.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = confetti.png; sourceTree = "<group>"; };
-		9C8180B51BDA675800FE8C68 /* confetti.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = confetti.scnp; sourceTree = "<group>"; };
-		9C8180B61BDA675800FE8C68 /* glow01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glow01.png; sourceTree = "<group>"; };
 		9CFCF1471B68E4CE00686987 /* game.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = game.scnassets; sourceTree = "<group>"; };
 		9CFCF14D1B68E4CE00686987 /* congratulations.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = congratulations.png; sourceTree = "<group>"; };
 		9CFCF14E1B68E4CE00686987 /* congratulations_pandaMax.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = congratulations_pandaMax.png; sourceTree = "<group>"; };
@@ -96,6 +91,9 @@
 		E677EFCF20D7040A005FEC05 /* AAPLItemFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLItemFactory.m; sourceTree = "<group>"; };
 		E677EFD920D71C25005FEC05 /* AAPLEnemyFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLEnemyFactory.h; sourceTree = "<group>"; };
 		E677EFDA20D71C25005FEC05 /* AAPLEnemyFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLEnemyFactory.m; sourceTree = "<group>"; };
+		E6F3F71C20DB772300A19939 /* fire.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = fire.scnp; sourceTree = "<group>"; };
+		E6F3F71D20DB772300A19939 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		E6F3F72020DB800500A19939 /* flamethrower.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = flamethrower.scnp; sourceTree = "<group>"; };
 		E6FB263520DB49CC0068AEB4 /* AAPLWeaponGrenade.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLWeaponGrenade.h; sourceTree = "<group>"; };
 		E6FB263620DB49CC0068AEB4 /* AAPLWeaponGrenade.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLWeaponGrenade.m; sourceTree = "<group>"; };
 		E6FB263820DB49DC0068AEB4 /* AAPLWeaponFlameThrower.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLWeaponFlameThrower.h; sourceTree = "<group>"; };
@@ -160,10 +158,9 @@
 		9C8180B21BDA675800FE8C68 /* Particle systems */ = {
 			isa = PBXGroup;
 			children = (
-				9C8180B31BDA675800FE8C68 /* collect.scnp */,
-				9C8180B41BDA675800FE8C68 /* confetti.png */,
-				9C8180B51BDA675800FE8C68 /* confetti.scnp */,
-				9C8180B61BDA675800FE8C68 /* glow01.png */,
+				E6F3F71C20DB772300A19939 /* fire.scnp */,
+				E6F3F72020DB800500A19939 /* flamethrower.scnp */,
+				E6F3F71D20DB772300A19939 /* spark.png */,
 			);
 			path = "Particle systems";
 			sourceTree = "<group>";
@@ -345,19 +342,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C0EAE271BA9D864004F26CB /* congratulations_pandaMax.png in Resources */,
-				9C8180BF1BDA675800FE8C68 /* confetti.scnp in Resources */,
+				E6F3F71F20DB772300A19939 /* spark.png in Resources */,
 				9C0EAE131BA9D4C0004F26CB /* Images.xcassets in Resources */,
 				9C0EAE2B1BA9D864004F26CB /* ItemsPearl.png in Resources */,
 				9C0EAE281BA9D864004F26CB /* dpad.png in Resources */,
 				9C0EAE2A1BA9D864004F26CB /* FlowerFull.png in Resources */,
 				9C0EAE291BA9D864004F26CB /* FlowerEmpty.png in Resources */,
 				9C0EAE0A1BA9D44F004F26CB /* Main.storyboard in Resources */,
+				E6F3F71E20DB772300A19939 /* fire.scnp in Resources */,
 				9C0EAE141BA9D4CA004F26CB /* game.scnassets in Resources */,
-				9C8180C21BDA675800FE8C68 /* glow01.png in Resources */,
-				9C8180B91BDA675800FE8C68 /* collect.scnp in Resources */,
 				9C0EAE261BA9D864004F26CB /* congratulations.png in Resources */,
 				9C0EAE2C1BA9D864004F26CB /* MaxIcon.png in Resources */,
-				9C8180BC1BDA675800FE8C68 /* confetti.png in Resources */,
+				E6F3F72120DB800500A19939 /* flamethrower.scnp in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

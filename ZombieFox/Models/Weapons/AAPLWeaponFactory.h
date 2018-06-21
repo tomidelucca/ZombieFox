@@ -14,4 +14,5 @@
 + (AAPLWeapon *)randomWeapon;
 + (AAPLWeapon *)shotgun;
 + (AAPLWeapon *)grenade;
++ (AAPLWeapon *)flamethrower;
 @end

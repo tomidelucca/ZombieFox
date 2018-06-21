@@ -20,6 +20,7 @@
 @property (strong, nonatomic) AAPLItem *item;
 @property (nonatomic) NSTimeInterval pastTime;
 @property (nonatomic) NSUInteger wave;
+@property (nonatomic) BOOL wasHoldingTrigger;
 @end
 
 @implementation AAPLGameViewController
@@ -82,7 +83,7 @@
 	self.player.playerDelegate = self;
 	[self.gameView.scene.rootNode addChildNode:self.player.node];
 
-	AAPLWeapon *weapon = [AAPLWeaponFactory shotgun];
+	AAPLWeapon *weapon = [AAPLWeaponFactory flamethrower];
 	self.player.weapon = weapon;
 
 	[AAPLGameStateManager sharedManager].enemies = [NSMutableArray new];
@@ -189,10 +190,15 @@
 		[enemy seek:self.player withTime:time - self.pastTime];
 	}
 
-	if (self.holdingTrigger) {
+	if (self.holdingTrigger == YES && self.wasHoldingTrigger == NO) {
 		[self.player shoot];
-		self.holdingTrigger = NO;
 	}
+    
+    if (self.holdingTrigger == NO && self.wasHoldingTrigger == YES) {
+        [self.player letGo];
+    }
+    
+    self.wasHoldingTrigger = self.holdingTrigger;
 
 	self.pastTime = time;
 }
@@ -240,10 +246,19 @@
 		AAPLEnemy *enemy = [AAPLEnemy enemyForNode:contact.nodeB];
 		[enemy hurtCharacter:self.player];
 	}
+    
+    if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskEnemy &&
+        contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskFire) {
+        AAPLEnemy *enemy = [AAPLEnemy enemyForNode:contact.nodeA];
+        [self.player hurtCharacter:enemy];
+    }
 
 	AAPLCharacter *character = [AAPLCharacter characterForNode:contact.nodeA];
-
-	[self character:character hitWall:contact.nodeB withContact:contact];
+    AAPLCharacter *characterB = [AAPLCharacter characterForNode:contact.nodeB];
+    
+    if (characterB) {
+        [self character:character hitWall:contact.nodeB withContact:contact];
+    }
 }
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer didSimulatePhysicsAtTime:(NSTimeInterval)time
