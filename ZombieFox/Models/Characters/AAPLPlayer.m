@@ -36,7 +36,7 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 	AAPLCharacterConfiguration *configuration = [AAPLCharacterConfiguration new];
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
 	configuration.maxLife = 100.0f;
-	configuration.maxVelocity = 1.5f;
+	configuration.maxVelocity = 1.3f;
 	configuration.strength = 10.0f;
 	return configuration;
 }

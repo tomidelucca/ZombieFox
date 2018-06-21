@@ -58,7 +58,10 @@
 		}
 
 		case 125: { // Down
-			return YES;
+			if (!theEvent.isARepeat) {
+				self.controllerDirection += (vector_float2) {0, -1};
+				return YES;
+			}
 		}
 
 		case 123: { // Left
@@ -96,7 +99,10 @@
 		}
 
 		case 125: { // Down
-			return YES;
+			if (!theEvent.isARepeat) {
+				self.controllerDirection -= (vector_float2) {0, -1};
+				return YES;
+			}
 		}
 
 		case 123: { // Left

@@ -30,20 +30,20 @@
 	if (!self.holder) {
 		return;
 	}
-    
-    [self releaseTheTrigger];
-    
-    for (SCNNode* node in [AAPLGameStateManager sharedManager].player.node.childNodes) {
-        if ([node.name isEqualToString:@"ft"]) {
-            [node removeAllParticleSystems];
-            [node removeFromParentNode];
-        }
-    }
+
+	[self releaseTheTrigger];
+
+	for (SCNNode *node in [AAPLGameStateManager sharedManager].player.node.childNodes) {
+		if ([node.name isEqualToString:@"ft"]) {
+			[node removeAllParticleSystems];
+			[node removeFromParentNode];
+		}
+	}
 
 	SCNNode *holder = [self.holder holderNodeForWeapon:self];
 
 	SCNNode *ft = [SCNNode node];
-    ft.name = @"ft";
+	ft.name = @"ft";
 	ft.position = SCNVector3Make(0.0f, 0.1f, 1.2f);
 	ft.eulerAngles = SCNVector3Make(-M_PI_2, 0.0f, 0.0f);
 
