@@ -9,5 +9,5 @@
 #import "AAPLEnemy.h"
 
 @interface AAPLEnemyFactory : NSObject
-+ (AAPLEnemy *)mummyWithLife:(CGFloat)life andStrength:(CGFloat)strength;
++ (AAPLEnemy *)mummyWithLife:(CGFloat)life andStrength:(CGFloat)strength andSpeed:(CGFloat)speed;
 @end

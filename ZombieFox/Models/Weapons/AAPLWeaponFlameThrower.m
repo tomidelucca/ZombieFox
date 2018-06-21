@@ -42,7 +42,7 @@
 
 	SCNNode *fireNode = [SCNNode node];
 	fireNode.name = @"fireNode";
-	fireNode.position = SCNVector3Make(0.0f, 1.2f, 0.0f);
+	fireNode.position = SCNVector3Make(0.0f, 1.0f, 0.0f);
 
 	SCNParticleSystem *fire = [SCNParticleSystem particleSystemNamed:@"flamethrower.scnp" inDirectory:nil];
 

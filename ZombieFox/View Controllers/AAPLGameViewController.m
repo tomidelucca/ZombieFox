@@ -83,7 +83,7 @@
 	self.player.playerDelegate = self;
 	[self.gameView.scene.rootNode addChildNode:self.player.node];
 
-	AAPLWeapon *weapon = [AAPLWeaponFactory randomWeapon];
+	AAPLWeapon *weapon = [AAPLWeaponFactory flamethrower];
 	self.player.weapon = weapon;
 
 	[AAPLGameStateManager sharedManager].enemies = [NSMutableArray new];
@@ -143,13 +143,14 @@
 {
 	NSUInteger numberOfEnemies = self.wave * 3;
 	CGFloat enemyLife = 25.0f + (self.wave - 1) * 5;
+	CGFloat speed = 1.2f + ((float)(self.wave - 1)) * 0.01;
 	SCNVector3 playerPosition = self.player.node.position;
 
 	for (int i = 0; i < numberOfEnemies; i++) {
 		CGFloat xPosition = ((((float)rand() / RAND_MAX) * 5.0f) + 3.0f) * pow(-1, arc4random_uniform(2));
 		CGFloat zPosition = ((((float)rand() / RAND_MAX) * 5.0f) + 3.0f) * pow(-1, arc4random_uniform(2));
 		SCNVector3 enemyPosition = SCNVector3Make(playerPosition.x + xPosition, 0.0f, playerPosition.z + zPosition);
-		AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:enemyLife andStrength:0.5f];
+		AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:enemyLife andStrength:0.5f andSpeed:speed];
 		enemy.node.position = enemyPosition;
 		enemy.delegate = self;
 		[self.gameView.scene.rootNode addChildNode:enemy.node];
@@ -190,9 +191,9 @@
 
 	[self.player rotateByAngle:[self characterAngleVelocity]];
 
-	for (AAPLEnemy *enemy in self.enemies) {
-		[enemy seek:self.player withTime:time - self.pastTime];
-	}
+	/*for (AAPLEnemy *enemy in self.enemies) {
+	    [enemy seek:self.player withTime:time - self.pastTime];
+	   }*/
 
 	if (self.holdingTrigger == YES && self.wasHoldingTrigger == NO) {
 		[self.player shoot];

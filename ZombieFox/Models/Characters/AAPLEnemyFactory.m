@@ -11,11 +11,12 @@
 
 @implementation AAPLEnemyFactory
 
-+ (AAPLEnemy *)mummyWithLife:(CGFloat)life andStrength:(CGFloat)strength
++ (AAPLEnemy *)mummyWithLife:(CGFloat)life andStrength:(CGFloat)strength andSpeed:(CGFloat)speed
 {
 	AAPLCharacterConfiguration *configuration = [AAPLEnemyFactory mummyConfigurationWithLife];
 	configuration.maxLife = life;
 	configuration.strength = strength;
+	configuration.maxVelocity = speed;
 
 	AAPLEnemy *enemy = [[AAPLEnemy alloc] initWithConfiguration:configuration];
 	enemy.node.scale = SCNVector3Make(0.65f, 0.65f, 0.65f);
@@ -30,7 +31,6 @@
 {
 	AAPLCharacterConfiguration *configuration = [AAPLCharacterConfiguration new];
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/mummy.dae"];
-	configuration.maxVelocity = 1.2f;
 	return configuration;
 }
 

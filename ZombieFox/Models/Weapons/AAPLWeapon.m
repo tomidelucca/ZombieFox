@@ -28,4 +28,9 @@
 {
 }
 
+- (void)dealloc
+{
+	[self releaseTheTrigger];
+}
+
 @end

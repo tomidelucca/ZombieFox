@@ -13,6 +13,8 @@
 #import "AAPLNodeManager.h"
 #import "SCNScene+LoadAnimation.h"
 
+static CGFloat const AAPLAbsoluteMaxVelocity = 2.0f;
+
 @interface AAPLCharacter ()
 @property (strong, nonatomic) CAAnimation *walkAnimation;
 @property (nonatomic) NSTimeInterval previousUpdateTime;
@@ -97,7 +99,7 @@
 
 	vector_float3 steering = desiredVelocity - self.velocity;
 
-	self.velocity = self.velocity + steering;
+	self.velocity = [self truncate:(self.velocity + steering) maxValue:AAPLAbsoluteMaxVelocity];
 
 	self.node.position = SCNVector3Make(p.x + self.velocity.x, p.y + self.velocity.y, p.z + self.velocity.z);
 
@@ -110,6 +112,20 @@
 	CGFloat angle = atan2(self.velocity.x, self.velocity.z);
 
 	[self.node runAction:[SCNAction rotateToX:0.0f y:angle z:0.0f duration:0.1f]];
+}
+
+- (vector_float3)truncate:(vector_float3)vector maxValue:(CGFloat)maxValue
+{
+	CGFloat x = fabs(vector.x) > maxValue ? maxValue : fabs(vector.x);
+	x *= vector.x > 0 ? 1 : -1;
+
+	CGFloat y = fabs(vector.y) > maxValue ? maxValue : fabs(vector.y);
+	y *= vector.y > 0 ? 1 : -1;
+
+	CGFloat z = fabs(vector.z) > maxValue ? maxValue : fabs(vector.z);
+	z *= vector.z > 0 ? 1 : -1;
+
+	return vector;
 }
 
 #pragma mark - Animating the character
