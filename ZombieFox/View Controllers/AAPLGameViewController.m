@@ -32,16 +32,15 @@
 
 - (void)viewDidAppear
 {
-    [super viewDidAppear];
-    
-    AAPLWeaponConfiguration* config = [[AAPLWeaponConfiguration alloc] init];
-    config.scene = self.gameView.scene;
-    config.player = self.player;
-    config.damage = 5.0f;
-    config.weaponType = AAPLWeaponTypeShotgun;
-    
-    AAPLWeapon *weapon = [AAPLWeaponFactory weaponWithConfiguration:config];
-    self.player.weapon = weapon;
+	[super viewDidAppear];
+
+	AAPLWeaponConfiguration *config = [[AAPLWeaponConfiguration alloc] init];
+	config.scene = self.gameView.scene;
+	config.damage = 5.0f;
+	config.type = AAPLWeaponTypeShotgun;
+
+	AAPLWeapon *weapon = [AAPLWeaponFactory weaponWithConfiguration:config];
+	self.player.weapon = weapon;
 }
 
 #pragma mark - Setup Scene
@@ -71,7 +70,7 @@
 	self.player = [AAPLPlayer new];
 	self.player.node.position = SCNVector3Make(0.0f, 0.0f, 1.0f);
 	self.player.delegate = self;
-    self.player.playerDelegate = self;
+	self.player.playerDelegate = self;
 	[self.gameView.scene.rootNode addChildNode:self.player.node];
 
 	self.enemies = [NSMutableArray new];
@@ -84,7 +83,7 @@
 
 	AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:0.5f];
 	enemy.node.position = SCNVector3Make(0.0f, 0.0f, 3.0f);
-    enemy.delegate = self;
+	enemy.delegate = self;
 	[self.gameView.scene.rootNode addChildNode:enemy.node];
 	[self.enemies addObject:enemy];
 }
@@ -152,11 +151,11 @@
 	for (AAPLEnemy *enemy in self.enemies) {
 		[enemy seek:self.player withTime:time - self.pastTime];
 	}
-    
-    if (self.holdingTrigger) {
-        [self.player shoot];
-        self.holdingTrigger = NO;
-    }
+
+	if (self.holdingTrigger) {
+		[self.player shoot];
+		self.holdingTrigger = NO;
+	}
 
 	self.pastTime = time;
 }
@@ -246,17 +245,17 @@
 {
 	if (character == self.player) {
 		[self.gameView setLife:newLife / character.maxLife];
-    } else {
-        if (newLife == 0) {
-            [character.node removeFromParentNode];
-            [self.enemies removeObject:(AAPLEnemy*)character];
-        }
-    }
+	} else {
+		if (newLife == 0) {
+			[character.node removeFromParentNode];
+			[self.enemies removeObject:(AAPLEnemy *)character];
+		}
+	}
 }
 
 - (void)player:(AAPLPlayer *)player selectedWeaponDidChange:(AAPLWeapon *)newWeapon
 {
-    [self.gameView setWeapon:newWeapon.name];
+	[self.gameView setWeapon:newWeapon.name];
 }
 
 @end

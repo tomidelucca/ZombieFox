@@ -13,4 +13,5 @@
 + (AAPLItem *)speedItemWithSpeed:(CGFloat)speed forInterval:(NSTimeInterval)interval;
 + (AAPLItem *)shieldForInterval:(CGFloat)interval;
 + (AAPLItem *)damageForCharacter:(CGFloat)damage;
++ (AAPLItem *)weaponItemWithConfiguration:(AAPLWeaponConfiguration *)configuration;
 @end

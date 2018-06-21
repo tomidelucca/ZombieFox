@@ -63,14 +63,14 @@
 	self.waveLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
 	self.waveLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeRight;
 	[self.overlayNode addChild:self.waveLabel];
-    
-    self.weaponLabel = [[SKLabelNode alloc] initWithFontNamed:@"Impact"];
-    self.weaponLabel.text = @"Shotgun";
-    self.weaponLabel.fontSize = 26.0f;
-    self.weaponLabel.position = CGPointMake(10.0f, 20.0f);
-    self.weaponLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-    self.weaponLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
-    [self.overlayNode addChild:self.weaponLabel];
+
+	self.weaponLabel = [[SKLabelNode alloc] initWithFontNamed:@"Impact"];
+	self.weaponLabel.text = @"Shotgun";
+	self.weaponLabel.fontSize = 26.0f;
+	self.weaponLabel.position = CGPointMake(10.0f, 20.0f);
+	self.weaponLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+	self.weaponLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
+	[self.overlayNode addChild:self.weaponLabel];
 
 	self.overlaySKScene = skScene;
 	skScene.userInteractionEnabled = NO;
@@ -108,8 +108,8 @@
 
 - (void)setWeapon:(NSString *)weapon
 {
-    _weapon = weapon;
-    self.weaponLabel.text = weapon;
+	_weapon = weapon;
+	self.weaponLabel.text = weapon;
 }
 
 #pragma mark - Mouse and Keyboard Events

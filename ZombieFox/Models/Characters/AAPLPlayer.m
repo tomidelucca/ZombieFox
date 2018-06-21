@@ -13,7 +13,7 @@
 
 static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 
-@interface AAPLPlayer ()
+@interface AAPLPlayer () <AAPLWeaponHolder>
 @property (nonatomic, strong) NSMutableDictionary <NSString *, CAAnimation *> *animations;
 @end
 
@@ -37,7 +37,7 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
 	configuration.maxLife = 80.0f;
 	configuration.maxVelocity = 1.5f;
-    configuration.strength = 10.0f;
+	configuration.strength = 10.0f;
 	return configuration;
 }
 
@@ -96,7 +96,19 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 
 - (void)shoot
 {
-    [self.weapon pullTheTrigger];
+	[self.weapon pullTheTrigger];
+}
+
+#pragma mark - AAPLWeaponHolder
+
+- (SCNVector3)positionForWeaponHolder:(AAPLWeapon *)weapon
+{
+	return self.node.position;
+}
+
+- (CGFloat)angleForWeaponHolder:(AAPLWeapon *)weapon
+{
+	return self.node.eulerAngles.y;
 }
 
 #pragma mark - Setters and getters
@@ -112,11 +124,13 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 
 - (void)setWeapon:(AAPLWeapon *)weapon
 {
-    _weapon = weapon;
-    
-    if ([self.playerDelegate respondsToSelector:@selector(player:selectedWeaponDidChange:)]) {
-        [self.playerDelegate player:self selectedWeaponDidChange:weapon];
-    }
+	_weapon = weapon;
+
+	_weapon.holder = self;
+
+	if ([self.playerDelegate respondsToSelector:@selector(player:selectedWeaponDidChange:)]) {
+		[self.playerDelegate player:self selectedWeaponDidChange:weapon];
+	}
 }
 
 - (void)setPace:(CGFloat)pace

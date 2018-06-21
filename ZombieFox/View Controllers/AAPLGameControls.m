@@ -79,7 +79,7 @@
 	BOOL success = NO;
 
 	if (theEvent.keyCode == 49) { // Spacebar
-        success = YES;
+		success = YES;
 	}
 
 	switch (theEvent.keyCode) {

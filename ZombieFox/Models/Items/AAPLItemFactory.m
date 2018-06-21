@@ -7,6 +7,7 @@
 //
 
 #import "AAPLItemFactory.h"
+#import "AAPLWeaponFactory.h"
 
 @implementation AAPLItemFactory
 
@@ -47,6 +48,18 @@
 {
 	AAPLItem *item = [[AAPLItem alloc] initWithAction: ^(AAPLPlayer *player) {
 	    [player takeLife:damage];
+	}];
+
+	[item setItemColor:[NSColor orangeColor]];
+
+	return item;
+}
+
++ (AAPLItem *)weaponItemWithConfiguration:(AAPLWeaponConfiguration *)configuration
+{
+	AAPLItem *item = [[AAPLItem alloc] initWithAction: ^(AAPLPlayer *player) {
+	    AAPLWeapon *weapon = [AAPLWeaponFactory weaponWithConfiguration:configuration];
+	    player.weapon = weapon;
 	}];
 
 	[item setItemColor:[NSColor purpleColor]];

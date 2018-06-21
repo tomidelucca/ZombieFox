@@ -142,7 +142,7 @@
 
 - (void)hurtCharacter:(AAPLCharacter *)character
 {
-    [character takeLife:self.strength];
+	[character takeLife:self.strength];
 }
 
 #pragma mark - Boosters
