@@ -16,7 +16,8 @@
 @property (strong, nonatomic) SKLabelNode *lifeLabel;
 @property (strong, nonatomic) SKSpriteNode *lifeBar;
 @property (strong, nonatomic) SKLabelNode *weaponLabel;
-@property (strong, nonatomic) SKSpriteNode *dimScreen;
+@property (strong, nonatomic) SKSpriteNode *gameOverOverlay;
+@property (strong, nonatomic) SKLabelNode *gameOverMessage;
 @end
 
 @implementation AAPLGameView
@@ -73,6 +74,19 @@
 	self.weaponLabel.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
 	self.weaponLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeLeft;
 	[self.overlayNode addChild:self.weaponLabel];
+    
+    self.gameOverOverlay = [SKSpriteNode spriteNodeWithColor:[[SKColor blackColor] colorWithAlphaComponent:0.4f] size:CGSizeMake(w, h)];
+    self.gameOverOverlay.position = CGPointMake(0.0f, 0.0f);
+    self.gameOverOverlay.anchorPoint = CGPointMake(0.0f, 0.0f);
+    
+    self.gameOverMessage = [[SKLabelNode alloc] initWithFontNamed:@"Impact"];
+    self.gameOverMessage.text = [NSString stringWithFormat:@"You've reached wave %ld, but died. Click to restart the game.", self.wave];
+    self.gameOverMessage.fontSize = 26.0f;
+    self.gameOverMessage.position = CGPointMake(w / 2, h / 2);
+    self.gameOverMessage.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+    self.gameOverMessage.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
+    
+    [self.gameOverOverlay addChild:self.gameOverMessage];
 
 	self.overlaySKScene = skScene;
 	skScene.userInteractionEnabled = NO;
@@ -82,24 +96,28 @@
 {
 	_invulnerable = invulnerable;
 
-	if (invulnerable) {
-		self.lifeBar.color = [NSColor cyanColor];
-	} else {
-		self.life = self.life;
-	}
+    [self paintLifeBar];
 }
 
 - (void)setLife:(CGFloat)life
 {
 	_life = life;
+    
 	self.lifeLabel.text = [NSString stringWithFormat:@"%.0f", life * 100.0f];
 	self.lifeBar.xScale = life;
 
-	if (life <= 0.2f) {
-		self.lifeBar.color = [NSColor redColor];
-	} else {
-		self.lifeBar.color = [NSColor greenColor];
-	}
+    [self paintLifeBar];
+}
+
+- (void)paintLifeBar
+{
+    if (_invulnerable) {
+        self.lifeBar.color = [NSColor cyanColor];
+    } else if (_life <= 0.2f) {
+        self.lifeBar.color = [NSColor redColor];
+    } else {
+        self.lifeBar.color = [NSColor greenColor];
+    }
 }
 
 - (void)setWave:(NSUInteger)wave
@@ -116,26 +134,16 @@
 
 - (void)setGameOverScreenVisible:(BOOL)visible
 {
-	dispatch_async(dispatch_get_main_queue(), ^(void) {
-		if (visible) {
-		    CGFloat w = self.bounds.size.width;
-		    CGFloat h = self.bounds.size.height;
-		    self.dimScreen = [SKSpriteNode spriteNodeWithColor:[[SKColor blackColor] colorWithAlphaComponent:0.4f] size:CGSizeMake(w, h)];
-		    self.dimScreen.position = CGPointMake(0.0f, 0.0f);
-		    self.dimScreen.anchorPoint = CGPointMake(0.0f, 0.0f);
-		    SKLabelNode *deadMessage = [[SKLabelNode alloc] initWithFontNamed:@"Impact"];
-		    deadMessage.text = [NSString stringWithFormat:@"You've reached wave %ld, but died. Click to restart the game.", self.wave];
-		    deadMessage.fontSize = 26.0f;
-		    deadMessage.position = CGPointMake(w / 2, h / 2);
-		    deadMessage.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
-		    deadMessage.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
-		    [self.dimScreen addChild:deadMessage];
-		    [self.overlayNode addChild:self.dimScreen];
-		} else {
-		    [self.dimScreen removeFromParent];
-		    self.dimScreen = nil;
-		}
-	});
+     __weak typeof(self)weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+         __strong typeof(self)strongSelf = weakSelf;
+        if (visible) {
+            strongSelf.gameOverMessage.text = [NSString stringWithFormat:@"You've reached wave %ld, but died. Click to restart the game.", strongSelf.wave];
+            [strongSelf.overlayNode addChild:self.gameOverOverlay];
+        } else {
+            [strongSelf.gameOverOverlay removeFromParent];
+        }
+    });
 }
 
 #pragma mark - Mouse and Keyboard Events

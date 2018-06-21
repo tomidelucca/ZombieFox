@@ -83,7 +83,7 @@
 	self.player.playerDelegate = self;
 	[self.gameView.scene.rootNode addChildNode:self.player.node];
 
-	AAPLWeapon *weapon = [AAPLWeaponFactory randomWeapon];
+	AAPLWeapon *weapon = [AAPLWeaponFactory flamethrower];
 	self.player.weapon = weapon;
 
 	[AAPLGameStateManager sharedManager].enemies = [NSMutableArray new];
@@ -299,16 +299,21 @@
 
 - (void)character:(AAPLCharacter *)character lifeDidChange:(CGFloat)newLife
 {
-	if (character == self.player) {
-		[self.gameView setLife:newLife / character.maxLife];
-		if (newLife == 0) {
-			[self cleanGame];
-		}
-	} else {
-		if (newLife == 0) {
-			[self enemyWasKilled:(AAPLEnemy *)character];
-		}
-	}
+    @synchronized(self) {
+        if (!self.playing) {
+            return;
+        }
+        if (character == self.player) {
+            [self.gameView setLife:newLife / character.maxLife];
+            if (newLife == 0) {
+                [self cleanGame];
+            }
+        } else {
+            if (newLife == 0) {
+                [self enemyWasKilled:(AAPLEnemy *)character];
+            }
+        }
+    }
 }
 
 - (void)character:(AAPLCharacter *)character invulnerabilityDidChange:(BOOL)invulnerable
@@ -327,16 +332,20 @@
 
 - (void)enemyWasKilled:(AAPLEnemy *)enemy
 {
-	[enemy.node removeFromParentNode];
-	[self.enemies removeObject:enemy];
-
-	if (self.enemies.count % 2 == 0) {
-		[self dropRandomItemAtPositon:enemy.node.position];
-	}
-
-	if (self.enemies.count == 0) {
-		[self prepareNextWave];
-	}
+    if (self.enemies.count == 0) {
+        return;
+    }
+    
+    [enemy.node removeFromParentNode];
+    [self.enemies removeObject:enemy];
+    
+    if (self.enemies.count % 2 == 0) {
+        [self dropRandomItemAtPositon:enemy.node.position];
+    }
+    
+    if (self.enemies.count == 0) {
+        [self prepareNextWave];
+    }
 }
 
 - (void)prepareNextWave
