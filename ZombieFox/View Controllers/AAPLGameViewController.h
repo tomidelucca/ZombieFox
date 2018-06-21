@@ -12,7 +12,5 @@
 #import "AAPLCollisionMasks.h"
 
 @interface AAPLGameViewController : NSViewController <SCNSceneRendererDelegate, SCNPhysicsContactDelegate>
-
 @property (nonatomic, readonly) AAPLGameView *gameView;
-
 @end

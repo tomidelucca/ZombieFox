@@ -20,6 +20,9 @@
 @property (strong, nonatomic) NSMutableArray <AAPLItem *> *items;
 @property (nonatomic) vector_float2 controllerDirection;
 @property (nonatomic) BOOL holdingTrigger;
+@property (nonatomic) BOOL playing;
+
+- (void)setupGame;
 @end
 
 @interface AAPLGameViewController (GameControls) <AAPLKeyboardAndMouseEventsDelegate>

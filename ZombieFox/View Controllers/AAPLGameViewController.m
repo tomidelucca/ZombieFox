@@ -37,64 +37,63 @@
 
 	self.wave = 1;
 
-	AAPLWeaponConfiguration *config = [[AAPLWeaponConfiguration alloc] init];
-	config.scene = self.gameView.scene;
-	config.damage = 5.0f;
-	config.type = AAPLWeaponTypeShotgun;
-
-	AAPLWeapon *weapon = [AAPLWeaponFactory weaponWithConfiguration:config];
-	self.player.weapon = weapon;
+	[self setupGame];
 }
 
 #pragma mark - Setup Scene
 
-- (void)setupScene
+- (void)setupGame
 {
-	self.gameView.scene = [SCNScene sceneNamed:@"game.scnassets/level.scn"];
-	self.gameView.playing = YES;
-	self.gameView.loops = YES;
-
-	[self setupGame];
+	[self resetGame];
 	[self setupCamera];
 	[self setupGround];
 	[self setupGameControllers];
 	[self setupDelegates];
 }
 
+- (void)setupScene
+{
+	self.gameView.scene = [SCNScene sceneNamed:@"game.scnassets/level.scn"];
+	self.gameView.playing = YES;
+	self.gameView.loops = YES;
+}
+
 - (void)setupDelegates
 {
 	self.gameView.scene.physicsWorld.contactDelegate = self;
 	self.gameView.delegate = self;
-	self.gameView.showsStatistics = YES;
 }
 
-- (void)setupGame
+- (void)resetGame
 {
+	[self.gameView.scene.rootNode enumerateChildNodesUsingBlock: ^(SCNNode *node, BOOL *stop) {
+	    [node removeFromParentNode];
+	}];
+
+	self.playing = YES;
+
+	self.wave = 1;
+	self.pastTime = 0.0f;
+
 	self.player = [AAPLPlayer new];
-	self.player.node.position = SCNVector3Make(0.0f, 0.0f, 1.0f);
+	self.player.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
 	self.player.delegate = self;
 	self.player.playerDelegate = self;
 	[self.gameView.scene.rootNode addChildNode:self.player.node];
 
+	AAPLWeaponConfiguration *config = [[AAPLWeaponConfiguration alloc] init];
+	config.scene = self.gameView.scene;
+	config.type = AAPLWeaponTypeShotgun;
+
+	AAPLWeapon *weapon = [AAPLWeaponFactory weaponWithConfiguration:config];
+	self.player.weapon = weapon;
+
 	self.enemies = [NSMutableArray new];
 	self.items = [NSMutableArray new];
 
-	AAPLItem *item = [AAPLItemFactory speedItemWithSpeed:2.0f forInterval:5.0f];
-	item.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
-	[self.gameView.scene.rootNode addChildNode:item.node];
-	[self.items addObject:item];
+	[self resetOverlay];
 
-	AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:0.5f];
-	enemy.node.position = SCNVector3Make(0.0f, 0.0f, 3.0f);
-	enemy.delegate = self;
-	[self.gameView.scene.rootNode addChildNode:enemy.node];
-	[self.enemies addObject:enemy];
-
-	enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:0.5f];
-	enemy.node.position = SCNVector3Make(0.0f, 0.0f, -3.0f);
-	enemy.delegate = self;
-	[self.gameView.scene.rootNode addChildNode:enemy.node];
-	[self.enemies addObject:enemy];
+	[self createEnemyWave];
 }
 
 - (void)setupCamera
@@ -126,6 +125,24 @@
 
 	self.ground = [SCNNode nodeWithGeometry:floor];
 	[self.gameView.scene.rootNode addChildNode:self.ground];
+}
+
+- (void)createEnemyWave
+{
+	NSUInteger numberOfEnemies = self.wave * 3;
+	CGFloat enemyLife = 25.0f + (self.wave - 1) * 5;
+	SCNVector3 playerPosition = self.player.node.position;
+
+	for (int i = 0; i < numberOfEnemies; i++) {
+		CGFloat xPosition = ((((float)rand() / RAND_MAX) * 5.0f) + 3.0f) * pow(-1, arc4random_uniform(2));
+		CGFloat zPosition = ((((float)rand() / RAND_MAX) * 5.0f) + 3.0f) * pow(-1, arc4random_uniform(2));
+		SCNVector3 enemyPosition = SCNVector3Make(playerPosition.x + xPosition, 0.0f, playerPosition.z + zPosition);
+		AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:enemyLife andStrength:0.5f];
+		enemy.node.position = enemyPosition;
+		enemy.delegate = self;
+		[self.gameView.scene.rootNode addChildNode:enemy.node];
+		[self.enemies addObject:enemy];
+	}
 }
 
 #pragma mark - SCNSceneRendererDelegate Conformance (Game Loop)
@@ -254,14 +271,12 @@
 {
 	if (character == self.player) {
 		[self.gameView setLife:newLife / character.maxLife];
+		if (newLife == 0) {
+			[self cleanGame];
+		}
 	} else {
 		if (newLife == 0) {
-			[character.node removeFromParentNode];
-			[self.enemies removeObject:(AAPLEnemy *)character];
-			AAPLItem *item = [AAPLItemFactory randomItemForScene:self.gameView.scene];
-			item.node.position = character.node.position;
-			[self.items addObject:item];
-			[self.gameView.scene.rootNode addChildNode:item.node];
+			[self enemyWasKilled:(AAPLEnemy *)character];
 		}
 	}
 }
@@ -276,6 +291,64 @@
 - (void)player:(AAPLPlayer *)player selectedWeaponDidChange:(AAPLWeapon *)newWeapon
 {
 	[self.gameView setWeapon:newWeapon.name];
+}
+
+#pragma mark - Private
+
+- (void)enemyWasKilled:(AAPLEnemy *)enemy
+{
+	[enemy.node removeFromParentNode];
+	[self.enemies removeObject:enemy];
+
+	if (self.enemies.count % 2 == 0) {
+		[self dropRandomItemAtPositon:enemy.node.position];
+	}
+
+	if (self.enemies.count == 0) {
+		[self prepareNextWave];
+	}
+}
+
+- (void)prepareNextWave
+{
+	self.wave++;
+
+	__weak typeof(self)weakSelf = self;
+	id wait = [SCNAction waitForDuration:2.0f];
+	id run = [SCNAction runBlock: ^(SCNNode *node) {
+	    [weakSelf createEnemyWave];
+	}];
+
+	[self.gameView.scene.rootNode runAction:[SCNAction sequence:@[wait, run]]];
+}
+
+- (void)dropRandomItemAtPositon:(SCNVector3)position
+{
+	AAPLItem *item = [AAPLItemFactory randomItemForScene:self.gameView.scene];
+	item.node.position = position;
+	[self.items addObject:item];
+	[self.gameView.scene.rootNode addChildNode:item.node];
+}
+
+- (void)resetOverlay
+{
+	[self.gameView setGameOverScreenVisible:NO];
+	[self.gameView setLife:1.0f];
+	[self.gameView setWave:self.wave];
+	[self.gameView setInvulnerable:NO];
+	[self.gameView setWeapon:self.player.weapon.name];
+}
+
+- (void)cleanGame
+{
+	self.playing = NO;
+
+	[self.gameView.scene.rootNode enumerateChildNodesUsingBlock: ^(SCNNode *node, BOOL *stop) {
+	    [node removeFromParentNode];
+	}];
+
+	[self setupGround];
+	[self.gameView setGameOverScreenVisible:YES];
 }
 
 #pragma mark - Setters and getters

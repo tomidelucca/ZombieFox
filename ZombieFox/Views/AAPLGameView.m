@@ -16,6 +16,7 @@
 @property (strong, nonatomic) SKLabelNode *lifeLabel;
 @property (strong, nonatomic) SKSpriteNode *lifeBar;
 @property (strong, nonatomic) SKLabelNode *weaponLabel;
+@property (strong, nonatomic) SKSpriteNode *dimScreen;
 @end
 
 @implementation AAPLGameView
@@ -25,11 +26,10 @@
 - (void)viewDidMoveToWindow
 {
 	[super viewDidMoveToWindow];
-	[self setup2DOverlay];
-	// self.debugOptions = SCNDebugOptionShowPhysicsShapes | SCNDebugOptionShowPhysicsFields;
+	[self setupOverlay];
 }
 
-- (void)setup2DOverlay
+- (void)setupOverlay
 {
 	CGFloat w = self.bounds.size.width;
 	CGFloat h = self.bounds.size.height;
@@ -110,6 +110,30 @@
 {
 	_weapon = weapon;
 	self.weaponLabel.text = weapon;
+}
+
+- (void)setGameOverScreenVisible:(BOOL)visible
+{
+	dispatch_async(dispatch_get_main_queue(), ^(void) {
+		if (visible) {
+		    CGFloat w = self.bounds.size.width;
+		    CGFloat h = self.bounds.size.height;
+		    self.dimScreen = [SKSpriteNode spriteNodeWithColor:[[SKColor blackColor] colorWithAlphaComponent:0.4f] size:CGSizeMake(w, h)];
+		    self.dimScreen.position = CGPointMake(0.0f, 0.0f);
+		    self.dimScreen.anchorPoint = CGPointMake(0.0f, 0.0f);
+		    SKLabelNode *deadMessage = [[SKLabelNode alloc] initWithFontNamed:@"Impact"];
+		    deadMessage.text = [NSString stringWithFormat:@"You've reached wave %ld, but died. Click to restart the game.", self.wave];
+		    deadMessage.fontSize = 26.0f;
+		    deadMessage.position = CGPointMake(w / 2, h / 2);
+		    deadMessage.verticalAlignmentMode = SKLabelVerticalAlignmentModeCenter;
+		    deadMessage.horizontalAlignmentMode = SKLabelHorizontalAlignmentModeCenter;
+		    [self.dimScreen addChild:deadMessage];
+		    [self.overlayNode addChild:self.dimScreen];
+		} else {
+		    [self.dimScreen removeFromParent];
+		    self.dimScreen = nil;
+		}
+	});
 }
 
 #pragma mark - Mouse and Keyboard Events

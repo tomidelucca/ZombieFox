@@ -70,7 +70,6 @@
 + (AAPLItem *)randomItemForScene:(SCNScene *)scene
 {
 	int random = arc4random_uniform(4);
-	random = 0;
 	AAPLItem *item = nil;
 
 	if (random == 0) {

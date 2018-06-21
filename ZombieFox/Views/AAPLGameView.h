@@ -27,4 +27,6 @@
 
 @property (nonatomic, weak) id <AAPLKeyboardAndMouseEventsDelegate> eventsDelegate;
 
+- (void)setGameOverScreenVisible:(BOOL)visible;
+
 @end

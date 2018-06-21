@@ -31,6 +31,10 @@
 
 - (BOOL)mouseUp:(NSView *)view event:(NSEvent *)theEvent
 {
+	if (!self.playing) {
+		[self setupGame];
+	}
+
 	return YES;
 }
 

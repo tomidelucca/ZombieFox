@@ -30,7 +30,7 @@
 {
 	AAPLCharacterConfiguration *configuration = [AAPLCharacterConfiguration new];
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/mummy.dae"];
-	configuration.maxVelocity = 0.6f;
+	configuration.maxVelocity = 1.0f;
 	return configuration;
 }
 
