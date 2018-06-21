@@ -89,9 +89,9 @@
 	[AAPLGameStateManager sharedManager].enemies = [NSMutableArray new];
 	[AAPLGameStateManager sharedManager].items = [NSMutableArray new];
 
-	[self resetOverlay];
-
 	[self createEnemyWave];
+    
+    [self resetOverlay];
 }
 
 - (void)setupCamera

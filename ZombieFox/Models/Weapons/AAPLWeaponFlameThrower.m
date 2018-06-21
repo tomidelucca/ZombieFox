@@ -30,6 +30,8 @@
 	if (!self.holder) {
 		return;
 	}
+    
+    [self releaseTheTrigger];
 
 	SCNNode *holder = [self.holder holderNodeForWeapon:self];
 
