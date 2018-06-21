@@ -83,7 +83,7 @@
 	self.player.playerDelegate = self;
 	[self.gameView.scene.rootNode addChildNode:self.player.node];
 
-	AAPLWeapon *weapon = [AAPLWeaponFactory flamethrower];
+	AAPLWeapon *weapon = [AAPLWeaponFactory randomWeapon];
 	self.player.weapon = weapon;
 
 	[AAPLGameStateManager sharedManager].enemies = [NSMutableArray new];

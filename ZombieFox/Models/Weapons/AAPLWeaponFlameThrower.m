@@ -41,7 +41,7 @@
     [ft addParticleSystem:fire];
     
     ft.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeKinematic
-                                            shape:[SCNPhysicsShape shapeWithGeometry:[SCNCone coneWithTopRadius:0.0f bottomRadius:0.5f height:1.5f] options:nil]];
+                                            shape:[SCNPhysicsShape shapeWithGeometry:[SCNCone coneWithTopRadius:0.0f bottomRadius:0.5f height:2.0f] options:nil]];
     ft.physicsBody.categoryBitMask = AAPLBitmaskFire;
     ft.physicsBody.collisionBitMask = AAPLBitmaskEnemy;
     ft.physicsBody.contactTestBitMask = AAPLBitmaskEnemy;
