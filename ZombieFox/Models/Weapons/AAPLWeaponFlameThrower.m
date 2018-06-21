@@ -33,13 +33,6 @@
 
 	[self releaseTheTrigger];
 
-	for (SCNNode *node in [AAPLGameStateManager sharedManager].player.node.childNodes) {
-		if ([node.name isEqualToString:@"ft"]) {
-			[node removeAllParticleSystems];
-			[node removeFromParentNode];
-		}
-	}
-
 	SCNNode *holder = [self.holder holderNodeForWeapon:self];
 
 	SCNNode *ft = [SCNNode node];
@@ -47,8 +40,14 @@
 	ft.position = SCNVector3Make(0.0f, 0.1f, 1.2f);
 	ft.eulerAngles = SCNVector3Make(-M_PI_2, 0.0f, 0.0f);
 
+    SCNNode *fireNode = [SCNNode node];
+    fireNode.name = @"fireNode";
+    fireNode.position = SCNVector3Make(0.0f, 1.2f, 0.0f);
+    
 	SCNParticleSystem *fire = [SCNParticleSystem particleSystemNamed:@"flamethrower.scnp" inDirectory:nil];
-	[ft addParticleSystem:fire];
+    
+	[fireNode addParticleSystem:fire];
+    [ft addChildNode:fireNode];
 
 	ft.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeKinematic
 	                                        shape:[SCNPhysicsShape shapeWithGeometry:[SCNCone coneWithTopRadius:0.0f bottomRadius:0.5f height:2.0f] options:nil]];
@@ -63,6 +62,15 @@
 
 - (void)releaseTheTrigger
 {
+    if (!self.ft) {
+        return;
+    }
+    
+    for (SCNNode* node in self.ft.childNodes) {
+        [node removeAllParticleSystems];
+        [node removeFromParentNode];
+    }
+    
 	[self.ft removeAllParticleSystems];
 	[self.ft removeFromParentNode];
 	self.ft = nil;
