@@ -31,8 +31,6 @@
 		return;
 	}
 
-	[self releaseTheTrigger];
-
 	SCNNode *holder = [self.holder holderNodeForWeapon:self];
 
 	SCNNode *ft = [SCNNode node];
@@ -64,11 +62,6 @@
 {
 	if (!self.ft) {
 		return;
-	}
-
-	for (SCNNode *node in self.ft.childNodes) {
-		[node removeAllParticleSystems];
-		[node removeFromParentNode];
 	}
 
 	[self.ft removeAllParticleSystems];
