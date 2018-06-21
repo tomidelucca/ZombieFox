@@ -7,7 +7,6 @@
 //
 
 #import <SceneKit/SceneKit.h>
-#import "AAPLWeaponConfiguration.h"
 
 @class AAPLWeapon;
 
@@ -21,6 +20,6 @@
 @property (strong, nonatomic, readonly) NSString *name;
 @property (weak, nonatomic) id <AAPLWeaponHolder> holder;
 
-- (instancetype)initWithConfiguration:(AAPLWeaponConfiguration *)configuration;
+- (instancetype)initWithDamage:(CGFloat)damage;
 - (void)pullTheTrigger;
 @end

@@ -35,7 +35,7 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 {
 	AAPLCharacterConfiguration *configuration = [AAPLCharacterConfiguration new];
 	configuration.characterScene = [SCNScene sceneNamed:@"game.scnassets/panda.scn"];
-	configuration.maxLife = 80.0f;
+	configuration.maxLife = 100.0f;
 	configuration.maxVelocity = 1.5f;
 	configuration.strength = 10.0f;
 	return configuration;
@@ -124,15 +124,15 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 
 - (void)setWeapon:(AAPLWeapon *)weapon
 {
-    if (_weapon) {
-        [_weapon.node removeFromParentNode];
-        _weapon = nil;
-    }
-    
+	if (_weapon) {
+		[_weapon.node removeFromParentNode];
+		_weapon = nil;
+	}
+
 	_weapon = weapon;
 	_weapon.holder = self;
-    [self.node addChildNode:weapon.node];
-    
+	[self.node addChildNode:weapon.node];
+
 	if ([self.playerDelegate respondsToSelector:@selector(player:selectedWeaponDidChange:)]) {
 		[self.playerDelegate player:self selectedWeaponDidChange:weapon];
 	}

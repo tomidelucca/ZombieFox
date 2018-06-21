@@ -11,13 +11,11 @@
 
 @implementation AAPLWeapon
 
-- (instancetype)initWithConfiguration:(AAPLWeaponConfiguration *)configuration
+- (instancetype)initWithDamage:(CGFloat)damage
 {
 	self = [super init];
 	if (self) {
-		self.scene = configuration.scene;
-		self.damage = configuration.damage;
-        self.gameState = configuration.gameState;
+		self.damage = damage;
 	}
 	return self;
 }

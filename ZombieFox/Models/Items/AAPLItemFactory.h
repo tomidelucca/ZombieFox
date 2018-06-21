@@ -13,6 +13,6 @@
 + (AAPLItem *)speedItemWithSpeed:(CGFloat)speed forInterval:(NSTimeInterval)interval;
 + (AAPLItem *)shieldForInterval:(CGFloat)interval;
 + (AAPLItem *)damageForCharacter:(CGFloat)damage;
-+ (AAPLItem *)weaponItemWithConfiguration:(AAPLWeaponConfiguration *)configuration;
++ (AAPLItem *)weaponItem;
 + (AAPLItem *)randomItemForScene:(SCNScene *)scene;
 @end

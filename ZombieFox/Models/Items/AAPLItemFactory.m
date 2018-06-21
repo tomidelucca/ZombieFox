@@ -55,10 +55,10 @@
 	return item;
 }
 
-+ (AAPLItem *)weaponItemWithConfiguration:(AAPLWeaponConfiguration *)configuration
++ (AAPLItem *)weaponItem
 {
 	AAPLItem *item = [[AAPLItem alloc] initWithAction: ^(AAPLPlayer *player) {
-	    AAPLWeapon *weapon = [AAPLWeaponFactory weaponWithConfiguration:configuration];
+	    AAPLWeapon *weapon = [AAPLWeaponFactory randomWeapon];
 	    player.weapon = weapon;
 	}];
 
@@ -83,9 +83,7 @@
 		int time = arc4random_uniform(5) + 5;
 		item = [AAPLItemFactory shieldForInterval:time];
 	} else if (random == 3) {
-		AAPLWeaponConfiguration *config = [AAPLWeaponConfiguration new];
-		config.scene = scene;
-		item = [AAPLItemFactory weaponItemWithConfiguration:config];
+		item = [AAPLItemFactory weaponItem];
 	}
 
 	return item;
