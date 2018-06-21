@@ -68,9 +68,9 @@
 
 - (void)resetGame
 {
-	[self.gameView.scene.rootNode enumerateChildNodesUsingBlock: ^(SCNNode *node, BOOL *stop) {
-	    [node removeFromParentNode];
-	}];
+	for (SCNNode *node in self.gameView.scene.rootNode.childNodes) {
+		[node removeFromParentNode];
+	}
 
 	self.playing = YES;
 
@@ -163,6 +163,10 @@
 {
 	if (!self.pastTime) {
 		self.pastTime = time;
+		return;
+	}
+
+	if (!self.playing) {
 		return;
 	}
 
@@ -369,9 +373,9 @@
 {
 	self.playing = NO;
 
-	[self.gameView.scene.rootNode enumerateChildNodesUsingBlock: ^(SCNNode *node, BOOL *stop) {
-	    [node removeFromParentNode];
-	}];
+	for (SCNNode *node in self.gameView.scene.rootNode.childNodes) {
+		[node removeFromParentNode];
+	}
 
 	[self setupGround];
 	[self.gameView setGameOverScreenVisible:YES];
