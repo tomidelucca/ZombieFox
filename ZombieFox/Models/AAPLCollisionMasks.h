@@ -14,7 +14,7 @@ typedef NS_OPTIONS (NSUInteger, AAPLBitmask) {
 	AAPLBitmaskCollectable = 1UL << 2,
 	AAPLBitmaskEnemy       = 1UL << 3,
 	AAPLBitmaskFire        = 1UL << 4,
-    AAPLBitmaskCollision   = 1UL << 5
+	AAPLBitmaskCollision   = 1UL << 5
 };
 
 #endif

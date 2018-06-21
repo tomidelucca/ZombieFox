@@ -193,12 +193,12 @@
 	if (self.holdingTrigger == YES && self.wasHoldingTrigger == NO) {
 		[self.player shoot];
 	}
-    
-    if (self.holdingTrigger == NO && self.wasHoldingTrigger == YES) {
-        [self.player letGo];
-    }
-    
-    self.wasHoldingTrigger = self.holdingTrigger;
+
+	if (self.holdingTrigger == NO && self.wasHoldingTrigger == YES) {
+		[self.player letGo];
+	}
+
+	self.wasHoldingTrigger = self.holdingTrigger;
 
 	self.pastTime = time;
 }
@@ -246,19 +246,19 @@
 		AAPLEnemy *enemy = [AAPLEnemy enemyForNode:contact.nodeB];
 		[enemy hurtCharacter:self.player];
 	}
-    
-    if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskEnemy &&
-        contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskFire) {
-        AAPLEnemy *enemy = [AAPLEnemy enemyForNode:contact.nodeA];
-        [self.player hurtCharacter:enemy];
-    }
+
+	if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskEnemy &&
+	    contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskFire) {
+		AAPLEnemy *enemy = [AAPLEnemy enemyForNode:contact.nodeA];
+		[self.player hurtCharacter:enemy];
+	}
 
 	AAPLCharacter *character = [AAPLCharacter characterForNode:contact.nodeA];
-    AAPLCharacter *characterB = [AAPLCharacter characterForNode:contact.nodeB];
-    
-    if (characterB) {
-        [self character:character hitWall:contact.nodeB withContact:contact];
-    }
+	AAPLCharacter *characterB = [AAPLCharacter characterForNode:contact.nodeB];
+
+	if (characterB) {
+		[self character:character hitWall:contact.nodeB withContact:contact];
+	}
 }
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer didSimulatePhysicsAtTime:(NSTimeInterval)time

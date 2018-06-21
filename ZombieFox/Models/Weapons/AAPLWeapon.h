@@ -13,7 +13,7 @@
 @protocol AAPLWeaponHolder <NSObject>
 - (SCNVector3)positionForWeaponHolder:(AAPLWeapon *)weapon;
 - (CGFloat)angleForWeaponHolder:(AAPLWeapon *)weapon;
-- (SCNNode*)holderNodeForWeapon:(AAPLWeapon *)weapon;
+- (SCNNode *)holderNodeForWeapon:(AAPLWeapon *)weapon;
 @end
 
 @interface AAPLWeapon : NSObject

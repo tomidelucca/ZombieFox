@@ -19,9 +19,9 @@
 		return [AAPLWeaponShotgun new];
 	} else if ([type isEqualToString:AAPLWeaponTypeGrenade]) {
 		return [AAPLWeaponGrenade new];
-    } else if ([type isEqualToString:AAPLWeaponTypeFlameThrower]) {
-        return [AAPLWeaponFlameThrower new];
-    }
+	} else if ([type isEqualToString:AAPLWeaponTypeFlameThrower]) {
+		return [AAPLWeaponFlameThrower new];
+	}
 
 	return nil;
 }
@@ -38,7 +38,7 @@
 
 + (AAPLWeapon *)flamethrower
 {
-    return [AAPLWeaponFlameThrower new];
+	return [AAPLWeaponFlameThrower new];
 }
 
 + (AAPLWeapon *)randomWeapon

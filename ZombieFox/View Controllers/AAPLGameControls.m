@@ -83,7 +83,7 @@
 	BOOL success = NO;
 
 	if (theEvent.keyCode == 49) { // Spacebar
-        self.holdingTrigger = NO;
+		self.holdingTrigger = NO;
 		success = YES;
 	}
 
