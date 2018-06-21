@@ -17,6 +17,7 @@
 	if (self) {
 		self.scene = configuration.scene;
 		self.damage = configuration.damage;
+        self.gameState = configuration.gameState;
 	}
 	return self;
 }

@@ -50,7 +50,7 @@
 {
 	self.node = [SCNNode node];
 	SCNScene *characterScene = scene;
-	SCNNode *characterTopLevelNode = characterScene.rootNode.childNodes[0];
+	SCNNode *characterTopLevelNode = [characterScene.rootNode.childNodes firstObject];
 	[self.node addChildNode:characterTopLevelNode];
 }
 

@@ -39,6 +39,10 @@
 		E677EFAB20D6FB88005FEC05 /* AAPLNodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFAA20D6FB88005FEC05 /* AAPLNodeManager.m */; };
 		E677EFD020D7040A005FEC05 /* AAPLItemFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFCF20D7040A005FEC05 /* AAPLItemFactory.m */; };
 		E677EFDB20D71C25005FEC05 /* AAPLEnemyFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = E677EFDA20D71C25005FEC05 /* AAPLEnemyFactory.m */; };
+		E6FB263720DB49CC0068AEB4 /* AAPLWeaponGrenade.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB263620DB49CC0068AEB4 /* AAPLWeaponGrenade.m */; };
+		E6FB263A20DB49DC0068AEB4 /* AAPLWeaponFlameThrower.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB263920DB49DC0068AEB4 /* AAPLWeaponFlameThrower.m */; };
+		E6FB263D20DB64E90068AEB4 /* AAPLGameState.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB263C20DB64E90068AEB4 /* AAPLGameState.m */; };
+		E6FB264020DB66980068AEB4 /* AAPLGameStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FB263F20DB66980068AEB4 /* AAPLGameStateManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,6 +99,14 @@
 		E677EFCF20D7040A005FEC05 /* AAPLItemFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLItemFactory.m; sourceTree = "<group>"; };
 		E677EFD920D71C25005FEC05 /* AAPLEnemyFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLEnemyFactory.h; sourceTree = "<group>"; };
 		E677EFDA20D71C25005FEC05 /* AAPLEnemyFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLEnemyFactory.m; sourceTree = "<group>"; };
+		E6FB263520DB49CC0068AEB4 /* AAPLWeaponGrenade.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLWeaponGrenade.h; sourceTree = "<group>"; };
+		E6FB263620DB49CC0068AEB4 /* AAPLWeaponGrenade.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLWeaponGrenade.m; sourceTree = "<group>"; };
+		E6FB263820DB49DC0068AEB4 /* AAPLWeaponFlameThrower.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLWeaponFlameThrower.h; sourceTree = "<group>"; };
+		E6FB263920DB49DC0068AEB4 /* AAPLWeaponFlameThrower.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLWeaponFlameThrower.m; sourceTree = "<group>"; };
+		E6FB263B20DB64E90068AEB4 /* AAPLGameState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLGameState.h; sourceTree = "<group>"; };
+		E6FB263C20DB64E90068AEB4 /* AAPLGameState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLGameState.m; sourceTree = "<group>"; };
+		E6FB263E20DB66980068AEB4 /* AAPLGameStateManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAPLGameStateManager.h; sourceTree = "<group>"; };
+		E6FB263F20DB66980068AEB4 /* AAPLGameStateManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAPLGameStateManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,13 +200,17 @@
 		E676BE6E20DB129000C1844D /* Weapons */ = {
 			isa = PBXGroup;
 			children = (
+				E676BE7820DB17DB00C1844D /* AAPLWeaponPrivate.h */,
 				E676BE6F20DB129E00C1844D /* AAPLWeapon.h */,
 				E676BE7020DB129E00C1844D /* AAPLWeapon.m */,
 				E676BE7520DB172000C1844D /* AAPLWeaponShotgun.h */,
 				E676BE7620DB172000C1844D /* AAPLWeaponShotgun.m */,
+				E6FB263520DB49CC0068AEB4 /* AAPLWeaponGrenade.h */,
+				E6FB263620DB49CC0068AEB4 /* AAPLWeaponGrenade.m */,
+				E6FB263820DB49DC0068AEB4 /* AAPLWeaponFlameThrower.h */,
+				E6FB263920DB49DC0068AEB4 /* AAPLWeaponFlameThrower.m */,
 				E676BE7220DB15EF00C1844D /* AAPLWeaponConfiguration.h */,
 				E676BE7320DB15EF00C1844D /* AAPLWeaponConfiguration.m */,
-				E676BE7820DB17DB00C1844D /* AAPLWeaponPrivate.h */,
 				E676BE7920DB1D4300C1844D /* AAPLWeaponFactory.h */,
 				E676BE7A20DB1D4300C1844D /* AAPLWeaponFactory.m */,
 			);
@@ -239,6 +255,10 @@
 				E677EFA520D6154B005FEC05 /* AAPLCollisionMasks.h */,
 				E677EFA920D6FB88005FEC05 /* AAPLNodeManager.h */,
 				E677EFAA20D6FB88005FEC05 /* AAPLNodeManager.m */,
+				E6FB263E20DB66980068AEB4 /* AAPLGameStateManager.h */,
+				E6FB263F20DB66980068AEB4 /* AAPLGameStateManager.m */,
+				E6FB263B20DB64E90068AEB4 /* AAPLGameState.h */,
+				E6FB263C20DB64E90068AEB4 /* AAPLGameState.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -357,20 +377,24 @@
 				E677EFDB20D71C25005FEC05 /* AAPLEnemyFactory.m in Sources */,
 				E676BE7B20DB1D4300C1844D /* AAPLWeaponFactory.m in Sources */,
 				9C0EAE111BA9D4AF004F26CB /* AAPLAppDelegate.m in Sources */,
+				E6FB263720DB49CC0068AEB4 /* AAPLWeaponGrenade.m in Sources */,
 				E677EF9D20D6098B005FEC05 /* SCNScene+LoadAnimation.m in Sources */,
 				E676BE7420DB15EF00C1844D /* AAPLWeaponConfiguration.m in Sources */,
 				E677EF9A20D5BA8E005FEC05 /* AAPLPlayer.m in Sources */,
 				9C0EAE1D1BA9D4DA004F26CB /* AAPLGameViewController.m in Sources */,
+				E6FB263D20DB64E90068AEB4 /* AAPLGameState.m in Sources */,
 				E677EFA820D630F9005FEC05 /* AAPLCharacterConfiguration.m in Sources */,
 				E677EF9420D5B798005FEC05 /* AAPLEnemy.m in Sources */,
 				E677EFAB20D6FB88005FEC05 /* AAPLNodeManager.m in Sources */,
 				9C0EAE1C1BA9D4DA004F26CB /* AAPLGameView.m in Sources */,
 				E677EFD020D7040A005FEC05 /* AAPLItemFactory.m in Sources */,
 				9C0EAE1E1BA9D4DA004F26CB /* AAPLCharacter.m in Sources */,
+				E6FB263A20DB49DC0068AEB4 /* AAPLWeaponFlameThrower.m in Sources */,
 				E677EFA420D61509005FEC05 /* AAPLItem.m in Sources */,
 				9C7D93A61BAC863900DB9637 /* AAPLGameControls.m in Sources */,
 				E676BE7720DB172000C1844D /* AAPLWeaponShotgun.m in Sources */,
 				E676BE7120DB129E00C1844D /* AAPLWeapon.m in Sources */,
+				E6FB264020DB66980068AEB4 /* AAPLGameStateManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

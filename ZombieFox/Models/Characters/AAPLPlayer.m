@@ -124,10 +124,15 @@ static NSString *const AAPLPlayerAnimationKeyWalk = @"walk";
 
 - (void)setWeapon:(AAPLWeapon *)weapon
 {
+    if (_weapon) {
+        [_weapon.node removeFromParentNode];
+        _weapon = nil;
+    }
+    
 	_weapon = weapon;
-
 	_weapon.holder = self;
-
+    [self.node addChildNode:weapon.node];
+    
 	if ([self.playerDelegate respondsToSelector:@selector(player:selectedWeaponDidChange:)]) {
 		[self.playerDelegate player:self selectedWeaponDidChange:weapon];
 	}

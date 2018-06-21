@@ -83,7 +83,7 @@
 
 	AAPLWeaponConfiguration *config = [[AAPLWeaponConfiguration alloc] init];
 	config.scene = self.gameView.scene;
-	config.type = AAPLWeaponTypeShotgun;
+	config.type = AAPLWeaponTypeGrenade;
 
 	AAPLWeapon *weapon = [AAPLWeaponFactory weaponWithConfiguration:config];
 	self.player.weapon = weapon;
@@ -93,7 +93,7 @@
 
 	[self resetOverlay];
 
-	[self createEnemyWave];
+	// [self createEnemyWave];
 }
 
 - (void)setupCamera
@@ -124,6 +124,20 @@
 	floor.firstMaterial = groundMaterial;
 
 	self.ground = [SCNNode nodeWithGeometry:floor];
+    
+    SCNNode *collider = [SCNNode node];
+    collider.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeStatic
+                                                  shape:[SCNPhysicsShape shapeWithGeometry:[SCNBox boxWithWidth:1000.0f
+                                                                                                         height:1.0f
+                                                                                                         length:1000.0f
+                                                                                                  chamferRadius:0.0f]
+                                                                                   options:nil]];
+    collider.physicsBody.allowsResting = YES;
+    collider.physicsBody.friction = 10.0f;
+    collider.position = SCNVector3Make(0.0f, -0.5f, 0.0f);
+    
+    [self.ground addChildNode:collider];
+    
 	[self.gameView.scene.rootNode addChildNode:self.ground];
 }
 

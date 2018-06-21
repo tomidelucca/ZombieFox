@@ -21,6 +21,15 @@
 		if (!self.damage) {
 			self.damage = 5.0f;
 		}
+        SCNScene* scene = [SCNScene sceneNamed:@"game.scnassets/shotgun.dae"];
+        SCNNode* node = [SCNNode node];
+        for (SCNNode* n in scene.rootNode.childNodes) {
+            [node addChildNode:n];
+        }
+        self.node = node;
+        self.node.scale = SCNVector3Make(0.05f, 0.05f, 0.05f);
+        self.node.eulerAngles = SCNVector3Make(0.0f, M_PI_2, 0.0f);
+        self.node.position = SCNVector3Make(-0.08f, 0.25f, 0.14f);
 	}
 	return self;
 }

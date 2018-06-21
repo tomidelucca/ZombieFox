@@ -8,6 +8,7 @@
 
 #import "AAPLWeaponFactory.h"
 #import "AAPLWeaponShotgun.h"
+#import "AAPLWeaponGrenade.h"
 
 @implementation AAPLWeaponFactory
 
@@ -15,13 +16,16 @@
 {
 	if (configuration.type == nil) {
 		int rand = arc4random_uniform(3);
-		configuration.type = rand == 0 ? AAPLWeaponTypeShotgun : rand == 1 ? AAPLWeaponTypeGranade : AAPLWeaponTypeFlameThrower;
+		configuration.type = rand == 0 ? AAPLWeaponTypeShotgun : rand == 1 ? AAPLWeaponTypeGrenade : AAPLWeaponTypeFlameThrower;
 	}
 
 	if ([configuration.type isEqualToString:AAPLWeaponTypeShotgun]) {
 		AAPLWeaponShotgun *shotgun = [[AAPLWeaponShotgun alloc] initWithConfiguration:configuration];
 		return shotgun;
-	}
+    } else if ([configuration.type isEqualToString:AAPLWeaponTypeGrenade]) {
+        AAPLWeaponGrenade *grenade = [[AAPLWeaponGrenade alloc] initWithConfiguration:configuration];
+        return grenade;
+    }
 
 	return nil;
 }
