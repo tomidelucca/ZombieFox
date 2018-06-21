@@ -18,6 +18,9 @@
 	self = [super initWithConfiguration:configuration];
 	if (self) {
 		self.name = @"Shotgun";
+		if (!self.damage) {
+			self.damage = 5.0f;
+		}
 	}
 	return self;
 }

@@ -67,4 +67,29 @@
 	return item;
 }
 
++ (AAPLItem *)randomItemForScene:(SCNScene *)scene
+{
+	int random = arc4random_uniform(4);
+	random = 0;
+	AAPLItem *item = nil;
+
+	if (random == 0) {
+		CGFloat life = arc4random_uniform(20.0f) + 10.0f;
+		item = [AAPLItemFactory healthItemWithLife:life];
+	} else if (random == 1) {
+		CGFloat speed = (double)arc4random_uniform(10.0f) / 10.0f + 1;
+		int time = arc4random_uniform(5) + 2;
+		item = [AAPLItemFactory speedItemWithSpeed:speed forInterval:time];
+	} else if (random == 2) {
+		int time = arc4random_uniform(5) + 5;
+		item = [AAPLItemFactory shieldForInterval:time];
+	} else if (random == 3) {
+		AAPLWeaponConfiguration *config = [AAPLWeaponConfiguration new];
+		config.scene = scene;
+		item = [AAPLItemFactory weaponItemWithConfiguration:config];
+	}
+
+	return item;
+}
+
 @end

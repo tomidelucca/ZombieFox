@@ -154,11 +154,27 @@
 	}
 
 	_life = life;
-	[self.delegate player:self lifeDidChange:life];
+
+	if ([self.delegate respondsToSelector:@selector(character:lifeDidChange:)]) {
+		[self.delegate character:self lifeDidChange:life];
+	}
+}
+
+- (void)setInvulnerable:(BOOL)invulnerable
+{
+	_invulnerable = invulnerable;
+
+	if ([self.delegate respondsToSelector:@selector(character:invulnerabilityDidChange:)]) {
+		[self.delegate character:self invulnerabilityDidChange:invulnerable];
+	}
 }
 
 - (void)takeLife:(CGFloat)points
 {
+	if (self.invulnerable) {
+		return;
+	}
+
 	self.life -= points;
 
 	if (self.life < 0) {
@@ -193,9 +209,15 @@
 - (void)invulnerableForInterval:(NSTimeInterval)interval
 {
 	self.invulnerable = YES;
-	[NSTimer scheduledTimerWithTimeInterval:interval repeats:NO block: ^(NSTimer *timer) {
-	    self.invulnerable = NO;
+
+	__weak typeof(self)weakSelf = self;
+
+	id wait = [SCNAction waitForDuration:interval];
+	id run = [SCNAction runBlock: ^(SCNNode *node) {
+	    weakSelf.invulnerable = NO;
 	}];
+
+	[self.node runAction:[SCNAction sequence:@[wait, run]]];
 }
 
 @end

@@ -14,4 +14,5 @@
 + (AAPLItem *)shieldForInterval:(CGFloat)interval;
 + (AAPLItem *)damageForCharacter:(CGFloat)damage;
 + (AAPLItem *)weaponItemWithConfiguration:(AAPLWeaponConfiguration *)configuration;
++ (AAPLItem *)randomItemForScene:(SCNScene *)scene;
 @end

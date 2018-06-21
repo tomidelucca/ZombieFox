@@ -15,8 +15,9 @@
 
 @class AAPLCharacter;
 
-@protocol AAPLCharacterDelegate
-- (void)player:(AAPLCharacter *)character lifeDidChange:(CGFloat)newLife;
+@protocol AAPLCharacterDelegate <NSObject>
+- (void)character:(AAPLCharacter *)character lifeDidChange:(CGFloat)newLife;
+- (void)character:(AAPLCharacter *)character invulnerabilityDidChange:(BOOL)invulnerable;
 @end
 
 @interface AAPLCharacter : NSObject

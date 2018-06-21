@@ -18,6 +18,7 @@
 @interface AAPLGameViewController () <AAPLCharacterDelegate, AAPLPlayerDelegate>
 @property (strong, nonatomic) AAPLItem *item;
 @property (nonatomic) NSTimeInterval pastTime;
+@property (nonatomic) NSUInteger wave;
 @end
 
 @implementation AAPLGameViewController
@@ -33,6 +34,8 @@
 - (void)viewDidAppear
 {
 	[super viewDidAppear];
+
+	self.wave = 1;
 
 	AAPLWeaponConfiguration *config = [[AAPLWeaponConfiguration alloc] init];
 	config.scene = self.gameView.scene;
@@ -83,6 +86,12 @@
 
 	AAPLEnemy *enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:0.5f];
 	enemy.node.position = SCNVector3Make(0.0f, 0.0f, 3.0f);
+	enemy.delegate = self;
+	[self.gameView.scene.rootNode addChildNode:enemy.node];
+	[self.enemies addObject:enemy];
+
+	enemy = [AAPLEnemyFactory mummyWithLife:30.0f andStrength:0.5f];
+	enemy.node.position = SCNVector3Make(0.0f, 0.0f, -3.0f);
 	enemy.delegate = self;
 	[self.gameView.scene.rootNode addChildNode:enemy.node];
 	[self.enemies addObject:enemy];
@@ -241,7 +250,7 @@
 
 #pragma mark - AAPLCharacterDelegate Conformance
 
-- (void)player:(AAPLCharacter *)character lifeDidChange:(CGFloat)newLife
+- (void)character:(AAPLCharacter *)character lifeDidChange:(CGFloat)newLife
 {
 	if (character == self.player) {
 		[self.gameView setLife:newLife / character.maxLife];
@@ -249,13 +258,33 @@
 		if (newLife == 0) {
 			[character.node removeFromParentNode];
 			[self.enemies removeObject:(AAPLEnemy *)character];
+			AAPLItem *item = [AAPLItemFactory randomItemForScene:self.gameView.scene];
+			item.node.position = character.node.position;
+			[self.items addObject:item];
+			[self.gameView.scene.rootNode addChildNode:item.node];
 		}
+	}
+}
+
+- (void)character:(AAPLCharacter *)character invulnerabilityDidChange:(BOOL)invulnerable
+{
+	if (character == self.player) {
+		self.gameView.invulnerable = invulnerable;
 	}
 }
 
 - (void)player:(AAPLPlayer *)player selectedWeaponDidChange:(AAPLWeapon *)newWeapon
 {
 	[self.gameView setWeapon:newWeapon.name];
+}
+
+#pragma mark - Setters and getters
+
+- (void)setWave:(NSUInteger)wave
+{
+	_wave = wave;
+
+	[self.gameView setWave:wave];
 }
 
 @end
