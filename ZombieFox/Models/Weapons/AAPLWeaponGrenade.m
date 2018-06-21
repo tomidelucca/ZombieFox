@@ -59,7 +59,7 @@
 	__weak typeof(self)weakSelf = self;
 	id explosionWait = [SCNAction waitForDuration:2.5f];
 	id inflictDamage = [SCNAction runBlock: ^(SCNNode *node) {
-	    SCNVector3 gPos = grenade.position;
+	    SCNVector3 gPos = grenade.presentationNode.position;
 	    [grenade removeFromParentNode];
 	    NSArray <AAPLEnemy *> *enemies = [[AAPLGameStateManager sharedManager].enemies copy];
 	    for (AAPLEnemy *enemy in enemies) {

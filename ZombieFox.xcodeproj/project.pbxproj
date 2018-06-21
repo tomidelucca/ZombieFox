@@ -168,6 +168,7 @@
 		9CFCF1461B68E4CE00686987 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				E655E78D20DB969500F4E573 /* Sounds */,
 				9C0EAE081BA9D44F004F26CB /* Main.storyboard */,
 				9C0EAE121BA9D4C0004F26CB /* Images.xcassets */,
 				9CFCF1471B68E4CE00686987 /* game.scnassets */,
@@ -189,6 +190,13 @@
 				9CFCF1531B68E4CE00686987 /* MaxIcon.png */,
 			);
 			path = Overlays;
+			sourceTree = "<group>";
+		};
+		E655E78D20DB969500F4E573 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		E676BE6E20DB129000C1844D /* Weapons */ = {

@@ -11,6 +11,10 @@
 #import "AAPLEnemy.h"
 #import "AAPLPlayer.h"
 
+@interface AAPLWeaponShotgun()
+@property (strong, nonatomic) SCNAudioSource* shot;
+@end
+
 @implementation AAPLWeaponShotgun
 
 - (instancetype)init
@@ -24,6 +28,7 @@
 			[node addChildNode:n];
 		}
 		self.node = node;
+        self.shot = [SCNAudioSource audioSourceNamed:@"game.scnassets/sounds/shotgun.mp3"];
 		self.node.scale = SCNVector3Make(0.05f, 0.05f, 0.05f);
 		self.node.eulerAngles = SCNVector3Make(0.0f, M_PI_2, 0.0f);
 		self.node.position = SCNVector3Make(-0.08f, 0.25f, 0.14f);
@@ -49,10 +54,12 @@
 	                                                                                                    toPoint:next
 	                                                                                                    options:options];
 
-	for (SCNHitTestResult *result in results) {
-		AAPLEnemy *enemy = [AAPLEnemy enemyForNode:result.node];
-		[enemy takeLife:self.damage];
-	}
+    SCNHitTestResult* result = [results firstObject];
+    AAPLEnemy *enemy = [AAPLEnemy enemyForNode:result.node];
+    [enemy takeLife:self.damage];
+    
+    SCNAction* play = [SCNAction playAudioSource:self.shot waitForCompletion:NO];
+    [[AAPLGameStateManager sharedManager].player.node runAction:play];
 }
 
 @end
