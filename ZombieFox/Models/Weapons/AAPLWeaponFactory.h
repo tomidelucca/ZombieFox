@@ -10,5 +10,9 @@
 #import "AAPLWeapon.h"
 
 @interface AAPLWeaponFactory : NSObject
-+ (AAPLWeapon *)weaponWithConfiguration:(AAPLWeaponConfiguration *)configuration;
++ (AAPLWeapon *)weaponWithType:(NSString *)type;
++ (AAPLWeapon *)randomWeapon;
++ (AAPLWeapon *)shotgun;
++ (AAPLWeapon *)grenade;
++ (AAPLWeapon *)flamethrower;
 @end

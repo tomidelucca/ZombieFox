@@ -9,8 +9,10 @@
 #ifndef AAPLWeaponPrivate_h
 #define AAPLWeaponPrivate_h
 
+#import "AAPLGameStateManager.h"
+
 @interface AAPLWeapon ()
-@property (weak, nonatomic) SCNScene *scene;
+@property (strong, nonatomic) SCNNode *node;
 @property (nonatomic) CGFloat damage;
 @property (strong, nonatomic) NSString *name;
 @end

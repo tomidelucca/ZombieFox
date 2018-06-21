@@ -14,11 +14,13 @@
 #import "AAPLItemFactory.h"
 #import "AAPLEnemyFactory.h"
 #import "AAPLWeaponFactory.h"
+#import "AAPLGameStateManager.h"
 
 @interface AAPLGameViewController () <AAPLCharacterDelegate, AAPLPlayerDelegate>
 @property (strong, nonatomic) AAPLItem *item;
 @property (nonatomic) NSTimeInterval pastTime;
 @property (nonatomic) NSUInteger wave;
+@property (nonatomic) BOOL wasHoldingTrigger;
 @end
 
 @implementation AAPLGameViewController
@@ -36,7 +38,6 @@
 	[super viewDidAppear];
 
 	self.wave = 1;
-
 	[self setupGame];
 }
 
@@ -54,6 +55,7 @@
 - (void)setupScene
 {
 	self.gameView.scene = [SCNScene sceneNamed:@"game.scnassets/level.scn"];
+	[AAPLGameStateManager sharedManager].mainScene = self.gameView.scene;
 	self.gameView.playing = YES;
 	self.gameView.loops = YES;
 }
@@ -75,25 +77,21 @@
 	self.wave = 1;
 	self.pastTime = 0.0f;
 
-	self.player = [AAPLPlayer new];
+	[AAPLGameStateManager sharedManager].player = [AAPLPlayer new];
 	self.player.node.position = SCNVector3Make(0.0f, 0.0f, 0.0f);
 	self.player.delegate = self;
 	self.player.playerDelegate = self;
 	[self.gameView.scene.rootNode addChildNode:self.player.node];
 
-	AAPLWeaponConfiguration *config = [[AAPLWeaponConfiguration alloc] init];
-	config.scene = self.gameView.scene;
-	config.type = AAPLWeaponTypeShotgun;
-
-	AAPLWeapon *weapon = [AAPLWeaponFactory weaponWithConfiguration:config];
+	AAPLWeapon *weapon = [AAPLWeaponFactory randomWeapon];
 	self.player.weapon = weapon;
 
-	self.enemies = [NSMutableArray new];
-	self.items = [NSMutableArray new];
-
-	[self resetOverlay];
+	[AAPLGameStateManager sharedManager].enemies = [NSMutableArray new];
+	[AAPLGameStateManager sharedManager].items = [NSMutableArray new];
 
 	[self createEnemyWave];
+    
+    [self resetOverlay];
 }
 
 - (void)setupCamera
@@ -124,6 +122,20 @@
 	floor.firstMaterial = groundMaterial;
 
 	self.ground = [SCNNode nodeWithGeometry:floor];
+
+	SCNNode *collider = [SCNNode node];
+	collider.physicsBody = [SCNPhysicsBody bodyWithType:SCNPhysicsBodyTypeStatic
+	                                              shape:[SCNPhysicsShape shapeWithGeometry:[SCNBox boxWithWidth:1000.0f
+	                                                                                                     height:1.0f
+	                                                                                                     length:1000.0f
+	                                                                                              chamferRadius:0.0f]
+	                                                                               options:nil]];
+	collider.physicsBody.allowsResting = YES;
+	collider.physicsBody.friction = 10.0f;
+	collider.position = SCNVector3Make(0.0f, -0.5f, 0.0f);
+
+	[self.ground addChildNode:collider];
+
 	[self.gameView.scene.rootNode addChildNode:self.ground];
 }
 
@@ -178,10 +190,15 @@
 		[enemy seek:self.player withTime:time - self.pastTime];
 	}
 
-	if (self.holdingTrigger) {
+	if (self.holdingTrigger == YES && self.wasHoldingTrigger == NO) {
 		[self.player shoot];
-		self.holdingTrigger = NO;
 	}
+
+	if (self.holdingTrigger == NO && self.wasHoldingTrigger == YES) {
+		[self.player letGo];
+	}
+
+	self.wasHoldingTrigger = self.holdingTrigger;
 
 	self.pastTime = time;
 }
@@ -230,9 +247,18 @@
 		[enemy hurtCharacter:self.player];
 	}
 
-	AAPLCharacter *character = [AAPLCharacter characterForNode:contact.nodeA];
+	if (contact.nodeA.physicsBody.categoryBitMask == AAPLBitmaskEnemy &&
+	    contact.nodeB.physicsBody.categoryBitMask == AAPLBitmaskFire) {
+		AAPLEnemy *enemy = [AAPLEnemy enemyForNode:contact.nodeA];
+		[self.player hurtCharacter:enemy];
+	}
 
-	[self character:character hitWall:contact.nodeB withContact:contact];
+	AAPLCharacter *character = [AAPLCharacter characterForNode:contact.nodeA];
+	AAPLCharacter *characterB = [AAPLCharacter characterForNode:contact.nodeB];
+
+	if (characterB) {
+		[self character:character hitWall:contact.nodeB withContact:contact];
+	}
 }
 
 - (void)renderer:(id <SCNSceneRenderer>)renderer didSimulatePhysicsAtTime:(NSTimeInterval)time
@@ -352,6 +378,21 @@
 }
 
 #pragma mark - Setters and getters
+
+- (AAPLPlayer *)player
+{
+	return [AAPLGameStateManager sharedManager].player;
+}
+
+- (NSMutableArray <AAPLEnemy *> *)enemies
+{
+	return [AAPLGameStateManager sharedManager].enemies;
+}
+
+- (NSMutableArray <AAPLItem *> *)items
+{
+	return [AAPLGameStateManager sharedManager].items;
+}
 
 - (void)setWave:(NSUInteger)wave
 {

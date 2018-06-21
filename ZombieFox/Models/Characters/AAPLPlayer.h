@@ -20,4 +20,5 @@
 @property (strong, nonatomic) AAPLWeapon *weapon;
 + (AAPLPlayer *)playerForNode:(SCNNode *)node;
 - (void)shoot;
+- (void)letGo;
 @end

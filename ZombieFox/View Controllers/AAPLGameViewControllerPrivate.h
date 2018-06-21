@@ -15,9 +15,6 @@
 
 @interface AAPLGameViewController ()
 @property (strong, nonatomic) SCNNode *ground;
-@property (strong, nonatomic) AAPLPlayer *player;
-@property (strong, nonatomic) NSMutableArray <AAPLEnemy *> *enemies;
-@property (strong, nonatomic) NSMutableArray <AAPLItem *> *items;
 @property (nonatomic) vector_float2 controllerDirection;
 @property (nonatomic) BOOL holdingTrigger;
 @property (nonatomic) BOOL playing;

@@ -8,22 +8,43 @@
 
 #import "AAPLWeaponFactory.h"
 #import "AAPLWeaponShotgun.h"
+#import "AAPLWeaponGrenade.h"
+#import "AAPLWeaponFlameThrower.h"
 
 @implementation AAPLWeaponFactory
 
-+ (AAPLWeapon *)weaponWithConfiguration:(AAPLWeaponConfiguration *)configuration
++ (AAPLWeapon *)weaponWithType:(NSString *)type
 {
-	if (configuration.type == nil) {
-		int rand = arc4random_uniform(3);
-		configuration.type = rand == 0 ? AAPLWeaponTypeShotgun : rand == 1 ? AAPLWeaponTypeGranade : AAPLWeaponTypeFlameThrower;
-	}
-
-	if ([configuration.type isEqualToString:AAPLWeaponTypeShotgun]) {
-		AAPLWeaponShotgun *shotgun = [[AAPLWeaponShotgun alloc] initWithConfiguration:configuration];
-		return shotgun;
+	if ([type isEqualToString:AAPLWeaponTypeShotgun]) {
+		return [AAPLWeaponShotgun new];
+	} else if ([type isEqualToString:AAPLWeaponTypeGrenade]) {
+		return [AAPLWeaponGrenade new];
+	} else if ([type isEqualToString:AAPLWeaponTypeFlameThrower]) {
+		return [AAPLWeaponFlameThrower new];
 	}
 
 	return nil;
+}
+
++ (AAPLWeapon *)shotgun
+{
+	return [AAPLWeaponShotgun new];
+}
+
++ (AAPLWeapon *)grenade
+{
+	return [AAPLWeaponGrenade new];
+}
+
++ (AAPLWeapon *)flamethrower
+{
+	return [AAPLWeaponFlameThrower new];
+}
+
++ (AAPLWeapon *)randomWeapon
+{
+	int random = arc4random_uniform(3);
+	return random == 0 ? [AAPLWeaponShotgun new] : (random == 1 ? [AAPLWeaponGrenade new] : [AAPLWeaponFlameThrower new]);
 }
 
 @end

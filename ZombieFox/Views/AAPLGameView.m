@@ -27,6 +27,8 @@
 {
 	[super viewDidMoveToWindow];
 	[self setupOverlay];
+
+	// self.debugOptions = SCNDebugOptionShowPhysicsShapes;
 }
 
 - (void)setupOverlay

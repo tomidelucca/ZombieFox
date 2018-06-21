@@ -13,14 +13,20 @@
 
 @implementation AAPLWeaponShotgun
 
-- (instancetype)initWithConfiguration:(AAPLWeaponConfiguration *)configuration
+- (instancetype)init
 {
-	self = [super initWithConfiguration:configuration];
+	self = [super initWithDamage:5.0f];
 	if (self) {
 		self.name = @"Shotgun";
-		if (!self.damage) {
-			self.damage = 5.0f;
+		SCNScene *scene = [SCNScene sceneNamed:@"game.scnassets/shotgun.dae"];
+		SCNNode *node = [SCNNode node];
+		for (SCNNode *n in scene.rootNode.childNodes) {
+			[node addChildNode:n];
 		}
+		self.node = node;
+		self.node.scale = SCNVector3Make(0.05f, 0.05f, 0.05f);
+		self.node.eulerAngles = SCNVector3Make(0.0f, M_PI_2, 0.0f);
+		self.node.position = SCNVector3Make(-0.08f, 0.25f, 0.14f);
 	}
 	return self;
 }
@@ -39,9 +45,9 @@
 
 	SCNVector3 next = SCNVector3Make(holder.x + 100 * sin(angle), 0.0f, holder.z + 100 * cos(angle));
 
-	NSArray *results = [self.scene.physicsWorld rayTestWithSegmentFromPoint:holder
-	                                                                toPoint:next
-	                                                                options:options];
+	NSArray *results = [[AAPLGameStateManager sharedManager].mainScene.physicsWorld rayTestWithSegmentFromPoint:holder
+	                                                                                                    toPoint:next
+	                                                                                                    options:options];
 
 	for (SCNHitTestResult *result in results) {
 		AAPLEnemy *enemy = [AAPLEnemy enemyForNode:result.node];
